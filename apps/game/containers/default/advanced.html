@@ -1,0 +1,73 @@
+<!--
+Copyright 2017 Google Inc. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/> 
+    <title>Whack a Pod!</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900,900i|Source+Code+Pro:400,900" rel="stylesheet">
+    <link href="assets/css/next.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/lib.js"></script>
+    <script src="assets/js/advanced.js"></script>
+</head>
+<body>
+    <div class="holder">
+        <div id="service">
+            <h3 id="endpoint"></h3>
+            <div class="report"></div>
+            <div class="kube-label" id="kube-service">Service</div>
+        </div>
+        <button class="action" id="deploy-start">Click to deploy</button> 
+        <button id="deploy-end">Click to stop</button>  
+        <code id="deployment">
+            kubectl create -f whack-a-pod-deployment.yaml
+        </code>  
+        <div id="nodes"></div>
+
+        <h3>Definitions</h3>
+        <dl>
+            <dt>Deploy/Deployment</dt>
+            <dd>Deployments are a Kubernetes control construct that implements 
+                your desired state at your desired rate.  In this case, the 
+                deployment has the instruction: always have 12 copies of the 
+                code base running. The deployment creates a replica set that
+                makes keeps 12 copies of the code running at all times. 
+            </dd>
+            <dt>Pod</dt>
+            <dd>One of a set of emphemeral copies of our code base.  
+                In this case, it is a simple api that serves up a random 
+                hexidecimal color value at /api/color/ on port 80.</dd>
+            <dt>Service</dt>
+            <dd>Pods are emphemeral, but we need a permanent place to access the 
+                the code. A service provides a consistent endpoint where we 
+                can access the code that runs in the Pods.  
+            </dd>
+            <dt>Node</dt>
+            <dd>A node is one of the member servers in our Kubernetes cluster. 
+                This can be a server running on bare metal or a virtual machine
+                in this case, it is running on a Compute Engine virtual machine
+                as part of Container Engine cluster. 
+            </dd>
+    </div>
+    
+    
+    <pre><div id="logwindow"></div></pre>  
+    <nav><a href="next.html">Back to Game</a></nav>    
+</body>
+</html>

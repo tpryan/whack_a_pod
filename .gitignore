@@ -1,0 +1,12 @@
+.DS_Store
+Makefile.properties
+Makefile.jp.properties
+Makefile.us.properties
+apps/game/kubernetes/game-deployment.yaml
+apps/game/kubernetes/game-service.yaml
+apps/game/containers/default/assets/js/config.js
+apps/admin/kubernetes/admin-deployment.yaml
+apps/admin/kubernetes/admin-service.yaml
+apps/api/kubernetes/api-deployment.yaml
+apps/api/kubernetes/api-service.yaml
+

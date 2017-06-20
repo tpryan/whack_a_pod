@@ -1,0 +1,25 @@
+Sounds taken from: 
+https://offers.adobe.com/en/na/audition/offers/audition_dlc/AdobeAuditionDLCSFX.html 
+
+Which states: 
+Your download and use of the content on this page is governed by and subject to 
+the Adobe Software License Agreement ("EULA") for Adobe Audition and other 
+related Adobe software, available at: http://www.adobe.com/products/eulas/
+
+Subject to the restrictions stated in the EULA, you may use, display, modify, 
+reproduce, and distribute the associated Content File. However, you may not 
+distribute the Content File on a standalone basis (i.e., in circumstances in 
+which the Content File constitute the primary value of the product being 
+distributed), and Customer may not claim any trademark rights in the Content 
+File or derivative works thereof.
+
+http://www.adobe.com/legal/terms.html
+
+2.5 Content Files. “Content Files” means Adobe-provided sample files such as 
+stock images or sounds. Unless the documentation or specific license associated 
+with the Content Files state otherwise, you may use, display, modify, reproduce, 
+and distribute any of the Content Files. However, you may not distribute the 
+Content Files on a stand-alone basis (i.e., in circumstances in which the 
+Content Files constitute the primary value of the product being distributed), 
+and you must not claim any trademark rights in the Content Files or derivative 
+works of the Content Files.

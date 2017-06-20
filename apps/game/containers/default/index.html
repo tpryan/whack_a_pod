@@ -1,0 +1,137 @@
+<!--
+Copyright 2017 Google Inc. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/> 
+    <title>Whack a Pod!</title>
+    <link href="https://fonts.googleapis.com/css?family=Alegreya+Sans+SC|Rye|Source+Code+Pro" rel="stylesheet">
+    <link href="assets/css/main.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/lib.js"></script>
+    <script src="assets/js/main.js"></script>
+</head>
+<body>
+    <div class="holder">
+        <div class="report"></div>
+         <p>You will see random flashes of green colors while the service is up.<br /> 
+        Manage to kill the service and this box goes red.</p>
+
+        <div class="pods">
+        </div>
+        <div class="pods-table">
+            <table>
+                <tr>
+                    <td id="pod-0"></td>
+                    <td id="pod-1"></td>
+                    <td id="pod-2"></td>
+                    <td id="pod-3"></td>
+                </tr>
+                <tr>
+                    <td id="pod-4"></td>
+                    <td id="pod-5"></td>
+                    <td id="pod-6"></td>
+                    <td id="pod-7"></td>
+                </tr>
+                <tr>
+                    <td id="pod-8"></td>
+                    <td id="pod-9"></td>
+                    <td id="pod-10"></td>
+                    <td id="pod-11"></td>
+                </tr>
+            </table>
+        </div>
+        <div class="alert">
+            <div class="msg"></div>
+        </div>
+        <div class="bombpanel">
+            <img id="bomb" src="assets/img/bomb_waiting.png" />
+            <p>Click the bomb to whack all the pods at once!</p>
+        </div>
+        <div class="scoreboard">
+            <table>
+                <tr>
+                    <th>Time:
+                    <td class="timer">0</td>
+                </tr>
+                <tr>
+                    <th>Score:
+                    <td class="total">0</td>
+                </tr>
+            </table>
+        </div>
+        <div class="overlay overlay-report">
+            <p>We have a <a href="http://kubernetes.io/docs/user-guide/services/">Kubernetes service</a> 
+            that <a href="/api/color/index.php">returns a random color of green</a>.  You can see the color of this 
+            sign changing constantly because we constantly poll it. That's how 
+            we know Kubernetes is keeping the service up.</p> 
+        </div>
+        <div class="overlay overlay-pods">
+            <p>Each one of these moles represents an actual Kuberntes pod. When 
+            you whack them, you kill the pod. The goal is to try and knock down 
+            enough pods that you disrupt the service. <strong>Notice:</strong></p> 
+            
+            <ul>
+                <li>How fast Kubernetes pods come back up</li>
+                <li>How hard it is to disrupt the service.</li>
+                <li>How fast the service comes back up after you manage to disrupt it</li>
+            </ul>    
+        </div>
+        <div class="overlay overlay-scoreboard">
+            <p>Scoring</a> 
+            <table>
+                <tr><th>Knock down pod:</th><td class="number">1</td><td>point</td></tr>
+                <tr><th>Disrupt service:</th><td class="number">100</td><td>points</td></tr>
+            </table>
+        </div>
+        
+    </div>
+    
+    <div id="start-modal" class="modal">
+        <div class="modal-message">
+            <h1>Welcome!</h1>
+            <p>Push the button to deploy to Kubernetes.
+            When ready, a whistle wil blow, and then you'll get to knock down
+               Kubernetes pods/moles. The pods are keeping your 
+                service up. 
+                
+            <p><strong>See if you can knock down enough of them to 
+                disrupt the service.</strong>
+            </p>
+            <button id="deploy-start">Click to deploy</button>
+            <br /><br />
+            <code>
+                kubectl create -f whack-a-pod-deployment.yaml
+            </code>    
+
+        </div>
+    </div>
+    <div id="end-modal" class="modal">
+        <div class="modal-message">
+            <h1>Good Job!</h1>
+            <p>You did the following:</p>
+            <ul>
+                <li>Killed <span id="total-pods">0</span></li>
+                <li>Caused <span id="total-knockdowns">0</span></li>
+                <li>For total of <span id="total-score">0</span></li>
+            </ul>    
+            <button id="restart">Restart</button>
+        </div>
+    </div>        
+</body>
+</html>

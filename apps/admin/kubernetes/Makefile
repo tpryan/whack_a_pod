@@ -21,8 +21,7 @@ reset: clean.deployment app
 app: build deploy
 
 build: creds
-	docker build -t gcr.io/$(PROJECT)/admin "$(BASEDIR)/../containers/."
-	gcloud docker -- push gcr.io/$(PROJECT)/admin
+	gcloud container builds submit "$(BASEDIR)/../containers/." --tag=gcr.io/$(PROJECT)/admin
 
 deploy: creds
 	kubectl apply -f "$(BASEDIR)/admin-service.yaml"

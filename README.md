@@ -21,9 +21,11 @@ service and to simulate creating and destroying nodes.
 
 ## Getting Started
 
-### Create Project
+### Create and configure project
 1. Create Project in Cloud Console
 1. Navigate to Compute Engine (to activate Compute Engine service)
+1. Navigate to the API Library and activate Container Builder API
+
 
 ### Create Configs - Part 1
 1. Make a copy of `/Samples.properties`, renamed to `/Makefile.properties`

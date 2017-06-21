@@ -21,8 +21,7 @@ reset: clean.deployment app
 	say "app refresh complete"
 
 build: creds
-	docker build -t gcr.io/$(PROJECT)/game "$(BASEDIR)/../containers/."
-	gcloud docker -- push gcr.io/$(PROJECT)/game
+	gcloud container builds submit "$(BASEDIR)/../containers/." --tag=gcr.io/$(PROJECT)/game
 
 deploy: creds
 	kubectl apply -f "$(BASEDIR)/game-service.yaml"

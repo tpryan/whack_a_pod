@@ -21,8 +21,7 @@ reset: clean.deployment app
 	say "app refresh complete"
 
 build: creds
-	docker build -t gcr.io/$(PROJECT)/api "$(BASEDIR)/../containers/."
-	gcloud docker -- push gcr.io/$(PROJECT)/api
+	gcloud container builds submit "$(BASEDIR)/../containers/." --tag=gcr.io/$(PROJECT)/api
 
 deploy: creds
 	kubectl apply -f "$(BASEDIR)/api-service.yaml"

@@ -6,7 +6,7 @@ goes down, the sign turns red. Your goal is to try and knock the service down
 by killing the Kubernetes pods that run the service. You can do that by 
 whacking the pods wich are respresented as moles.
 
-![Whack-a-pod Screenshot](screenshots/game.png "Screesnhot")
+![Whack-a-pod Screenshot](screenshots/game.png "Screenshot")
 
 There is also a less busy verison of the game available at /next.html. This 
 version has an advanced mode that allows someone to do a more visual 
@@ -60,7 +60,7 @@ other things for you.
      1. /apps/api/kubernetes/api-service.yaml
 
 ### Build Application
-1. Open a terminal in `/`.
+1. Open a terminal in root of whack_a_pod location.
 1. Run `make build`
 1. Run `make deploy`
 1. When process finishes Browse to the the value of `GAMEHOST`. 

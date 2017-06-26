@@ -26,7 +26,7 @@ advantage of Container Engine to build a manage your Kubernetes cluster.  There
 is nothing preventing this app from *running* on a Kubernetes cluster hosted
 elsewhere, but the directions for setup assume Container Engine. If there is
 significant interest in these directions, I'll be happy to publish them (or
-better yet, except a pull request.)
+better yet, accept a pull request.)
 
 ### Create and configure GCP project
 1. Create Project in Cloud Console

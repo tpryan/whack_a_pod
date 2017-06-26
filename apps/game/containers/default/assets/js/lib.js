@@ -43,7 +43,7 @@ function PODS(){
     this.max = 12;
     var podsArray = [];
     var DoNotReAdd = new Object();
-    
+
     var initPods = function(){
         podsArray = [];
         for (var i = 0; i < this.max; i++){
@@ -70,7 +70,7 @@ function PODS(){
         for (var i = 0; i < podsArray.length; i++){
             if (typeof podsArray[i] !== 'object'){
                 continue;
-            } 
+            }
 
             if(name == podsArray[i].name){
                 return true;
@@ -86,7 +86,7 @@ function PODS(){
             for (var i = 0; i < podsArray.length; i++){
                 if (typeof podsArray[i] !== 'object'){
                     continue;
-                } 
+                }
 
                 if(name == podsArray[i].name){
                     return podsArray[i];
@@ -96,8 +96,8 @@ function PODS(){
 
         if (typeof input == "number") {
             return podsArray[input];
-        }    
-        
+        }
+
         return ;
     };
 
@@ -106,12 +106,12 @@ function PODS(){
             return;
         }
         podsArray[pod.holder] = pod;
-    }; 
+    };
 
     this.Delete = function(pod){
         DoNotReAdd[pod.name] = true;
         podsArray[pod.holder] = "";
-    }; 
+    };
 
     this.Count = function(){
         return podsArray.length;
@@ -129,22 +129,42 @@ function PODS(){
         }
 
         pod.SetPhase(json);
-       
+
         if (pod.holder != -1){
             this.Set(pod);
         }
     }
 
 
-    
+
 }
+
+function NODE(json){
+    this.name = json.metadata.name;
+    this.selflink = json.metadata.selfLink;
+    this.type = "Node";
+    this.status = "Ready";
+
+    if (typeof json.spec.unschedulable != "undefined"){
+        this.status = "Ready,SchedulingDisabled";
+    }
+
+
+    this.SetShortName = function(){
+        var nodenameArr = this.name.split("-");
+        this.shortname = nodenameArr[nodenameArr.length-1];
+    }
+
+    this.SetShortName();
+}
+
 
 function POD(json){
     this.name = json.metadata.name;
     this.selflink = json.metadata.selfLink;
     this.type = "Pod";
     this.host = json.spec.nodeName;
-    this.hostIP = json.status.hostIP; 
+    this.hostIP = json.status.hostIP;
     this.terminateThreshold = 1000;
     this.phase = "";
     this.holder = "";
@@ -153,7 +173,7 @@ function POD(json){
     if (typeof this.host == "undefined"){
         this.host = "";
     }
-    
+
     this.phase ="";
     this.startTerminate ="";
 
@@ -168,18 +188,18 @@ function POD(json){
             if ( now - this.startTerminate > this.terminateThreshold){
                 return true;
             }
-        } 
+        }
         return false;
     }
 
     this.SetPhase = function(json){
         var podPhase = json.status.phase ? json.status.phase.toLowerCase() : '';
         this.phase = podPhase;
-        
+
         if ((podPhase != "terminating") && (typeof json.metadata.deletionTimestamp != "undefined")) {
             this.phase = "terminating";
             this.startTerminate = new Date();
-        } 
+        }
     }
     this.SetShortName();
     this.SetPhase(json);
@@ -202,8 +222,8 @@ function PODSUI(pods, logwindow){
                 if (poddiv != null){
                     poddiv.parentNode.removeChild(poddiv);
                 }
-                
-            }    
+
+            }
         }
     }
 
@@ -242,20 +262,20 @@ function PODSUI(pods, logwindow){
             div.append(span);
             $("#pod-" + pod.holder).append(div);
             logwindow.Log(pod);
-        } 
+        }
 
         div.classList.add(pod.phase);
-        
+
         if (pod.phase == "running"){
             div.addEventListener("click", hitHandler);
         } else{
             div.removeEventListener("click", hitHandler);
         }
-        
+
     }
 
     this.DrawPods = function(json, whackHandler){
-        
+
         var podNames = [];
         for (var i = 0; i < json.items.length; i++){
             podNames.push(json.items[i].metadata.name);
@@ -273,7 +293,7 @@ function PODSUI(pods, logwindow){
             this.AddPod(pod,whackHandler);
             logwindow.Log(pod);
         }
-    } 
+    }
 }
 
 function API(hostname){
@@ -298,10 +318,10 @@ function API(hostname){
         });
         if (this.debug){
             console.log("Called: ", url);
-        }    
+        }
     };
 
-    
+
     var getColorURI = function(){
         return apiprotocol + apihostname + uri_color;
     }
@@ -336,7 +356,7 @@ function API(hostname){
 
     this.URL = getColorURI;
 
-}    
+}
 
 function DEPLOYMENTAPI(hostname, logwindow){
     if (typeof(logwindow)==='undefined') logwindow = new LOGWINDOW();
@@ -345,6 +365,7 @@ function DEPLOYMENTAPI(hostname, logwindow){
     var apihostname = hostname;
     this.timeout = 2000;
     var apiprotocol = "http://"
+    var uri_getnodes = "/api/k8s/getnodes";
     var uri_get = "/api/k8s/getpods?labelSelector=app%3Dapi";
     var uri_delete = "/api/k8s/deletedeploy/";
     var uri_create = "/api/k8s/createdeploy/";
@@ -352,9 +373,13 @@ function DEPLOYMENTAPI(hostname, logwindow){
     var uri_drain = "/api/k8s/drain/?node=";
     var uri_uncordon = "/api/k8s/uncordon/?node=";
 
-    
+
     var getPodsURI = function(){
         return apiprotocol + apihostname + uri_get;
+    }
+
+    var getNodesURI = function(){
+        return apiprotocol + apihostname + uri_getnodes;
     }
 
     var getDeleteURI = function(){
@@ -390,7 +415,7 @@ function DEPLOYMENTAPI(hostname, logwindow){
     var ajaxProxy = function(url) {
         if (this.debug){
             console.log("Called: ", url);
-        } 
+        }
         $.ajax({
             url: url,
             success: success,
@@ -398,7 +423,7 @@ function DEPLOYMENTAPI(hostname, logwindow){
             timeout: this.timeout
 
         });
-           
+
     };
 
     this.Delete = function(){
@@ -455,11 +480,35 @@ function DEPLOYMENTAPI(hostname, logwindow){
         });
         if (this.debug){
             console.log("Called: ", url);
-        }    
+        }
     };
 
+    this.GetNodes = function(successHandler, errorHandler){
+        $.ajax({
+            url: getNodesURI(),
+            success: successHandler,
+            error: errorHandler,
+            timeout: 1000
 
-    
+        });
+        if (this.debug){
+            console.log("Called: ", url);
+        }
+    };
+
+    this.ResetNodes = function(){
+        this.GetNodes(handleRefreshNodes);
+
+    };
+
+    var handleRefreshNodes = function(nodes){
+        for (var i = 0; i < nodes.items.length; i++){
+            var node = nodes.items[i];
+            var url = getUncordonURI() +  node.metadata.name;
+            ajaxProxy(url);
+        }
+    };
+
 
 }
 
@@ -480,7 +529,7 @@ function GAME(){
     this.SetBombShowed = function(){
         bombShowed = true;;
     }
-    
+
 
     this.IsServiceDown = function(){
         return serviceDown;
@@ -525,7 +574,7 @@ function GAME(){
         this.SetServiceDown();
     }
 
-}  
+}
 
 function SOUNDS(){
 
@@ -544,7 +593,7 @@ function SOUNDS(){
 
         if (fileExt == "mp3"){
             type = "audio/mpeg";
-        } 
+        }
 
         var result  = new Audio();
         var src  = document.createElement("source");
@@ -603,7 +652,7 @@ function CLOCK(duration, completeHandler){
     var shutItDown = function(){
         completeHandler();
         window.clearInterval(watcher);
-    }    
+    }
 
     var checkComplete = function(){
         var diff = new Date() - Date.parse(start_time);
@@ -613,7 +662,7 @@ function CLOCK(duration, completeHandler){
         }
     }
 
-    
+
 
     this.getTimeLeft = function(){
         var diff = new Date() - Date.parse(start_time);
@@ -655,7 +704,7 @@ function LOGWINDOW(){
     alreadyShown.terminating = new Object();
     alreadyShown.pending = new Object();
     alreadyShown.running = new Object();
-    
+
 
     var IsAlreadyShown = function(pod){
         if (typeof(alreadyShown[pod.phase][pod.name])==='undefined'){
@@ -670,7 +719,7 @@ function LOGWINDOW(){
         }
         return false;
     };
-    
+
     this.Log = function(e){
         var e = jQuery.extend(true, {}, e);
         var item = e;
@@ -678,15 +727,19 @@ function LOGWINDOW(){
             item = new POD(e);
         }
 
+         if (e.kind == "Node"){
+            item = new NODE(e);
+        }
+
         if (IsError(item)){
             return;
         }
-        
+
         if (item.type === "Pod"){
             if (IsAlreadyShown(item)){
                 return;
             }
-            
+
             alreadyShown[item.phase][item.name] = "";
             delete item.terminateThreshold;
             delete item.holder;
@@ -695,10 +748,10 @@ function LOGWINDOW(){
             }
         }
 
-        
+
         var output = JSON.stringify(item,null,2);
         var textArray = output.split("\n");
-        
+
         for (var i = textArray.length -1; i >= 0; i--){
             var css_class = "";
             var content = '<div><span>' + textArray[i] +  '</span></div>';
@@ -707,8 +760,8 @@ function LOGWINDOW(){
                 content = '<div>  <span class="'+ css_class +'">' + textArray[i].trim() +  '</span></div>';
             }
             $(content).prependTo("#logwindow").hide().delay( (textArray.length - i) * 50 ).slideDown();
-        } 
+        }
 
-        
+
     }
 }

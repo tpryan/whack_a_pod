@@ -24,6 +24,7 @@ var pods_shown = [];
 
 document.addEventListener('DOMContentLoaded', function() {
     deploymentAPI.Delete();
+    deploymentAPI.ResetNodes();
     setReport("");
     $("#deploy-start").click(startDeployment);
     $("#deploy-end").click(endDeployment);
@@ -34,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function setReport(msg, color){
     if (typeof color == "undefined") color = "#333333";
     var report = $(".report");
-    
+
     report.css("-webkit-filter", "drop-shadow(2px 2px 3px " + color + ")");
     report.css("color", color);
     var msgholder = $("#report_message");
@@ -53,8 +54,8 @@ function setReport(msg, color){
             $(".report").addClass("service_up");
             $(".report").removeClass("service_down");
         }
-    } 
-    
+    }
+
 }
 
 function startDeployment(){
@@ -68,7 +69,7 @@ function startDeployment(){
 function initGame(e){
     game.Start(getColor, showScore, getPods, getTimeLeft);
     logwindow.Log(e);
-    
+
 }
 
 function getColor(){
@@ -86,9 +87,9 @@ function handleColor(e){
         setReport("Service call result: "+ e.color, e.color);
         $(".responder").removeClass("responder");
         $("#"+e.name).addClass("responder");
-        
+
     }
-    
+
 }
 
 function handleColorError(e,textStatus, errorThrown){
@@ -123,12 +124,12 @@ function drawPods(pods){
         }
 
         pods_active.push(pod.name);
-        
+
         if (nodes.indexOf(pod.host) < 0){
             nodes.push(pod.host);
             createNodeUI(pod.host);
         }
-        
+
         if (pods_shown.indexOf(pod.name) < 0){
             pods_shown.push(pod.name);
             createPodUI(pod);
@@ -146,12 +147,12 @@ function drawPods(pods){
         if (pod.ShouldRemove()){
             $pod.remove();
         }
-        
+
     }
     for (var i = 0; i < pods_shown.length; i++){
         if (pods_active.indexOf(pods_shown[i]) < 0){
             $("#"+ pods_shown[i]).remove();
-        }    
+        }
     }
 
 }
@@ -164,7 +165,7 @@ function createPodUI(pod){
     div.id = pod.name;
     div.dataset.selflink = pod.selflink;
     div.classList.add("pod");
-    
+
     var span = document.createElement("span");
     span.innerHTML = pod.shortname;
     span.dataset.selflink = pod.selflink;
@@ -175,18 +176,18 @@ function createPodUI(pod){
     label.classList.add("kube-pod");
     label.innerHTML= "Pod";
     div.append(label);
-    
-    
+
+
     $("#pod-" + pod.holder).append(div);
     $("#"+ hostID).append(div);
-    
+
     logwindow.Log((pod));
-    
+
 }
 
 
 function createNodeUI(name){
-    var id = "node_"+name; 
+    var id = "node_"+name;
     var $div = $('<div class="node" id="' + id + '"><button class="small" id="kill-' + id +  '">X</button><p>' + name + '</p><div class="kube-label kube-node">Node</div></div>');
     var $holder = $("#nodes");
     $div.appendTo("#nodes")
@@ -245,7 +246,7 @@ function whackHandler(e){
     } else{
         $("#" + e.target.id ).addClass("terminating");
     }
-    
+
     killPod(e.target.dataset.selflink)
 }
 

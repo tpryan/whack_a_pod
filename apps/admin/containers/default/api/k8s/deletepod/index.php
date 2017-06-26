@@ -11,13 +11,13 @@
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
-// limitations under the License. 
+// limitations under the License.
 	include "../lib.php";
 	$ch = getK8sCurlHandle();
-	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE"); 
+	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
 	curl_setopt($ch, CURLOPT_URL, "https://kubernetes" . $_GET['pod']);
-	$output = curl_exec($ch); 
-	curl_close($ch);      
+	$output = curl_exec($ch);
+	curl_close($ch);
 	header("Content-Type: application/json;charset=utf-8");
 	echo $output;
 ?>

@@ -12,14 +12,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-    include "../lib.php";
-    header("Access-Control-Allow-Origin: *");
+include "../lib.php";
+header("Access-Control-Allow-Origin: *");
 
-    $result = new stdClass();
-    $result->color = getRandomColor();
-    $result->name = $_SERVER['HOSTNAME'];
-    $json = json_encode($result);
-    header("Content-Type: application/json;charset=utf-8");
-    echo $json;
-
-
+$result = new stdClass();
+$result->color = getRandomColor();
+$result->name = $_SERVER['HOSTNAME'];
+$json = json_encode($result);
+header("Content-Type: application/json;charset=utf-8");
+echo $json;

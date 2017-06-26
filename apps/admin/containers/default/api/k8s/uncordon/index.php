@@ -11,19 +11,19 @@
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
-// limitations under the License. 
+// limitations under the License.
 	include "../lib.php";
     $data = '{"spec": {"unschedulable": false}}';
 
 	$curl = getK8sCurlHandleForPatch($data);
-	
-	curl_setopt($curl, CURLOPT_URL, "https://kubernetes/api/v1/nodes/" . $_GET['node']); 
+
+	curl_setopt($curl, CURLOPT_URL, "https://kubernetes/api/v1/nodes/" . $_GET['node']);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PATCH');
     curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-	
-	$output = curl_exec($curl); 
-	curl_close($curl);      
+
+	$output = curl_exec($curl);
+	curl_close($curl);
 	header("Content-Type: application/json;charset=utf-8");
 	echo $output;
 ?>

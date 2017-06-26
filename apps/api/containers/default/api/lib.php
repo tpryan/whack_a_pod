@@ -1,4 +1,4 @@
-<?php 
+<?php
 // Copyright 2017 Google Inc. All Rights Reserved.
 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +16,6 @@ function getRandomColor(){
     $color = "";
     $red = dechex(rand(0,255));
     $blue = dechex(rand(0,255));
-    $green = dechex(rand(0,255)); 
+    $green = dechex(rand(0,255));
     return "#" . $red . $green . $blue;
 }

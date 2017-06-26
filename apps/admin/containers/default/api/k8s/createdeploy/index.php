@@ -1,4 +1,4 @@
-<?php 
+<?php
 // Copyright 2017 Google Inc. All Rights Reserved.
 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +13,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 	include "../lib.php";
-	
-	
+
+
 	$body = file_get_contents(dirname(__DIR__) . "/createdeploy/deployment.json");
 
 	if(isset($_GET['replicas'])) {
@@ -23,23 +23,23 @@
 
 
 	$ch = getK8sCurlHandleForPost($body);
-	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST"); 
-	curl_setopt($ch, CURLOPT_URL, "https://kubernetes/apis/extensions/v1beta1/namespaces/default/deployments"); 
+	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+	curl_setopt($ch, CURLOPT_URL, "https://kubernetes/apis/extensions/v1beta1/namespaces/default/deployments");
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
-	
+
 	$output = curl_exec($ch);
 	$json = json_decode($output);
 
 	$deploymentResult = array();
 	$deploymentResult['item'] = "DEPLOYMENT";
 	$deploymentResult['selflink'] = $json->metadata->selfLink;
-	if ($json->code == "409"){
+	if (isset($json->code) && $json->code == "409"){
 		$deploymentResult['status'] = "ALREADY EXISTS";
 	} else{
 		$deploymentResult['status'] = "CREATED";
 	}
-	
-	curl_close($ch);     
+
+	curl_close($ch);
 
 	header("Content-Type: application/json;charset=utf-8");
 	echo json_encode($deploymentResult);

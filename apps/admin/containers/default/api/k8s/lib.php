@@ -26,7 +26,7 @@
 
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
         return $ch;
     }
@@ -35,13 +35,13 @@
         $kube_token = getToken();
         $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
-            'Content-Type: application/json',                                                                                
-            'Content-Length: ' . strlen($input), 
-            'Authorization: Bearer ' . $kube_token)                                                                       
-        );   
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($input),
+            'Authorization: Bearer ' . $kube_token)
+        );
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
         return $ch;
     }
@@ -50,21 +50,21 @@
         $kube_token = getToken();
         $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
-            'Content-Type: application/merge-patch+json',                                                                                
-            'Content-Length: ' . strlen($input), 
-            'Authorization: Bearer ' . $kube_token)                                                                       
-        );   
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/merge-patch+json',
+            'Content-Length: ' . strlen($input),
+            'Authorization: Bearer ' . $kube_token)
+        );
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
         return $ch;
     }
 
     function killAllPods(){
         $ch = getK8sCurlHandle();
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET"); 
-        curl_setopt($ch, CURLOPT_URL, "https://kubernetes/api/v1/pods?labelSelector=app=whack-a-pod"); 
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+        curl_setopt($ch, CURLOPT_URL, "https://kubernetes/api/v1/pods?labelSelector=app=api");
         $output = curl_exec($ch);
         $podList = json_decode($output);
         $pods = $podList->items;
@@ -74,19 +74,19 @@
             array_push($podsToPurge, $pods[$i]->metadata->selfLink);
         }
 
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE"); 
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
         for ($i = 0; $i < count($podsToPurge); $i++){
             curl_setopt($ch, CURLOPT_URL, "https://kubernetes" . $podsToPurge[$i]);
-            $output = curl_exec($ch); 
+            $output = curl_exec($ch);
         }
-        curl_close($ch);     
+        curl_close($ch);
 
     }
 
     function killAllPodsOnNode($node){
         $ch = getK8sCurlHandle();
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET"); 
-        curl_setopt($ch, CURLOPT_URL, "https://kubernetes/api/v1/pods?labelSelector=app=whack-a-pod"); 
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+        curl_setopt($ch, CURLOPT_URL, "https://kubernetes/api/v1/pods?labelSelector=app=api");
         $output = curl_exec($ch);
         $podList = json_decode($output);
         $pods = $podList->items;
@@ -98,11 +98,11 @@
             }
         }
 
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE"); 
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
         for ($i = 0; $i < count($podsToPurge); $i++){
             curl_setopt($ch, CURLOPT_URL, "https://kubernetes" . $podsToPurge[$i]);
-            curl_exec($ch); 
+            curl_exec($ch);
         }
-        curl_close($ch);  
+        curl_close($ch);
     }
 

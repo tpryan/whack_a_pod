@@ -10,3 +10,4 @@ apps/admin/kubernetes/admin-service.yaml
 apps/api/kubernetes/api-deployment.yaml
 apps/api/kubernetes/api-service.yaml
 
+/Makefile.au.properties

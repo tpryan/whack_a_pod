@@ -600,7 +600,7 @@ function SOUNDS(){
         src.type = type;
         src.src  = file;
         result.preload = "auto";
-        result.appendChild(src);
+        result.append(src);
         result.volume = volume;
         return result;
     }

@@ -531,7 +531,7 @@ dd{
 nav a{
     position: fixed;
     display: block;
-    bottom: 10px;
+    top: 800px;
     left: 10px;
     z-index: 100;
     border: 1px solid #ccc;

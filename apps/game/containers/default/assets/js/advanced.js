@@ -60,7 +60,9 @@ function setReport(msg, color){
 
 function startDeployment(){
     $("#deploy-start").hide();
+    $("#deploy-start").css('z-index', 1);
     $("#deploy-end").show();
+    $("#deploy-end").css('z-index', 300);
     deploymentAPI.Create(initGame,genericError);
     setReport("");
     $("#deployment").html("kubectl delete -f whack-a-pod-deployment.yaml")

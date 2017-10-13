@@ -18,6 +18,12 @@ include ../../../Makefile.properties
 reset: clean.deployment app
 	say "App Reset"
 
+reset.safe: 
+	gcloud container builds submit "$(BASEDIR)/../containers/." --tag=gcr.io/$(PROJECT)/admin
+	-kubectl delete -f "$(BASEDIR)/admin-deployment.yaml"	
+	-kubectl apply -f "$(BASEDIR)/admin-deployment.yaml"
+	say "app refresh complete"		
+
 app: build deploy
 
 build: creds

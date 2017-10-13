@@ -14,12 +14,18 @@
 // limitations under the License.
 	include "../lib.php";
 
-
 	$ch = getK8sCurlHandle();
 	curl_setopt($ch, CURLOPT_URL, "https://kubernetes/api/v1/pods?labelSelector=" . $_GET['labelSelector']);
 
 	$output = curl_exec($ch);
 	curl_close($ch);
 	header("Content-Type: application/json;charset=utf-8");
-	echo $output;
+	if(isset($_GET['compress'])) {
+		$pods_all = json_decode($output);
+		$altered_output  = compress_pods($pods_all);
+		echo $altered_output;
+	} else{
+		echo $output;
+	}
+	
 ?>

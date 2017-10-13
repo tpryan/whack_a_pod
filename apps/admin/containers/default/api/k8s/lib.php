@@ -106,3 +106,27 @@
         curl_close($ch);
     }
 
+    function compress_pods($json){
+        for ($i = 0; $i < count($json->items); $i++){
+            $pod = $json->items[$i];
+            $newpod = new stdClass();
+            $newpod->metadata =  new stdClass();
+            $newpod->spec =  new stdClass();
+            $newpod->status =  new stdClass();
+    
+            $newpod->metadata->name = $pod->metadata->name;
+            $newpod->metadata->selfLink = $pod->metadata->selfLink;
+            if (isset($pod->status->hostIP) ){
+                $newpod->status->hostIP = $pod->status->hostIP;
+            }
+            $newpod->status->phase = $pod->status->phase;
+            $newpod->spec->nodeName = $pod->spec->nodeName;
+    
+            if (isset($pod->metadata->deletionTimestamp)){
+                $newpod->metadata->deletionTimestamp = $pod->metadata->deletionTimestamp;
+            }
+            $json->items[$i] = $newpod;
+        }
+        return json_encode($json,JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT);
+    }
+

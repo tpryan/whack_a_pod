@@ -20,6 +20,7 @@ var game = new GAME();
 var score = new SCORE();
 var nodes = [];
 var pods_shown = [];
+var fails_threshold = 9;
 
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -29,8 +30,37 @@ document.addEventListener('DOMContentLoaded', function() {
     $("#deploy-start").click(startDeployment);
     $("#deploy-end").click(endDeployment);
     $("#endpoint").html(api.URL());
+    $("#show-pod-yaml").click(showPodModal);
+    $("#close-pod-modal").click(hidePodModal);
+    $("#show-service-yaml").click(showServiceModal);
+    $("#close-service-modal").click(hideServiceModal);
 });
 
+function showModal(id){
+    var modal = $(id);
+    modal.fadeIn('slow');
+}
+
+function hideModal(id){
+    var modal = $(id);
+    modal.fadeOut();
+}
+
+function showPodModal(e){
+    showModal("#pod-yaml");
+}
+
+function hidePodModal(e){
+    hideModal("#pod-yaml");
+}
+
+function showServiceModal(e){
+    showModal("#service-yaml");
+}
+
+function hideServiceModal(e){
+    hideModal("#service-yaml");
+}
 
 function setReport(msg, color){
     if (typeof color == "undefined") color = "#333333";
@@ -91,16 +121,22 @@ function handleColor(e){
         $("#"+e.name).addClass("responder");
 
     }
-
+    if (api.ResetFails()){
+        console.log("Soft service has recovered.");
+    }
 }
 
 function handleColorError(e,textStatus, errorThrown){
     if (game.GetState() == "running") {
-        setReport("Kubernetes service is DOWN!", "#FF0000");
-        alertYouKilledIt();
+        if (api.IsHardFail()){
+            console.log("Hard service fail.");
+            setReport("Kubernetes service is DOWN!", "#FF0000");
+            alertYouKilledIt();
+        } else {
+            console.log("Soft service fail. Retry");
+        }
     }
 }
-
 
 function getPods(){
     deploymentAPI.Get(handlePods, handlePodsError);
@@ -112,6 +148,7 @@ function handlePods(e){
     }
 
     drawPods(e);
+    
 }
 
 function drawPods(pods){
@@ -120,8 +157,9 @@ function drawPods(pods){
     //create node UI if it doesn't exist
     for (var i = 0; i < pods.items.length; i++){
         var pod = new POD(pods.items[i]);
+        logwindow.Log((pod));
 
-        if (pod.host.length == 0){
+        if ((pod.host == null) || (pod.host.length == 0)){
             continue;
         }
 
@@ -140,8 +178,11 @@ function drawPods(pods){
         var $pod = $("#"+ pod.name);
         $pod.addClass(pod.phase);
 
-        if (pod.phase == "running"){
-            $pod.click(whackHandler);
+        if (pod.phase == "running") {
+            if (!$pod.hasClass("bound")){
+                $pod.click(whackHandler);
+                $pod.addClass("bound");
+            }
         } else{
             $pod.click();
         }
@@ -183,14 +224,15 @@ function createPodUI(pod){
     $("#pod-" + pod.holder).append(div);
     $("#"+ hostID).append(div);
 
-    logwindow.Log((pod));
+    // logwindow.Log((pod));
 
 }
 
 
 function createNodeUI(name){
     var id = "node_"+name;
-    var $div = $('<div class="node" id="' + id + '"><button class="small" id="kill-' + id +  '">X</button><p>' + name + '</p><div class="kube-label kube-node">Node</div></div>');
+    var label = name.split("-")[name.split("-").length -1 ];
+    var $div = $('<div class="node" id="' + id + '"><button class="small" id="kill-' + id +  '">X</button><p>Node: <strong>' + label + '</strong></p><div class="kube-label kube-node">Node</div></div>');
     var $holder = $("#nodes");
     $div.appendTo("#nodes")
     $killbtn = $("#kill-" + id)
@@ -219,8 +261,13 @@ function resetNode(e){
 }
 
 function handlePodsError(e){
-    $(".pods").html("");
-    console.log("Error getting pods:", e);
+    // $(".pods").html("");
+    if (typeof e != "string"){
+        console.log("Error getting pods:", e.statusText);
+    } else{
+        console.log("Error getting pods:", e);
+    }
+    
 }
 
 function genericError(e){
@@ -262,7 +309,8 @@ function killHandler(e){
 }
 
 function podError(e){
-    console.log("Pod already gone? :", e);
+
+    // console.log("Pod already gone? :", e);
 }
 
 function endDeployment(){

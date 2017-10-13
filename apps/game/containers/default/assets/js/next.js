@@ -24,6 +24,7 @@ var game = new GAME();
 var clock = "";
 var score = new SCORE();
 var sounds = new SOUNDS();
+var fails_threshold = 9;
 sounds.SetWhack("assets/audio/pop.wav",.5);
 sounds.SetExplosion("assets/audio/explosion.wav",.5);
 sounds.SetCountdown("assets/audio/countdown.mp3",.5);
@@ -126,14 +127,27 @@ function handleColor(e){
         game.SetServiceUp();
         setReport("", e);
     }
+    if (api.fails > 0){
+        api.fails = 0;
+        console.log("Soft service has recovered.");
+    }
+    
     
 }
 
 function handleColorError(e,textStatus, errorThrown){
     if (game.GetState() == "running") {
-        setReport("Kubernetes service is DOWN!", "#FF0000");
-        alertYouKilledIt();
+        if (api.fails > fails_threshold){
+            console.log("Hard service fail.");
+            setReport("Kubernetes service is DOWN!", "#FF0000");
+            alertYouKilledIt();
+        } else {
+            console.log("Soft service fail. Retry");
+            api.fails++;
+        }
+        
     }
+
 }
 
 function showScore(){

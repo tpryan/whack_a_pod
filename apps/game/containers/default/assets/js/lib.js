@@ -19,23 +19,24 @@ function SCORE(){
     this.KnockDown = function(){
         knockdowns++;
         total += 100;
-    }
+    };
 
     this.KillPod = function(){
         pods++;
         total++;
-    }
+    };
 
     this.GetTotal = function(){
         return total;
-    }
+    };
 
     this.GetPods = function(){
         return pods;
-    }
+    };
+
     this.GetKnockDowns = function(){
         return knockdowns;
-    }
+    };
 
 }
 
@@ -77,7 +78,6 @@ function PODS(){
             }
         }
         return false;
-
     };
 
     this.Get = function(input){
@@ -212,7 +212,6 @@ function PODSUI(pods, logwindow){
     var alreadyShown = new Object();
     alreadyShown.terminating = new Object();
 
-
     this.ClearTerminating = function(){
         for (var i = 0; i < pods.Count(); i++){
             var podObj = pods.Get(i);
@@ -232,6 +231,8 @@ function PODSUI(pods, logwindow){
         for (i = 0; i < podsDOM.length; ++i) {
             if (podNames.lastIndexOf(podsDOM[i].id) < 0){
                 pods.Delete(podsDOM[i].id);
+                //TODO: uncomment.
+                podsDOM[i].parentNode.removeChild(podsDOM[i]);
             }
         }
     }
@@ -247,7 +248,6 @@ function PODSUI(pods, logwindow){
     }
 
     this.AddPod  = function(pod, hitHandler){
-
 
         var div = document.getElementById(pod.name);
 
@@ -299,8 +299,10 @@ function PODSUI(pods, logwindow){
 function API(hostname){
 
     this.debug = false;
+    this.fails = 0;
+    this.fail_threshold = 2;
     var apihostname = hostname;
-    this.timeout = 2000;
+    this.timeout = 3000;
     var apiprotocol = "http://"
     var uri_get = "/api/k8s/getpods?labelSelector=app%3Dapi";
     var uri_delete = "/api/k8s/deletepod/index.php?pod=";
@@ -309,7 +311,7 @@ function API(hostname){
 
     var ajaxProxy = function(url, successHandler, errorHandler, timeout) {
         timeout = typeof timeout !== 'undefined' ? timeout : this.timeout;
-        $.ajax({
+        var connections = $.ajax({
             url: url,
             success: successHandler,
             error: errorHandler,
@@ -324,19 +326,19 @@ function API(hostname){
 
     var getColorURI = function(){
         return apiprotocol + apihostname + uri_color;
-    }
+    };
 
     var getColorCompleteURI = function(){
         return apiprotocol + apihostname + uri_color_complete;
-    }
+    };
 
      var getDeleteURI = function(){
         return apiprotocol + apihostname + uri_delete;
-    }
+    };
 
     var getPodsURI = function(){
         return apiprotocol + apihostname + uri_get;
-    }
+    };
 
     this.Delete = function(pod, successHandler, errorHandler){
         ajaxProxy(getDeleteURI() + pod, successHandler, errorHandler);
@@ -356,6 +358,23 @@ function API(hostname){
 
     this.URL = getColorURI;
 
+    this.IsHardFail = function(){
+        if (this.fails > this.fail_threshold){
+            return true;
+        } else {
+            this.fails++;
+            return false;
+        }
+    };
+
+    this.ResetFails = function(){
+        if (this.fails != 0){
+            this.fails = 0;
+            return true;
+        } 
+        return false;
+    };
+
 }
 
 function DEPLOYMENTAPI(hostname, logwindow){
@@ -366,7 +385,7 @@ function DEPLOYMENTAPI(hostname, logwindow){
     this.timeout = 2000;
     var apiprotocol = "http://"
     var uri_getnodes = "/api/k8s/getnodes";
-    var uri_get = "/api/k8s/getpods?labelSelector=app%3Dapi";
+    var uri_get = "/api/k8s/getpods?labelSelector=app%3Dapi&compress";
     var uri_delete = "/api/k8s/deletedeploy/";
     var uri_create = "/api/k8s/createdeploy/";
     var uri_deletepod = "/api/k8s/deletepod/index.php?pod=";
@@ -465,7 +484,7 @@ function DEPLOYMENTAPI(hostname, logwindow){
             url: getCreateURI(),
             success: successHandler,
             error: errorHandler,
-            timeout: 1000
+            timeout: this.timeout
 
         });
     };
@@ -475,7 +494,7 @@ function DEPLOYMENTAPI(hostname, logwindow){
             url: getPodsURI(),
             success: successHandler,
             error: errorHandler,
-            timeout: 1000
+            timeout: this.timeout
 
         });
         if (this.debug){
@@ -488,7 +507,7 @@ function DEPLOYMENTAPI(hostname, logwindow){
             url: getNodesURI(),
             success: successHandler,
             error: errorHandler,
-            timeout: 1000
+            timeout: this.timeout
 
         });
         if (this.debug){
@@ -553,7 +572,7 @@ function GAME(){
     this.Start = function(colorFunction, scoreFunction, podsFunction, clockFunction){
         this.gameInterval = setInterval(colorFunction, 300);
         this.scoreInterval = setInterval(scoreFunction, 10);
-        this.podsInterval = setInterval(podsFunction, 200);
+        this.podsInterval = setInterval(podsFunction, 100);
         this.clockInterval = setInterval(clockFunction, 100);
         state = "started";
         startTime = Date.now();
@@ -603,24 +622,24 @@ function SOUNDS(){
         result.append(src);
         result.volume = volume;
         return result;
-    }
+    };
 
     this.SetWhack = function(filename,volume){
         hit = makeSource(filename,volume);
         hit2 = makeSource(filename,volume);
-    }
+    };
 
     this.SetExplosion = function(filename,volume){
         explosion = makeSource(filename,volume);
-    }
+    };
 
     this.SetCountdown = function(filename,volume){
         countdown = makeSource(filename,volume);
-    }
+    };
 
     this.SetStartup = function(filename,volume){
         startup = makeSource(filename,volume);
-    }
+    };
 
     this.PlayWhack = function(filename,volume){
          if (!hit.paused){
@@ -628,31 +647,31 @@ function SOUNDS(){
         } else{
             hit.play();
         }
-    }
+    };
 
     this.PlayExplosion = function(filename,volume){
         explosion.play();
-    }
+    };
 
     this.PlayCountdown = function(filename,volume){
         countdown.play();
-    }
+    };
 
     this.PlayStartup = function(filename,volume){
         startup.play();
-    }
+    };
 
 }
 
-function CLOCK(duration, completeHandler){
+function CLOCK(d, handler){
     var start_time = new Date();
-    var duration = duration;
-    var completeHandler = completeHandler;
+    var duration = d;
+    var completeHandler = handler;
 
     var shutItDown = function(){
         completeHandler();
         window.clearInterval(watcher);
-    }
+    };
 
     var checkComplete = function(){
         var diff = new Date() - Date.parse(start_time);
@@ -660,9 +679,7 @@ function CLOCK(duration, completeHandler){
         if (count > duration){
             shutItDown();
         }
-    }
-
-
+    };
 
     this.getTimeLeft = function(){
         var diff = new Date() - Date.parse(start_time);
@@ -700,10 +717,10 @@ function BOMBUI(waitingimg, explodeimg){
 }
 
 function LOGWINDOW(){
-    var alreadyShown = new Object();
-    alreadyShown.terminating = new Object();
-    alreadyShown.pending = new Object();
-    alreadyShown.running = new Object();
+    var alreadyShown = {};
+    alreadyShown.terminating = {};
+    alreadyShown.pending = {};
+    alreadyShown.running = {};
 
 
     var IsAlreadyShown = function(pod){
@@ -720,20 +737,22 @@ function LOGWINDOW(){
         return false;
     };
 
-    this.Log = function(e){
-        var e = jQuery.extend(true, {}, e);
+    this.Log = function(ev){
+        var e = jQuery.extend(true, {}, ev);
         var item = e;
         if (e.kind == "Pod"){
             item = new POD(e);
         }
 
-         if (e.kind == "Node"){
+        if (e.kind == "Node"){
             item = new NODE(e);
         }
 
         if (IsError(item)){
             return;
         }
+
+        
 
         if (item.type === "Pod"){
             if (IsAlreadyShown(item)){
@@ -747,6 +766,7 @@ function LOGWINDOW(){
                  delete item.startTerminate;
             }
         }
+        
 
 
         var output = JSON.stringify(item,null,2);
@@ -756,12 +776,18 @@ function LOGWINDOW(){
             var css_class = "";
             var content = '<div><span>' + textArray[i] +  '</span></div>';
             if (textArray[i].indexOf("phase") >= 0){
-                var css_class = "phase";
+                css_class = "phase";
                 content = '<div>  <span class="'+ css_class +'">' + textArray[i].trim() +  '</span></div>';
             }
             $(content).prependTo("#logwindow").hide().delay( (textArray.length - i) * 50 ).slideDown();
         }
 
+        var consoleLength = $("#logwindow div").length;
+        if (consoleLength > 100){
+            var diff = -(consoleLength - 100);
+            $('#logwindow > div').slice(diff).remove();
+            console.log("Log window trimmed");
+        }
 
-    }
+    };
 }

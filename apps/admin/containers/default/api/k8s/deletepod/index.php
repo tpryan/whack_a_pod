@@ -15,7 +15,7 @@
 	include "../lib.php";
 	$ch = getK8sCurlHandle();
 	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
-	curl_setopt($ch, CURLOPT_URL, "https://kubernetes" . $_GET['pod']);
+	curl_setopt($ch, CURLOPT_URL, "https://kubernetes" . $_GET['pod'] . "?gracePeriodSeconds=3");
 	$output = curl_exec($ch);
 	curl_close($ch);
 	header("Content-Type: application/json;charset=utf-8");

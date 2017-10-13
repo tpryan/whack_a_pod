@@ -21,7 +21,7 @@ limitations under the License.
     <title>Whack a Pod!</title>
     <link href="//fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900,900i|Source+Code+Pro:400,900" rel="stylesheet">
     <link href="assets/css/next.css" rel="stylesheet">
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="assets/js/config.js"></script>
     <script src="assets/js/lib.js"></script>
     <script src="assets/js/advanced.js"></script>
@@ -39,32 +39,65 @@ limitations under the License.
             kubectl create -f whack-a-pod-deployment.yaml
         </code>  
         <div id="nodes"></div>
-
-        <h3>Definitions</h3>
-        <dl>
-            <dt>Deploy/Deployment</dt>
-            <dd>Deployments are a Kubernetes control construct that implements 
-                your desired state at your desired rate.  In this case, the 
-                deployment has the instruction: always have 12 copies of the 
-                code base running. The deployment creates a replica set that
-                makes keeps 12 copies of the code running at all times. 
-            </dd>
-            <dt>Pod</dt>
-            <dd>One of a set of emphemeral copies of our code base.  
-                In this case, it is a simple api that serves up a random 
-                hexidecimal color value at /api/color/ on port 80.</dd>
-            <dt>Service</dt>
-            <dd>Pods are emphemeral, but we need a permanent place to access the 
-                the code. A service provides a consistent endpoint where we 
-                can access the code that runs in the Pods.  
-            </dd>
-            <dt>Node</dt>
-            <dd>A node is one of the member servers in our Kubernetes cluster. 
-                This can be a server running on bare metal or a virtual machine
-                in this case, it is running on a Compute Engine virtual machine
-                as part of Container Engine cluster. 
-            </dd>
+        <button class="text-reveal" id="show-pod-yaml">View Deployment Yaml</button> 
+        <button class="text-reveal" id="show-service-yaml">View Service Yaml</button> 
     </div>
+
+    <div id="pod-yaml" class="modal">
+        <div class="modal-message">
+        <button class="small" id="close-pod-modal">X</button>
+<h1>Deployment Configuration</h1>        
+<code><pre>
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+    name: api-deployment
+spec:
+    replicas: 12
+    strategy:
+        type: RollingUpdate
+    template:
+        metadata:
+            labels:
+                app: api
+        spec:
+            containers:
+            - name: "api"
+              image: "gcr.io/projectid/api"
+              ports:
+              - name: "http"
+                containerPort: 8080
+                protocol: TCP
+</pre></code>
+
+        </div>
+    </div>
+
+    <div id="service-yaml" class="modal">
+            <div class="modal-message">
+            <button class="small" id="close-service-modal">X</button>
+    <h1>Service Configuration</h1>        
+    <code><pre>
+apiVersion: v1
+kind: Service
+metadata:
+    labels:
+        name: api
+    name: api
+spec:
+    type: LoadBalancer
+    loadBalancerIP: 35.198.214.114
+    ports:
+    - name: "http"
+        port: 80
+        targetPort: 8080
+        protocol: TCP
+    selector:
+        app: api
+    </pre></code>
+    
+            </div>
+        </div>
     
     
     <pre><div id="logwindow"></div></pre>  

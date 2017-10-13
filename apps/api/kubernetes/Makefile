@@ -20,6 +20,12 @@ app: build deploy
 reset: clean.deployment app
 	say "app refresh complete"
 
+reset.safe: 
+	gcloud container builds submit "$(BASEDIR)/../containers/." --tag=gcr.io/$(PROJECT)/api
+	-kubectl delete -f "$(BASEDIR)/api-deployment.yaml"	
+	-kubectl apply -f "$(BASEDIR)/api-deployment.yaml"
+	say "app refresh complete"		
+
 build: creds
 	gcloud container builds submit "$(BASEDIR)/../containers/." --tag=gcr.io/$(PROJECT)/api
 

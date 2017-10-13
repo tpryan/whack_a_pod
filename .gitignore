@@ -12,3 +12,5 @@ apps/api/kubernetes/api-service.yaml
 
 /Makefile.au.properties
 /Makefile.us.old.properties
+/Makefile.eu.properties
+/Makefile.sg.properties

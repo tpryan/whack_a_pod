@@ -19,11 +19,14 @@ deploy: env
 	cd "$(BASEDIR)/apps/api/kubernetes/" && $(MAKE) deploy
 	cd "$(BASEDIR)/apps/game/kubernetes/" && $(MAKE) deploy
 	cd "$(BASEDIR)/apps/admin/kubernetes/" && $(MAKE) deploy
+	cd "$(BASEDIR)/apps/admin/ingress/" && $(MAKE) deploy
+	
 
 clean: env
 	cd "$(BASEDIR)/apps/api/kubernetes/" && $(MAKE) clean
 	cd "$(BASEDIR)/apps/game/kubernetes/" && $(MAKE) clean
 	cd "$(BASEDIR)/apps/admin/kubernetes/" && $(MAKE) clean	
+	cd "$(BASEDIR)/apps/admin/ingress/" && $(MAKE) clean
 
 build: env
 	cd "$(BASEDIR)/apps/api/kubernetes/" && $(MAKE) build
@@ -34,4 +37,5 @@ config: env
 	@cd "$(BASEDIR)/apps/api/kubernetes/" && $(MAKE) config
 	@cd "$(BASEDIR)/apps/game/kubernetes/" && $(MAKE) config
 	@cd "$(BASEDIR)/apps/admin/kubernetes/" && $(MAKE) config
+	@cd "$(BASEDIR)/apps/admin/ingress/" && $(MAKE) config
 				

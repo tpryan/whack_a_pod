@@ -38,6 +38,4 @@ clean.repo:
 	-gsutil -m rm -r gs://artifacts.$(PROJECT).appspot.com
 
 ips:
-	gcloud compute --project $(PROJECT) addresses create "api" --region $(REGION)
-	gcloud compute --project $(PROJECT) addresses create "admin" --region $(REGION)
-	gcloud compute --project $(PROJECT) addresses create "game" --region $(REGION)			
+	gcloud compute --project $(PROJECT) addresses create $(INGRESSNAME) --global

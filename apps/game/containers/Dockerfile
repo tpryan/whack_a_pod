@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-FROM gcr.io/google_appengine/php:latest
-ENV DOCUMENT_ROOT /app/web
-ADD default /app/web
+FROM nginx
+COPY default.conf /etc/nginx/conf.d
+COPY default /usr/share/nginx/html
+RUN chmod -R 755 /usr/share/nginx/html

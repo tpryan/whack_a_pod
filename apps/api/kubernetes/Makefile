@@ -47,8 +47,6 @@ config:
 	@echo Creating API Yaml files based on samples and setting in your Makefile.properties
 	@cp "$(BASEDIR)/api-deployment.sample.yaml" "$(BASEDIR)/api-deployment.yaml"
 	$(call rewritefile,"$(BASEDIR)/api-deployment.yaml",%PROJECT%,$(PROJECT))
-	@cp "$(BASEDIR)/api-service.sample.yaml" "$(BASEDIR)/api-service.yaml"
-	$(call rewritefile,"$(BASEDIR)/api-service.yaml",%APIIP%,$(APIIP))
 
 define rewritefile
 	@sed s/$(2)/$(3)/g <""$(1)"" >"$(BASEDIR)/.temp"

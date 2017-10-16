@@ -48,11 +48,6 @@ config:
 	@echo Creating GAME Yaml files based on samples and setting in your Makefile.properties
 	@cp "$(BASEDIR)/game-deployment-sample.yaml" "$(BASEDIR)/game-deployment.yaml"
 	$(call rewritefile,"$(BASEDIR)/game-deployment.yaml",%PROJECT%,$(PROJECT))
-	@cp "$(BASEDIR)/game-service-sample.yaml" "$(BASEDIR)/game-service.yaml"
-	$(call rewritefile,"$(BASEDIR)/game-service.yaml",%GAMEIP%,$(GAMEIP))
-	@cp "$(BASEDIR)/../containers/default/assets/js/config.sample.js" "$(BASEDIR)/../containers/default/assets/js/config.js"
-	$(call rewritefile,"$(BASEDIR)/../containers/default/assets/js/config.js",%APIHOST%,$(APIHOST))
-	$(call rewritefile,"$(BASEDIR)/../containers/default/assets/js/config.js",%ADMINHOST%,$(ADMINHOST))
 
 define rewritefile
 	@sed s/$(2)/$(3)/g <""$(1)"" >"$(BASEDIR)/.temp"

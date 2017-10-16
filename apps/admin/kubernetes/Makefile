@@ -47,8 +47,6 @@ config:
 	@echo Creating ADMIN Yaml files based on samples and setting in your Makefile.properties
 	@cp "$(BASEDIR)/admin-deployment.sample.yaml" "$(BASEDIR)/admin-deployment.yaml"
 	$(call rewritefile,"$(BASEDIR)/admin-deployment.yaml",%PROJECT%,$(PROJECT))
-	@cp "$(BASEDIR)/admin-service.sample.yaml" "$(BASEDIR)/admin-service.yaml"
-	$(call rewritefile,"$(BASEDIR)/admin-service.yaml",%ADMINIP%,$(ADMINIP))
 	@cp "$(BASEDIR)/deployment.json" "$(BASEDIR)/../containers/default/api/k8s/createdeploy/deployment.json"
 	$(call rewritefile,"$(BASEDIR)/../containers/default/api/k8s/createdeploy/deployment.json",%PROJECT%,$(PROJECT))
 

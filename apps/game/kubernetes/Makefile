@@ -21,30 +21,30 @@ reset: clean.deployment app
 	say "app refresh complete"
 
 
-reset.safe: 
+reset.safe: env creds
 	gcloud container builds submit "$(BASEDIR)/../containers/." --tag=gcr.io/$(PROJECT)/game
 	-kubectl delete -f "$(BASEDIR)/game-deployment.yaml"	
 	-kubectl apply -f "$(BASEDIR)/game-deployment.yaml"
 	say "app refresh complete"	
 
-build: creds
+build: env creds
 	gcloud container builds submit "$(BASEDIR)/../containers/." --tag=gcr.io/$(PROJECT)/game
 
-deploy: creds
+deploy: env creds
 	kubectl apply -f "$(BASEDIR)/game-service.yaml"
 	kubectl apply -f "$(BASEDIR)/game-deployment.yaml"	
 
 clean: clean.deployment clean.service 
 
-clean.deployment: env
+clean.deployment: env creds
 	-kubectl delete -f "$(BASEDIR)/game-deployment.yaml"
 	
-clean.service: env
+clean.service: env creds
 	-kubectl delete -f "$(BASEDIR)/game-service.yaml"
 
 retry: clean build deploy
 
-config:
+config: env 
 	@echo Creating GAME Yaml files based on samples and setting in your Makefile.properties
 	@cp "$(BASEDIR)/game-deployment-sample.yaml" "$(BASEDIR)/game-deployment.yaml"
 	$(call rewritefile,"$(BASEDIR)/game-deployment.yaml",%PROJECT%,$(PROJECT))

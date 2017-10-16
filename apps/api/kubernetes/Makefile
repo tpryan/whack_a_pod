@@ -20,30 +20,30 @@ app: build deploy
 reset: clean.deployment app
 	say "app refresh complete"
 
-reset.safe: 
+reset.safe: env creds
 	gcloud container builds submit "$(BASEDIR)/../containers/." --tag=gcr.io/$(PROJECT)/api
 	-kubectl delete -f "$(BASEDIR)/api-deployment.yaml"	
 	-kubectl apply -f "$(BASEDIR)/api-deployment.yaml"
 	say "app refresh complete"		
 
-build: creds
+build: env creds
 	gcloud container builds submit "$(BASEDIR)/../containers/." --tag=gcr.io/$(PROJECT)/api
 
-deploy: creds
+deploy: env creds
 	kubectl apply -f "$(BASEDIR)/api-service.yaml"
 	kubectl apply -f "$(BASEDIR)/api-deployment.yaml"	
 
 clean: clean.deployment clean.service 
 
-clean.deployment: env
+clean.deployment: env creds
 	-kubectl delete -f "$(BASEDIR)/api-deployment.yaml"
 	
-clean.service: env
+clean.service: env creds
 	-kubectl delete -f "$(BASEDIR)/api-service.yaml"
 
 retry: clean build deploy
 
-config:
+config: env 
 	@echo Creating API Yaml files based on samples and setting in your Makefile.properties
 	@cp "$(BASEDIR)/api-deployment.sample.yaml" "$(BASEDIR)/api-deployment.yaml"
 	$(call rewritefile,"$(BASEDIR)/api-deployment.yaml",%PROJECT%,$(PROJECT))

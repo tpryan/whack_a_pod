@@ -26,24 +26,24 @@ reset.safe:
 
 app: build deploy
 
-build: creds
+build: env creds
 	gcloud container builds submit "$(BASEDIR)/../containers/." --tag=gcr.io/$(PROJECT)/admin
 
-deploy: creds
+deploy: env creds
 	kubectl apply -f "$(BASEDIR)/admin-service.yaml"
 	kubectl apply -f "$(BASEDIR)/admin-deployment.yaml"	
 
 clean: clean.deployment clean.service 
 
-clean.deployment: env
+clean.deployment: env creds
 	-kubectl delete -f "$(BASEDIR)/admin-deployment.yaml"
 	
-clean.service: env
+clean.service: env creds
 	-kubectl delete -f "$(BASEDIR)/admin-service.yaml"
 
 retry: clean build deploy
 
-config:
+config: env 
 	@echo Creating ADMIN Yaml files based on samples and setting in your Makefile.properties
 	@cp "$(BASEDIR)/admin-deployment.sample.yaml" "$(BASEDIR)/admin-deployment.yaml"
 	$(call rewritefile,"$(BASEDIR)/admin-deployment.yaml",%PROJECT%,$(PROJECT))

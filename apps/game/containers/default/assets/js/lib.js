@@ -303,7 +303,7 @@ function API(hostname){
     this.fail_threshold = 2;
     var apihostname = hostname;
     this.timeout = 3000;
-    var apiprotocol = "http://"
+    var apiprotocol = ""
     var uri_get = "/api/k8s/getpods?labelSelector=app%3Dapi";
     var uri_delete = "/api/k8s/deletepod/index.php?pod=";
     var uri_color = "/api/color/";
@@ -383,14 +383,14 @@ function DEPLOYMENTAPI(hostname, logwindow){
     this.debug = false;
     var apihostname = hostname;
     this.timeout = 2000;
-    var apiprotocol = "http://"
-    var uri_getnodes = "/api/k8s/getnodes";
-    var uri_get = "/api/k8s/getpods?labelSelector=app%3Dapi&compress";
-    var uri_delete = "/api/k8s/deletedeploy/";
-    var uri_create = "/api/k8s/createdeploy/";
-    var uri_deletepod = "/api/k8s/deletepod/index.php?pod=";
-    var uri_drain = "/api/k8s/drain/?node=";
-    var uri_uncordon = "/api/k8s/uncordon/?node=";
+    var apiprotocol = "";
+    var uri_getnodes = "/admin/k8s/getnodes";
+    var uri_get = "/admin/k8s/getpods?labelSelector=app%3Dapi&compress";
+    var uri_delete = "/admin/k8s/deletedeploy/";
+    var uri_create = "/admin/k8s/createdeploy/";
+    var uri_deletepod = "/admin/k8s/deletepod/index.php?pod=";
+    var uri_drain = "/admin/k8s/drain/?node=";
+    var uri_uncordon = "/admin/k8s/uncordon/?node=";
 
 
     var getPodsURI = function(){

@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: wap-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: %INGRESSNAME%
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /api/*
+        backend:
+          serviceName: api
+          servicePort: 8080
+      - path: /admin/*
+        backend:
+          serviceName: admin
+          servicePort: 8080
+      - path: /*
+        backend:
+          serviceName: game
+          servicePort: 8080

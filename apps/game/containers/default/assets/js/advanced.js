@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setReport("");
     $("#deploy-start").click(startDeployment);
     $("#deploy-end").click(endDeployment);
-    $("#endpoint").html(api.URL());
+    $("#endpoint").html(location.hostname + api.URL());
     $("#show-pod-yaml").click(showPodModal);
     $("#close-pod-modal").click(hidePodModal);
     $("#show-service-yaml").click(showServiceModal);

@@ -40,15 +40,14 @@ better yet, accept a pull request.)
 1. Alter `ZONE` and `REGION` if you want to run this demo in a particular area.
 1. Alter `CLUSTER` if you want to call your cluster something other than
 `whack-a-pod`.
-1. Set `GAMEHOST`, `ADMINHOST`, and `APIHOST` if you have static host names for
-your cluster.
+1. Set `INGRESSNAME` if you need to use something other than the default. 
 
 ### Build Infrastructure
 1. Open a terminal in `/infrastructure/`.
 1. Run `make build`.
 `make build` will do the following:
     1. Create Kubernetes Cluster
-    1. Create 3 static ip addresses for use in the app
+    1. Create 1 static ip addresse for use in the app
 
 >If you get the error `ResponseError: code=503,
 message=Project projectname is not fully initialized with the default service
@@ -61,18 +60,17 @@ Google Cloud console to activate Compute Engine service.
 other things for you.
 1. This should create the following files:
      1. /apps/admin/kubernetes/admin-deployment.yaml
-     1. /apps/admin/kubernetes/admin-service.yaml
-     1. /apps/game/containers/default/assets/js/config.js
+     1. /apps/admin/containers/default/admin/k8s/createdeploy/deployment.json
      1. /apps/game/kubernetes/game-deployment.yaml
-     1. /apps/game/kubernetes/game-service.yaml
      1. /apps/api/kubernetes/api-deployment.yaml
-     1. /apps/api/kubernetes/api-service.yaml
+     
 
 ### Build Application
 1. Open a terminal in root of whack_a_pod location.
 1. Run `make build`
 1. Run `make deploy`
-1. When process finishes Browse to the the value of `GAMEHOST`.
+1. When process finishes Browse to the the IP address value for the ingress.
+1. To get that address: `gcloud compute addresses describe #INGRESSNAME# --global`
 
 ## Run demo
 There are two skins to the game.

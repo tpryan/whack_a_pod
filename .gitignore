@@ -12,3 +12,4 @@ apps/api/kubernetes/api-deployment.yaml
 /Makefile.eu.properties
 /Makefile.sg.properties
 /apps/ingress/ingress.yaml
+/apps/admin/containers/main

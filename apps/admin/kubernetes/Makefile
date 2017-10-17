@@ -19,39 +19,40 @@ reset: clean.deployment app
 	say "App Reset"
 
 reset.safe: 
-	gcloud container builds submit "$(BASEDIR)/../containers/." --tag=gcr.io/$(PROJECT)/admin
-	-kubectl delete -f "$(BASEDIR)/admin-deployment.yaml"	
-	-kubectl apply -f "$(BASEDIR)/admin-deployment.yaml"
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o "$(BASEDIR)/../containers/main" "$(BASEDIR)/../containers/main.go"
+	gcloud container builds submit "$(BASEDIR)/../containers/." --tag=$(DOCKERREPO)/admin
+	-kubectl delete deployment admin-deployment
+	-kubectl run admin-deployment --image=$(DOCKERREPO)/admin --replicas=1 --port=8080 --labels=app=admin --env="APIIMAGE=$(DOCKERREPO)/api"
 	say "app refresh complete"		
 
 app: build deploy
 
-build: env creds
-	gcloud container builds submit "$(BASEDIR)/../containers/." --tag=gcr.io/$(PROJECT)/admin
+main:
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o "$(BASEDIR)/../containers/main" "$(BASEDIR)/../containers/main.go"
 
-deploy: env creds
-	kubectl apply -f "$(BASEDIR)/admin-service.yaml"
-	kubectl apply -f "$(BASEDIR)/admin-deployment.yaml"	
+build: env creds main
+	gcloud container builds submit "$(BASEDIR)/../containers/." --tag=$(DOCKERREPO)/admin
+
+deploy: env creds deployment service
+	
+	
+
+deployment:
+	kubectl run admin-deployment --image=$(DOCKERREPO)/admin --replicas=1 --port=8080 --labels=app=admin --env="APIIMAGE=$(DOCKERREPO)/api"
+
+service:
+	kubectl expose deployment admin-deployment --name=admin --target-port=8080  --type=NodePort --labels="app=admin"
 
 clean: clean.deployment clean.service 
 
 clean.deployment: env creds
-	-kubectl delete -f "$(BASEDIR)/admin-deployment.yaml"
+	-kubectl delete deployment admin-deployment
 	
 clean.service: env creds
-	-kubectl delete -f "$(BASEDIR)/admin-service.yaml"
+	-kubectl delete service admin
 
 retry: clean build deploy
 
 config: env 
-	@echo Creating ADMIN Yaml files based on samples and setting in your Makefile.properties
-	@cp "$(BASEDIR)/admin-deployment.sample.yaml" "$(BASEDIR)/admin-deployment.yaml"
-	$(call rewritefile,"$(BASEDIR)/admin-deployment.yaml",%PROJECT%,$(PROJECT))
-	@cp "$(BASEDIR)/deployment.json" "$(BASEDIR)/../containers/default/api/k8s/createdeploy/deployment.json"
-	$(call rewritefile,"$(BASEDIR)/../containers/default/api/k8s/createdeploy/deployment.json",%PROJECT%,$(PROJECT))
-
-define rewritefile
-	@sed s/$(2)/$(3)/g <""$(1)"" >"$(BASEDIR)/.temp"
-	@cp "$(BASEDIR)/.temp" $(1)
-	@rm "$(BASEDIR)/.temp" 
-endef
+	echo "No custom config needed for admin"
+	

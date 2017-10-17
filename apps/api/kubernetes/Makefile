@@ -21,25 +21,33 @@ reset: clean.deployment app
 	say "app refresh complete"
 
 reset.safe: env creds
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o "$(BASEDIR)/../containers/main" "$(BASEDIR)/../containers/main.go"
 	gcloud container builds submit "$(BASEDIR)/../containers/." --tag=gcr.io/$(PROJECT)/api
-	-kubectl delete -f "$(BASEDIR)/api-deployment.yaml"	
-	-kubectl apply -f "$(BASEDIR)/api-deployment.yaml"
+	-kubectl delete deployment api-deployment
+	-kubectl run api-deployment --image=$(DOCKERREPO)/api --replicas=12 --port=8080 --labels=app=api 
 	say "app refresh complete"		
 
-build: env creds
-	gcloud container builds submit "$(BASEDIR)/../containers/." --tag=gcr.io/$(PROJECT)/api
+main:
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o "$(BASEDIR)/../containers/main" "$(BASEDIR)/../containers/main.go"
 
-deploy: env creds
-	kubectl apply -f "$(BASEDIR)/api-service.yaml"
-	kubectl apply -f "$(BASEDIR)/api-deployment.yaml"	
+build: env creds main
+	gcloud container builds submit "$(BASEDIR)/../containers/." --tag=$(DOCKERREPO)/api
+
+deploy: env creds deployment service
+
+deployment:
+	kubectl run api-deployment --image=$(DOCKERREPO)/api --replicas=12 --port=8080 --labels=app=api 
+
+service:
+	kubectl expose deployment api-deployment --name=api --target-port=8080  --type=NodePort --labels="app=api"
 
 clean: clean.deployment clean.service 
 
 clean.deployment: env creds
-	-kubectl delete -f "$(BASEDIR)/api-deployment.yaml"
+	-kubectl delete deployment api-deployment
 	
 clean.service: env creds
-	-kubectl delete -f "$(BASEDIR)/api-service.yaml"
+	-kubectl delete service api
 
 retry: clean build deploy
 

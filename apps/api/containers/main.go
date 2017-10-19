@@ -12,8 +12,15 @@ import (
 )
 
 func main() {
+	srv := &http.Server{
+		ReadTimeout:  5 * time.Second,
+		WriteTimeout: 10 * time.Second,
+		Addr:         ":8080",
+		Handler:      handler(),
+	}
+
 	log.Printf("starting whack a pod api api")
-	http.ListenAndServe(":8080", handler())
+	srv.ListenAndServe()
 }
 
 func handler() http.Handler {
@@ -24,15 +31,20 @@ func handler() http.Handler {
 	r.HandleFunc("/api/healthz", health)
 	r.HandleFunc("/api/color", color)
 	r.HandleFunc("/api/color-complete", colorComplete)
-
+	r.HandleFunc("/api/color/", color)
+	r.HandleFunc("/api/color-complete/", colorComplete)
 	return r
 }
 
 func health(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
+	w.WriteHeader(http.StatusOK)
 	fmt.Fprint(w, "ok")
 }
 
 func color(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
+	w.WriteHeader(http.StatusOK)
 	fmt.Fprint(w, hexColorString())
 }
 
@@ -42,6 +54,7 @@ type result struct {
 }
 
 func colorComplete(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
 	h, _ := os.Hostname()
 	result := result{
 		Name:  h,

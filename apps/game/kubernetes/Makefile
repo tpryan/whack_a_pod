@@ -23,34 +23,30 @@ reset: clean.deployment app
 
 reset.safe: env creds
 	gcloud container builds submit "$(BASEDIR)/../containers/." --tag=gcr.io/$(PROJECT)/game
-	-kubectl delete -f "$(BASEDIR)/game-deployment.yaml"	
-	-kubectl apply -f "$(BASEDIR)/game-deployment.yaml"
+	-kubectl delete deployment game-deployment
+	kubectl run game-deployment --image=$(DOCKERREPO)/game --replicas=4 --port=8080 --labels=app=game 
 	say "app refresh complete"	
 
 build: env creds
 	gcloud container builds submit "$(BASEDIR)/../containers/." --tag=gcr.io/$(PROJECT)/game
 
-deploy: env creds
-	kubectl apply -f "$(BASEDIR)/game-service.yaml"
-	kubectl apply -f "$(BASEDIR)/game-deployment.yaml"	
+deploy: env creds deployment service
+
+deployment:
+	kubectl run game-deployment --image=$(DOCKERREPO)/game --replicas=4 --port=8080 --labels=app=game 
+
+service:
+	kubectl expose deployment game-deployment --name=game --target-port=8080  --type=NodePort --labels="app=api"
 
 clean: clean.deployment clean.service 
 
 clean.deployment: env creds
-	-kubectl delete -f "$(BASEDIR)/game-deployment.yaml"
+	-kubectl delete deployment game-deployment
 	
 clean.service: env creds
-	-kubectl delete -f "$(BASEDIR)/game-service.yaml"
+	-kubectl delete service game
+
 
 retry: clean build deploy
 
 config: env 
-	@echo Creating GAME Yaml files based on samples and setting in your Makefile.properties
-	@cp "$(BASEDIR)/game-deployment-sample.yaml" "$(BASEDIR)/game-deployment.yaml"
-	$(call rewritefile,"$(BASEDIR)/game-deployment.yaml",%PROJECT%,$(PROJECT))
-
-define rewritefile
-	@sed s/$(2)/$(3)/g <""$(1)"" >"$(BASEDIR)/.temp"
-	@cp "$(BASEDIR)/.temp" $(1)
-	@rm "$(BASEDIR)/.temp" 
-endef

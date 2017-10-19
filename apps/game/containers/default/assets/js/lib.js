@@ -160,15 +160,26 @@ function NODE(json){
 
 
 function POD(json){
-    this.name = json.metadata.name;
+
     this.selflink = json.metadata.selfLink;
     this.type = "Pod";
-    this.host = json.spec.nodeName;
-    this.hostIP = json.status.hostIP;
     this.terminateThreshold = 1000;
     this.phase = "";
     this.holder = "";
     this.shortname = "";
+
+    if (typeof json.spec != "undefined" && typeof json.spec.nodeName != "undefined"){
+        this.host = json.spec.nodeName;
+    }
+
+    if (typeof json.metadata.name != "undefined"){
+        this.name = json.metadata.name;
+    }
+
+    if (typeof json.status != "undefined"){
+        this.hostIP = json.status.hostIP;
+    }
+
 
     if (typeof this.host == "undefined"){
         this.host = "";
@@ -301,11 +312,12 @@ function API(hostname){
     this.debug = false;
     this.fails = 0;
     this.fail_threshold = 2;
-    var apihostname = hostname;
-    this.timeout = 3000;
-    var apiprotocol = ""
-    var uri_get = "/api/k8s/getpods?labelSelector=app%3Dapi";
-    var uri_delete = "/api/k8s/deletepod/index.php?pod=";
+    var apihostname = window.location.hostname;
+    this.timeout = 5000;
+    var apiprotocol = window.location.protocol + "//";
+    if (apihostname.length == 0){
+        apiprotocol ="";
+    }
     var uri_color = "/api/color/";
     var uri_color_complete = "/api/color-complete/";
 
@@ -323,7 +335,6 @@ function API(hostname){
         }
     };
 
-
     var getColorURI = function(){
         return apiprotocol + apihostname + uri_color;
     };
@@ -332,28 +343,12 @@ function API(hostname){
         return apiprotocol + apihostname + uri_color_complete;
     };
 
-     var getDeleteURI = function(){
-        return apiprotocol + apihostname + uri_delete;
-    };
-
-    var getPodsURI = function(){
-        return apiprotocol + apihostname + uri_get;
-    };
-
-    this.Delete = function(pod, successHandler, errorHandler){
-        ajaxProxy(getDeleteURI() + pod, successHandler, errorHandler);
-    };
-
     this.Color = function(successHandler, errorHandler){
         ajaxProxy(getColorURI(), successHandler, errorHandler, 400);
     };
 
     this.ColorComplete = function(successHandler, errorHandler){
         ajaxProxy(getColorCompleteURI(), successHandler, errorHandler, 400);
-    };
-
-    this.Get = function(){
-        ajaxProxy(getPodsURI(), successHandler, errorHandler, 500);
     };
 
     this.URL = getColorURI;
@@ -381,60 +376,65 @@ function DEPLOYMENTAPI(hostname, logwindow){
     if (typeof(logwindow)==='undefined') logwindow = new LOGWINDOW();
 
     this.debug = false;
-    var apihostname = hostname;
-    this.timeout = 2000;
-    var apiprotocol = "";
-    var uri_getnodes = "/admin/k8s/getnodes";
-    var uri_get = "/admin/k8s/getpods?labelSelector=app%3Dapi&compress";
-    var uri_delete = "/admin/k8s/deletedeploy/";
-    var uri_create = "/admin/k8s/createdeploy/";
-    var uri_deletepod = "/admin/k8s/deletepod/index.php?pod=";
-    var uri_drain = "/admin/k8s/drain/?node=";
-    var uri_uncordon = "/admin/k8s/uncordon/?node=";
+    var apihostname = window.location.hostname;
+    this.timeout = 5000;
+    var apiprotocol = window.location.protocol + "//";
+    if (apihostname.length == 0){
+        apiprotocol ="";
+    }
+    var uri_getnodes = "/admin/k8s/nodes/get";
+    var uri_get = "/admin/k8s/pods/get";
+    var uri_delete = "/admin/k8s/deployment/delete";
+    var uri_create = "/admin/k8s/deployment/create";
+    var uri_deletepod = "/admin/k8s/pod/delete?pod=";
+    var uri_drain = "/admin/k8s/node/drain/?node=";
+    var uri_uncordon = "/admin/k8s/node/uncordon/?node=";
 
 
     var getPodsURI = function(){
         return apiprotocol + apihostname + uri_get;
-    }
+    };
 
     var getNodesURI = function(){
         return apiprotocol + apihostname + uri_getnodes;
-    }
+    };
 
     var getDeleteURI = function(){
         return apiprotocol + apihostname + uri_delete;
-    }
+    };
 
      var getDeletePodURI = function(){
         return apiprotocol + apihostname + uri_deletepod;
-    }
+    };
 
     var getCreateURI = function(){
         return apiprotocol + apihostname + uri_create;
-    }
+    };
 
     var getDrainURI = function(){
         return apiprotocol + apihostname + uri_drain;
-    }
+    };
 
     var getUncordonURI = function(){
         return apiprotocol + apihostname + uri_uncordon;
-    }
+    };
 
     var success = function(e){
         if (typeof(logwindow)!='undefined') {
             logwindow.Log(e);
         }
-    }
+    };
 
     var error = function(e){
-        console.log("Failure: " , e);
-    }
+        if (typeof e.status != "undefined" && e.status == 404){
+            console.log("Item not found which in most cases is expected.");
+        } else{
+            console.log("Failure: " , e);
+        } 
+        
+    };
 
     var ajaxProxy = function(url) {
-        if (this.debug){
-            console.log("Called: ", url);
-        }
         $.ajax({
             url: url,
             success: success,
@@ -442,6 +442,9 @@ function DEPLOYMENTAPI(hostname, logwindow){
             timeout: this.timeout
 
         });
+        if (this.debug){
+            console.log("Called: ", url);
+        }
 
     };
 
@@ -450,48 +453,64 @@ function DEPLOYMENTAPI(hostname, logwindow){
     };
 
     this.DeletePod = function(pod, successHandler, errorHandler){
+        var url = getDeletePodURI() + pod;
         $.ajax({
-            url: getDeletePodURI() + pod,
+            url: url,
             success: successHandler,
             error: errorHandler,
             timeout: this.timeout
-
         });
+        if (this.debug){
+            console.log("Called: ", url);
+        }
     };
 
     this.DrainNode = function(node, successHandler, errorHandler){
+        var url = getDrainURI() + node
         $.ajax({
-            url: getDrainURI() + node,
+            url: url,
             success: successHandler,
             error: errorHandler,
             timeout: this.timeout
 
         });
+        if (this.debug){
+            console.log("Called: ", url);
+        }
     };
 
     this.UncordonNode = function(node, successHandler, errorHandler){
+        var url = getUncordonURI() + node
         $.ajax({
-            url: getUncordonURI() + node,
+            url: url,
             success: successHandler,
             error: errorHandler,
             timeout: this.timeout
 
         });
+        if (this.debug){
+            console.log("Called: ", url);
+        }
     };
 
     this.Create = function(successHandler, errorHandler){
+        var url = getCreateURI();
         $.ajax({
-            url: getCreateURI(),
+            url: url,
             success: successHandler,
             error: errorHandler,
             timeout: this.timeout
 
         });
+        if (this.debug){
+            console.log("Called: ", url);
+        }
     };
 
     this.Get = function(successHandler, errorHandler){
+        var url = getPodsURI();
         $.ajax({
-            url: getPodsURI(),
+            url: url,
             success: successHandler,
             error: errorHandler,
             timeout: this.timeout
@@ -503,8 +522,9 @@ function DEPLOYMENTAPI(hostname, logwindow){
     };
 
     this.GetNodes = function(successHandler, errorHandler){
+        var url = getPodsURI();
         $.ajax({
-            url: getNodesURI(),
+            url: url,
             success: successHandler,
             error: errorHandler,
             timeout: this.timeout
@@ -520,7 +540,7 @@ function DEPLOYMENTAPI(hostname, logwindow){
 
     };
 
-    var handleRefreshNodes = function(nodes){
+    var handleRefreshNodes = function(nodes, ex){
         for (var i = 0; i < nodes.items.length; i++){
             var node = nodes.items[i];
             var url = getUncordonURI() +  node.metadata.name;
@@ -716,6 +736,19 @@ function BOMBUI(waitingimg, explodeimg){
 
 }
 
+function PODLIST(json){
+    this.selflink = json.metadata.selfLink;
+    
+    this.items = [];
+
+    for (var i=0; i< json.items.length; i++){
+        var item = new POD(json.items[i]);
+        this.items.push(item)
+    }
+
+}
+
+
 function LOGWINDOW(){
     var alreadyShown = {};
     alreadyShown.terminating = {};
@@ -734,6 +767,9 @@ function LOGWINDOW(){
         if (e.kind == "Status"){
             return true;
         }
+        if (typeof e.error != "undefined"){
+            return true;
+        }
         return false;
     };
 
@@ -746,6 +782,20 @@ function LOGWINDOW(){
 
         if (e.kind == "Node"){
             item = new NODE(e);
+        }
+
+        if (e.kind == "PodList"){
+            item = new PODLIST(e);
+        }
+
+        if (typeof e.metadata != "undefined"){
+            if (e.metadata.selfLink.indexOf("Pod") > -1 ) {
+                item = new POD(e);
+            }
+    
+            if (e.metadata.selfLink.indexOf("Node") > -1 ) {
+                item = new NODE(e);
+            }
         }
 
         if (IsError(item)){
@@ -777,16 +827,16 @@ function LOGWINDOW(){
             var content = '<div><span>' + textArray[i] +  '</span></div>';
             if (textArray[i].indexOf("phase") >= 0){
                 css_class = "phase";
-                content = '<div>  <span class="'+ css_class +'">' + textArray[i].trim() +  '</span></div>';
+                content = '<div><span class="'+ css_class +'">' + textArray[i] +  '</span></div>';
             }
             $(content).prependTo("#logwindow").hide().delay( (textArray.length - i) * 50 ).slideDown();
         }
 
         var consoleLength = $("#logwindow div").length;
-        if (consoleLength > 100){
-            var diff = -(consoleLength - 100);
-            $('#logwindow > div').slice(diff).remove();
-            console.log("Log window trimmed");
+        if (consoleLength > 2000){
+           var diff = -(consoleLength - 2000);
+           $('#logwindow > div').slice(diff).remove();
+           console.log("Log window trimmed");
         }
 
     };

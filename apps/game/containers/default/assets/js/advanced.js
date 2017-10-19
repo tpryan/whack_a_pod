@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setReport("");
     $("#deploy-start").click(startDeployment);
     $("#deploy-end").click(endDeployment);
-    $("#endpoint").html(location.hostname + api.URL());
+    $("#endpoint").html(api.URL());
     $("#show-pod-yaml").click(showPodModal);
     $("#close-pod-modal").click(hidePodModal);
     $("#show-service-yaml").click(showServiceModal);
@@ -131,6 +131,7 @@ function handleColorError(e,textStatus, errorThrown){
         if (api.IsHardFail()){
             console.log("Hard service fail.");
             setReport("Kubernetes service is DOWN!", "#FF0000");
+            $(".responder").removeClass("responder");
             alertYouKilledIt();
         } else {
             console.log("Soft service fail. Retry");
@@ -142,7 +143,8 @@ function getPods(){
     deploymentAPI.Get(handlePods, handlePodsError);
 }
 
-function handlePods(e){
+function handlePods(e,b){
+    
     if (game.GetState() == "done") {
         return;
     }

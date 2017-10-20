@@ -19,7 +19,7 @@ NODECOUNT="2"
 NODETYPE="n1-standard-4"
 
 # Builds the entire infrastructure you need to run this set of demos. 
-build: env build.cluster ips
+build: env build.cluster ip
 
 # Requests a GKE cluster
 build.cluster: 
@@ -27,7 +27,7 @@ build.cluster:
 	--disk-size=$(NODEDISKSIZE) --machine-type=$(NODETYPE) --zone=$(ZONE)
 
 # Runs all the clean commands. 
-clean: env clean.cluster clean.repo
+clean: env clean.cluster clean.repo clean.ip
 
 # deletes the cluster. 
 clean.cluster:
@@ -37,5 +37,8 @@ clean.cluster:
 clean.repo:
 	-gsutil -m rm -r gs://artifacts.$(PROJECT).appspot.com
 
-ips:
+ip:
 	gcloud compute --project $(PROJECT) addresses create $(INGRESSNAME) --global
+
+clean.ip:
+	gcloud compute --project $(PROJECT) addresses delete $(INGRESSNAME) 

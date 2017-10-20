@@ -34,13 +34,23 @@ better yet, accept a pull request.)
 1. Navigate to the API Library and activate Container Builder API
 
 
-### Create Configs - Part 1
+### Create Configs 
 1. Make a copy of `/Samples.properties`, renamed to `/Makefile.properties`
 1. Alter value for `PROJECT` to your project id
 1. Alter `ZONE` and `REGION` if you want to run this demo in a particular area.
 1. Alter `CLUSTER` if you want to call your cluster something other than
 `whack-a-pod`.
 1. Set `INGRESSNAME` if you need to use something other than the default. 
+1. Open a terminal in `/`.
+1. Run `make config` to create your ingress file. 
+1. This should create the following file:
+     1. /apps/ingress/ingress.yaml
+
+
+>I use this application to show off Google Cloud Platform, so I tend set it up
+multiple times, once per region or datacenter. Therefore, I rename the `INGRESSNAME` and
+`CLUSTER` a bunch. If you only have one cluster, you don't have to fiddle with 
+these. 
 
 ### Build Infrastructure
 1. Open a terminal in `/infrastructure/`.
@@ -54,15 +64,6 @@ message=Project projectname is not fully initialized with the default service
 accounts. Please try again later.` You need to navigfate to Compute Engine in
 Google Cloud console to activate Compute Engine service.
 
-### Create Configs - Part 2
-1. Open a terminal in `/`.
-1. Run `make config` this will create all your kubernetes yaml files and a few
-other things for you.
-1. This should create the following files:
-     1. /apps/admin/kubernetes/admin-deployment.yaml
-     1. /apps/admin/containers/default/admin/k8s/createdeploy/deployment.json
-     1. /apps/game/kubernetes/game-deployment.yaml
-     1. /apps/api/kubernetes/api-deployment.yaml
      
 
 ### Build Application

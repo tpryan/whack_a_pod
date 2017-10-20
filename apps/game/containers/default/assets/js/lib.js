@@ -774,6 +774,8 @@ function LOGWINDOW(){
     };
 
     this.Log = function(ev){
+
+
         var e = jQuery.extend(true, {}, ev);
         var item = e;
         if (e.kind == "Pod"){
@@ -823,6 +825,9 @@ function LOGWINDOW(){
         var textArray = output.split("\n");
 
         for (var i = textArray.length -1; i >= 0; i--){
+            if (textArray[i].length < 3){
+                continue;
+            }
             var css_class = "";
             var content = '<div><span>' + textArray[i] +  '</span></div>';
             if (textArray[i].indexOf("phase") >= 0){

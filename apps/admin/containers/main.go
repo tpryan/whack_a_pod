@@ -1,16 +1,15 @@
+// Package main is a Kubernetes API proxy. It exposes a smaller surface of the
+// API and limits operations to specifically selected labels, and deployments
 package main
 
 import (
 	"crypto/tls"
 	"crypto/x509"
-	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
 	"time"
 )
-
-const defaultGracePeriod = 3
 
 func main() {
 	log.Printf("starting whack a pod admin api")
@@ -202,13 +201,4 @@ func sendJSON(w http.ResponseWriter, content string, status int) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
 	fmt.Fprint(w, content)
-}
-
-func sendBytes(v interface{}) ([]byte, error) {
-	result, err := json.Marshal(v)
-	if err != nil {
-		return nil, fmt.Errorf("could not unmarshall data: %v", err)
-	}
-
-	return result, nil
 }

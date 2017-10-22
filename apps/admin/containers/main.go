@@ -11,6 +11,22 @@ import (
 	"time"
 )
 
+var (
+	client              *http.Client
+	pool                *x509.CertPool
+	token               = ""
+	errItemNotExist     = fmt.Errorf("Item does not exist")
+	errItemAlreadyExist = fmt.Errorf("Item already exists")
+	doFunction          = client.Do
+)
+
+const (
+	root             = "https://kubernetes"
+	selector         = "app=api"
+	defaultTokenPath = "/var/run/secrets/kubernetes.io/serviceaccount/token"
+	defaultCertPath  = "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
+)
+
 func main() {
 	log.Printf("starting whack a pod admin api")
 	var err error

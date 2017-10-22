@@ -2,29 +2,12 @@ package main
 
 import (
 	"bytes"
-	"crypto/x509"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"strconv"
-)
-
-var (
-	client              *http.Client
-	pool                *x509.CertPool
-	token               = ""
-	errItemNotExist     = fmt.Errorf("Item does not exist")
-	errItemAlreadyExist = fmt.Errorf("Item already exists")
-	doFunction          = client.Do
-)
-
-const (
-	root             = "https://kubernetes"
-	selector         = "app=api"
-	defaultTokenPath = "/var/run/secrets/kubernetes.io/serviceaccount/token"
-	defaultCertPath  = "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
 )
 
 func tokenFromDisk(f string) (string, error) {
@@ -85,29 +68,6 @@ func listPods() ([]byte, error) {
 	return b, nil
 }
 
-func listNodes() ([]byte, error) {
-	url := root + "/api/v1/nodes"
-
-	b, _, err := queryK8sAPI(url, "GET", nil)
-	if err != nil {
-		return nil, fmt.Errorf("I can't even with the HTTP: %v", err)
-	}
-
-	return b, nil
-}
-
-func describePod(podname string) ([]byte, error) {
-	url := root + podname
-
-	b, _, err := queryK8sAPI(url, "GET", nil)
-	if err != nil {
-		return nil, fmt.Errorf("I can't even with the HTTP: %v", err)
-	}
-
-	return b, nil
-
-}
-
 func deletePod(podname string) ([]byte, error) {
 	url := root + podname
 
@@ -123,7 +83,6 @@ func deletePod(podname string) ([]byte, error) {
 	return b, nil
 
 }
-
 func deletePods(node string) ([]byte, error) {
 	url := root + "/api/v1/namespaces/default/pods" + "?labelSelector=" + selector
 	if len(node) > 0 {
@@ -142,6 +101,29 @@ func deletePods(node string) ([]byte, error) {
 
 	return b, nil
 
+}
+
+func describePod(podname string) ([]byte, error) {
+	url := root + podname
+
+	b, _, err := queryK8sAPI(url, "GET", nil)
+	if err != nil {
+		return nil, fmt.Errorf("I can't even with the HTTP: %v", err)
+	}
+
+	return b, nil
+
+}
+
+func listNodes() ([]byte, error) {
+	url := root + "/api/v1/nodes"
+
+	b, _, err := queryK8sAPI(url, "GET", nil)
+	if err != nil {
+		return nil, fmt.Errorf("I can't even with the HTTP: %v", err)
+	}
+
+	return b, nil
 }
 
 func toggleNode(nodename string, inactive bool) ([]byte, error) {
@@ -170,23 +152,6 @@ func deleteReplicaSet() ([]byte, error) {
 
 	if status == http.StatusNotFound {
 
-		return nil, errItemNotExist
-	}
-
-	return b, nil
-
-}
-
-func deleteDeployment(depname string) ([]byte, error) {
-	selflink := "/apis/extensions/v1beta1/namespaces/default/deployments/" + depname
-	url := root + selflink
-
-	b, status, err := queryK8sAPI(url, "DELETE", nil)
-	if err != nil {
-		return nil, fmt.Errorf("I can't even with the HTTP: %v", err)
-	}
-
-	if status == http.StatusNotFound {
 		return nil, errItemNotExist
 	}
 
@@ -288,6 +253,23 @@ func createDeployment() ([]byte, error) {
 
 	if status == http.StatusConflict {
 		return nil, errItemAlreadyExist
+	}
+
+	return b, nil
+
+}
+
+func deleteDeployment(depname string) ([]byte, error) {
+	selflink := "/apis/extensions/v1beta1/namespaces/default/deployments/" + depname
+	url := root + selflink
+
+	b, status, err := queryK8sAPI(url, "DELETE", nil)
+	if err != nil {
+		return nil, fmt.Errorf("I can't even with the HTTP: %v", err)
+	}
+
+	if status == http.StatusNotFound {
+		return nil, errItemNotExist
 	}
 
 	return b, nil

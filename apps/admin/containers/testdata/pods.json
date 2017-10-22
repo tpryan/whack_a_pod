@@ -1,0 +1,1594 @@
+{
+    "apiVersion": "v1",
+    "items": [
+        {
+            "apiVersion": "v1",
+            "kind": "Pod",
+            "metadata": {
+                "annotations": {
+                    "kubernetes.io/created-by": "{\"kind\":\"SerializedReference\",\"apiVersion\":\"v1\",\"reference\":{\"kind\":\"ReplicaSet\",\"namespace\":\"default\",\"name\":\"api-deployment-1435701907\",\"uid\":\"c61cf2f0-b5ff-11e7-ab94-42010af0005b\",\"apiVersion\":\"extensions\",\"resourceVersion\":\"39104044\"}}\n",
+                    "kubernetes.io/limit-ranger": "LimitRanger plugin set: cpu request for container api-deployment"
+                },
+                "creationTimestamp": "2017-10-21T01:33:00Z",
+                "generateName": "api-deployment-1435701907-",
+                "labels": {
+                    "app": "api",
+                    "pod-template-hash": "1435701907"
+                },
+                "name": "api-deployment-1435701907-00cps",
+                "namespace": "default",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "extensions/v1beta1",
+                        "controller": true,
+                        "kind": "ReplicaSet",
+                        "name": "api-deployment-1435701907",
+                        "uid": "c61cf2f0-b5ff-11e7-ab94-42010af0005b"
+                    }
+                ],
+                "resourceVersion": "39104113",
+                "selfLink": "/api/v1/namespaces/default/pods/api-deployment-1435701907-00cps",
+                "uid": "c620034f-b5ff-11e7-ab94-42010af0005b"
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "image": "gcr.io/carnivaldemos/api",
+                        "imagePullPolicy": "Always",
+                        "name": "api-deployment",
+                        "ports": [
+                            {
+                                "containerPort": 8080,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "resources": {
+                            "requests": {
+                                "cpu": "100m"
+                            }
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "default-token-4q4nh",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "nodeName": "gke-whack-a-pod-default-pool-8deaa3a5-b9p7",
+                "restartPolicy": "Always",
+                "schedulerName": "default-scheduler",
+                "securityContext": {},
+                "serviceAccount": "default",
+                "serviceAccountName": "default",
+                "terminationGracePeriodSeconds": 30,
+                "tolerations": [
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.alpha.kubernetes.io/notReady",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    },
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.alpha.kubernetes.io/unreachable",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    }
+                ],
+                "volumes": [
+                    {
+                        "name": "default-token-4q4nh",
+                        "secret": {
+                            "defaultMode": 420,
+                            "secretName": "default-token-4q4nh"
+                        }
+                    }
+                ]
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2017-10-21T01:33:00Z",
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2017-10-21T01:33:02Z",
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2017-10-21T01:33:00Z",
+                        "status": "True",
+                        "type": "PodScheduled"
+                    }
+                ],
+                "containerStatuses": [
+                    {
+                        "containerID": "docker://2690afb674d99b07032722dd93f0224be97aae4f08a17b59f085afdd19e16c2b",
+                        "image": "gcr.io/carnivaldemos/api",
+                        "imageID": "docker://sha256:f1740ddf1ad96242af9c986c2b15cf189307b181d77346c426978caf425f2603",
+                        "lastState": {},
+                        "name": "api-deployment",
+                        "ready": true,
+                        "restartCount": 0,
+                        "state": {
+                            "running": {
+                                "startedAt": "2017-10-21T01:33:01Z"
+                            }
+                        }
+                    }
+                ],
+                "hostIP": "10.128.0.2",
+                "phase": "Running",
+                "podIP": "10.120.0.164",
+                "startTime": "2017-10-21T01:33:00Z"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Pod",
+            "metadata": {
+                "annotations": {
+                    "kubernetes.io/created-by": "{\"kind\":\"SerializedReference\",\"apiVersion\":\"v1\",\"reference\":{\"kind\":\"ReplicaSet\",\"namespace\":\"default\",\"name\":\"api-deployment-1435701907\",\"uid\":\"c61cf2f0-b5ff-11e7-ab94-42010af0005b\",\"apiVersion\":\"extensions\",\"resourceVersion\":\"39104044\"}}\n",
+                    "kubernetes.io/limit-ranger": "LimitRanger plugin set: cpu request for container api-deployment"
+                },
+                "creationTimestamp": "2017-10-21T01:33:00Z",
+                "generateName": "api-deployment-1435701907-",
+                "labels": {
+                    "app": "api",
+                    "pod-template-hash": "1435701907"
+                },
+                "name": "api-deployment-1435701907-83snq",
+                "namespace": "default",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "extensions/v1beta1",
+                        "controller": true,
+                        "kind": "ReplicaSet",
+                        "name": "api-deployment-1435701907",
+                        "uid": "c61cf2f0-b5ff-11e7-ab94-42010af0005b"
+                    }
+                ],
+                "resourceVersion": "39104135",
+                "selfLink": "/api/v1/namespaces/default/pods/api-deployment-1435701907-83snq",
+                "uid": "c6201c5d-b5ff-11e7-ab94-42010af0005b"
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "image": "gcr.io/carnivaldemos/api",
+                        "imagePullPolicy": "Always",
+                        "name": "api-deployment",
+                        "ports": [
+                            {
+                                "containerPort": 8080,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "resources": {
+                            "requests": {
+                                "cpu": "100m"
+                            }
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "default-token-4q4nh",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "nodeName": "gke-whack-a-pod-default-pool-8deaa3a5-znz4",
+                "restartPolicy": "Always",
+                "schedulerName": "default-scheduler",
+                "securityContext": {},
+                "serviceAccount": "default",
+                "serviceAccountName": "default",
+                "terminationGracePeriodSeconds": 30,
+                "tolerations": [
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.alpha.kubernetes.io/notReady",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    },
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.alpha.kubernetes.io/unreachable",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    }
+                ],
+                "volumes": [
+                    {
+                        "name": "default-token-4q4nh",
+                        "secret": {
+                            "defaultMode": 420,
+                            "secretName": "default-token-4q4nh"
+                        }
+                    }
+                ]
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2017-10-21T01:33:00Z",
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2017-10-21T01:33:02Z",
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2017-10-21T01:33:00Z",
+                        "status": "True",
+                        "type": "PodScheduled"
+                    }
+                ],
+                "containerStatuses": [
+                    {
+                        "containerID": "docker://aa9c417d904c0204cab5161e66e7df6ec00f1cf613b242441af1094bf51ab224",
+                        "image": "gcr.io/carnivaldemos/api",
+                        "imageID": "docker://sha256:f1740ddf1ad96242af9c986c2b15cf189307b181d77346c426978caf425f2603",
+                        "lastState": {},
+                        "name": "api-deployment",
+                        "ready": true,
+                        "restartCount": 0,
+                        "state": {
+                            "running": {
+                                "startedAt": "2017-10-21T01:33:01Z"
+                            }
+                        }
+                    }
+                ],
+                "hostIP": "10.128.0.3",
+                "phase": "Running",
+                "podIP": "10.120.1.243",
+                "startTime": "2017-10-21T01:33:00Z"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Pod",
+            "metadata": {
+                "annotations": {
+                    "kubernetes.io/created-by": "{\"kind\":\"SerializedReference\",\"apiVersion\":\"v1\",\"reference\":{\"kind\":\"ReplicaSet\",\"namespace\":\"default\",\"name\":\"api-deployment-1435701907\",\"uid\":\"c61cf2f0-b5ff-11e7-ab94-42010af0005b\",\"apiVersion\":\"extensions\",\"resourceVersion\":\"39104044\"}}\n",
+                    "kubernetes.io/limit-ranger": "LimitRanger plugin set: cpu request for container api-deployment"
+                },
+                "creationTimestamp": "2017-10-21T01:33:00Z",
+                "generateName": "api-deployment-1435701907-",
+                "labels": {
+                    "app": "api",
+                    "pod-template-hash": "1435701907"
+                },
+                "name": "api-deployment-1435701907-b5fqs",
+                "namespace": "default",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "extensions/v1beta1",
+                        "controller": true,
+                        "kind": "ReplicaSet",
+                        "name": "api-deployment-1435701907",
+                        "uid": "c61cf2f0-b5ff-11e7-ab94-42010af0005b"
+                    }
+                ],
+                "resourceVersion": "39104122",
+                "selfLink": "/api/v1/namespaces/default/pods/api-deployment-1435701907-b5fqs",
+                "uid": "c61fabf7-b5ff-11e7-ab94-42010af0005b"
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "image": "gcr.io/carnivaldemos/api",
+                        "imagePullPolicy": "Always",
+                        "name": "api-deployment",
+                        "ports": [
+                            {
+                                "containerPort": 8080,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "resources": {
+                            "requests": {
+                                "cpu": "100m"
+                            }
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "default-token-4q4nh",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "nodeName": "gke-whack-a-pod-default-pool-8deaa3a5-znz4",
+                "restartPolicy": "Always",
+                "schedulerName": "default-scheduler",
+                "securityContext": {},
+                "serviceAccount": "default",
+                "serviceAccountName": "default",
+                "terminationGracePeriodSeconds": 30,
+                "tolerations": [
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.alpha.kubernetes.io/notReady",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    },
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.alpha.kubernetes.io/unreachable",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    }
+                ],
+                "volumes": [
+                    {
+                        "name": "default-token-4q4nh",
+                        "secret": {
+                            "defaultMode": 420,
+                            "secretName": "default-token-4q4nh"
+                        }
+                    }
+                ]
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2017-10-21T01:33:00Z",
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2017-10-21T01:33:01Z",
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2017-10-21T01:33:00Z",
+                        "status": "True",
+                        "type": "PodScheduled"
+                    }
+                ],
+                "containerStatuses": [
+                    {
+                        "containerID": "docker://275094a51b9ef01e42af06bdec3be15c35b6617b2eb45f1b30d909e2366ecb46",
+                        "image": "gcr.io/carnivaldemos/api",
+                        "imageID": "docker://sha256:f1740ddf1ad96242af9c986c2b15cf189307b181d77346c426978caf425f2603",
+                        "lastState": {},
+                        "name": "api-deployment",
+                        "ready": true,
+                        "restartCount": 0,
+                        "state": {
+                            "running": {
+                                "startedAt": "2017-10-21T01:33:01Z"
+                            }
+                        }
+                    }
+                ],
+                "hostIP": "10.128.0.3",
+                "phase": "Running",
+                "podIP": "10.120.1.242",
+                "startTime": "2017-10-21T01:33:00Z"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Pod",
+            "metadata": {
+                "annotations": {
+                    "kubernetes.io/created-by": "{\"kind\":\"SerializedReference\",\"apiVersion\":\"v1\",\"reference\":{\"kind\":\"ReplicaSet\",\"namespace\":\"default\",\"name\":\"api-deployment-1435701907\",\"uid\":\"c61cf2f0-b5ff-11e7-ab94-42010af0005b\",\"apiVersion\":\"extensions\",\"resourceVersion\":\"39104044\"}}\n",
+                    "kubernetes.io/limit-ranger": "LimitRanger plugin set: cpu request for container api-deployment"
+                },
+                "creationTimestamp": "2017-10-21T01:33:00Z",
+                "generateName": "api-deployment-1435701907-",
+                "labels": {
+                    "app": "api",
+                    "pod-template-hash": "1435701907"
+                },
+                "name": "api-deployment-1435701907-d3hj2",
+                "namespace": "default",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "extensions/v1beta1",
+                        "controller": true,
+                        "kind": "ReplicaSet",
+                        "name": "api-deployment-1435701907",
+                        "uid": "c61cf2f0-b5ff-11e7-ab94-42010af0005b"
+                    }
+                ],
+                "resourceVersion": "39104107",
+                "selfLink": "/api/v1/namespaces/default/pods/api-deployment-1435701907-d3hj2",
+                "uid": "c6202462-b5ff-11e7-ab94-42010af0005b"
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "image": "gcr.io/carnivaldemos/api",
+                        "imagePullPolicy": "Always",
+                        "name": "api-deployment",
+                        "ports": [
+                            {
+                                "containerPort": 8080,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "resources": {
+                            "requests": {
+                                "cpu": "100m"
+                            }
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "default-token-4q4nh",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "nodeName": "gke-whack-a-pod-default-pool-8deaa3a5-b9p7",
+                "restartPolicy": "Always",
+                "schedulerName": "default-scheduler",
+                "securityContext": {},
+                "serviceAccount": "default",
+                "serviceAccountName": "default",
+                "terminationGracePeriodSeconds": 30,
+                "tolerations": [
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.alpha.kubernetes.io/notReady",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    },
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.alpha.kubernetes.io/unreachable",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    }
+                ],
+                "volumes": [
+                    {
+                        "name": "default-token-4q4nh",
+                        "secret": {
+                            "defaultMode": 420,
+                            "secretName": "default-token-4q4nh"
+                        }
+                    }
+                ]
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2017-10-21T01:33:00Z",
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2017-10-21T01:33:02Z",
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2017-10-21T01:33:00Z",
+                        "status": "True",
+                        "type": "PodScheduled"
+                    }
+                ],
+                "containerStatuses": [
+                    {
+                        "containerID": "docker://065596aec0be4978db46b572e9c38866da2f9906a4ab354845959ac89f92b926",
+                        "image": "gcr.io/carnivaldemos/api",
+                        "imageID": "docker://sha256:f1740ddf1ad96242af9c986c2b15cf189307b181d77346c426978caf425f2603",
+                        "lastState": {},
+                        "name": "api-deployment",
+                        "ready": true,
+                        "restartCount": 0,
+                        "state": {
+                            "running": {
+                                "startedAt": "2017-10-21T01:33:01Z"
+                            }
+                        }
+                    }
+                ],
+                "hostIP": "10.128.0.2",
+                "phase": "Running",
+                "podIP": "10.120.0.165",
+                "startTime": "2017-10-21T01:33:00Z"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Pod",
+            "metadata": {
+                "annotations": {
+                    "kubernetes.io/created-by": "{\"kind\":\"SerializedReference\",\"apiVersion\":\"v1\",\"reference\":{\"kind\":\"ReplicaSet\",\"namespace\":\"default\",\"name\":\"api-deployment-1435701907\",\"uid\":\"c61cf2f0-b5ff-11e7-ab94-42010af0005b\",\"apiVersion\":\"extensions\",\"resourceVersion\":\"39104044\"}}\n",
+                    "kubernetes.io/limit-ranger": "LimitRanger plugin set: cpu request for container api-deployment"
+                },
+                "creationTimestamp": "2017-10-21T01:33:00Z",
+                "generateName": "api-deployment-1435701907-",
+                "labels": {
+                    "app": "api",
+                    "pod-template-hash": "1435701907"
+                },
+                "name": "api-deployment-1435701907-hws5s",
+                "namespace": "default",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "extensions/v1beta1",
+                        "controller": true,
+                        "kind": "ReplicaSet",
+                        "name": "api-deployment-1435701907",
+                        "uid": "c61cf2f0-b5ff-11e7-ab94-42010af0005b"
+                    }
+                ],
+                "resourceVersion": "39104091",
+                "selfLink": "/api/v1/namespaces/default/pods/api-deployment-1435701907-hws5s",
+                "uid": "c61f934a-b5ff-11e7-ab94-42010af0005b"
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "image": "gcr.io/carnivaldemos/api",
+                        "imagePullPolicy": "Always",
+                        "name": "api-deployment",
+                        "ports": [
+                            {
+                                "containerPort": 8080,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "resources": {
+                            "requests": {
+                                "cpu": "100m"
+                            }
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "default-token-4q4nh",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "nodeName": "gke-whack-a-pod-default-pool-8deaa3a5-b9p7",
+                "restartPolicy": "Always",
+                "schedulerName": "default-scheduler",
+                "securityContext": {},
+                "serviceAccount": "default",
+                "serviceAccountName": "default",
+                "terminationGracePeriodSeconds": 30,
+                "tolerations": [
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.alpha.kubernetes.io/notReady",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    },
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.alpha.kubernetes.io/unreachable",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    }
+                ],
+                "volumes": [
+                    {
+                        "name": "default-token-4q4nh",
+                        "secret": {
+                            "defaultMode": 420,
+                            "secretName": "default-token-4q4nh"
+                        }
+                    }
+                ]
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2017-10-21T01:33:00Z",
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2017-10-21T01:33:02Z",
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2017-10-21T01:33:00Z",
+                        "status": "True",
+                        "type": "PodScheduled"
+                    }
+                ],
+                "containerStatuses": [
+                    {
+                        "containerID": "docker://60e9f02ee71fef4ca01379e698985c30115a94ef4b0be149deb58259d432d154",
+                        "image": "gcr.io/carnivaldemos/api",
+                        "imageID": "docker://sha256:f1740ddf1ad96242af9c986c2b15cf189307b181d77346c426978caf425f2603",
+                        "lastState": {},
+                        "name": "api-deployment",
+                        "ready": true,
+                        "restartCount": 0,
+                        "state": {
+                            "running": {
+                                "startedAt": "2017-10-21T01:33:01Z"
+                            }
+                        }
+                    }
+                ],
+                "hostIP": "10.128.0.2",
+                "phase": "Running",
+                "podIP": "10.120.0.166",
+                "startTime": "2017-10-21T01:33:00Z"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Pod",
+            "metadata": {
+                "annotations": {
+                    "kubernetes.io/created-by": "{\"kind\":\"SerializedReference\",\"apiVersion\":\"v1\",\"reference\":{\"kind\":\"ReplicaSet\",\"namespace\":\"default\",\"name\":\"api-deployment-1435701907\",\"uid\":\"c61cf2f0-b5ff-11e7-ab94-42010af0005b\",\"apiVersion\":\"extensions\",\"resourceVersion\":\"39104044\"}}\n",
+                    "kubernetes.io/limit-ranger": "LimitRanger plugin set: cpu request for container api-deployment"
+                },
+                "creationTimestamp": "2017-10-21T01:33:00Z",
+                "generateName": "api-deployment-1435701907-",
+                "labels": {
+                    "app": "api",
+                    "pod-template-hash": "1435701907"
+                },
+                "name": "api-deployment-1435701907-jmlc1",
+                "namespace": "default",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "extensions/v1beta1",
+                        "controller": true,
+                        "kind": "ReplicaSet",
+                        "name": "api-deployment-1435701907",
+                        "uid": "c61cf2f0-b5ff-11e7-ab94-42010af0005b"
+                    }
+                ],
+                "resourceVersion": "39104117",
+                "selfLink": "/api/v1/namespaces/default/pods/api-deployment-1435701907-jmlc1",
+                "uid": "c61fa451-b5ff-11e7-ab94-42010af0005b"
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "image": "gcr.io/carnivaldemos/api",
+                        "imagePullPolicy": "Always",
+                        "name": "api-deployment",
+                        "ports": [
+                            {
+                                "containerPort": 8080,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "resources": {
+                            "requests": {
+                                "cpu": "100m"
+                            }
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "default-token-4q4nh",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "nodeName": "gke-whack-a-pod-default-pool-8deaa3a5-znz4",
+                "restartPolicy": "Always",
+                "schedulerName": "default-scheduler",
+                "securityContext": {},
+                "serviceAccount": "default",
+                "serviceAccountName": "default",
+                "terminationGracePeriodSeconds": 30,
+                "tolerations": [
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.alpha.kubernetes.io/notReady",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    },
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.alpha.kubernetes.io/unreachable",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    }
+                ],
+                "volumes": [
+                    {
+                        "name": "default-token-4q4nh",
+                        "secret": {
+                            "defaultMode": 420,
+                            "secretName": "default-token-4q4nh"
+                        }
+                    }
+                ]
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2017-10-21T01:33:00Z",
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2017-10-21T01:33:01Z",
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2017-10-21T01:33:00Z",
+                        "status": "True",
+                        "type": "PodScheduled"
+                    }
+                ],
+                "containerStatuses": [
+                    {
+                        "containerID": "docker://5287f6e54848c548b36a5ebf9f85ea222bb08c3c61fc9e132b58c9a9afd47825",
+                        "image": "gcr.io/carnivaldemos/api",
+                        "imageID": "docker://sha256:f1740ddf1ad96242af9c986c2b15cf189307b181d77346c426978caf425f2603",
+                        "lastState": {},
+                        "name": "api-deployment",
+                        "ready": true,
+                        "restartCount": 0,
+                        "state": {
+                            "running": {
+                                "startedAt": "2017-10-21T01:33:01Z"
+                            }
+                        }
+                    }
+                ],
+                "hostIP": "10.128.0.3",
+                "phase": "Running",
+                "podIP": "10.120.1.241",
+                "startTime": "2017-10-21T01:33:00Z"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Pod",
+            "metadata": {
+                "annotations": {
+                    "kubernetes.io/created-by": "{\"kind\":\"SerializedReference\",\"apiVersion\":\"v1\",\"reference\":{\"kind\":\"ReplicaSet\",\"namespace\":\"default\",\"name\":\"api-deployment-1435701907\",\"uid\":\"c61cf2f0-b5ff-11e7-ab94-42010af0005b\",\"apiVersion\":\"extensions\",\"resourceVersion\":\"39104044\"}}\n",
+                    "kubernetes.io/limit-ranger": "LimitRanger plugin set: cpu request for container api-deployment"
+                },
+                "creationTimestamp": "2017-10-21T01:33:00Z",
+                "generateName": "api-deployment-1435701907-",
+                "labels": {
+                    "app": "api",
+                    "pod-template-hash": "1435701907"
+                },
+                "name": "api-deployment-1435701907-jnxmk",
+                "namespace": "default",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "extensions/v1beta1",
+                        "controller": true,
+                        "kind": "ReplicaSet",
+                        "name": "api-deployment-1435701907",
+                        "uid": "c61cf2f0-b5ff-11e7-ab94-42010af0005b"
+                    }
+                ],
+                "resourceVersion": "39104140",
+                "selfLink": "/api/v1/namespaces/default/pods/api-deployment-1435701907-jnxmk",
+                "uid": "c61f9cc8-b5ff-11e7-ab94-42010af0005b"
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "image": "gcr.io/carnivaldemos/api",
+                        "imagePullPolicy": "Always",
+                        "name": "api-deployment",
+                        "ports": [
+                            {
+                                "containerPort": 8080,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "resources": {
+                            "requests": {
+                                "cpu": "100m"
+                            }
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "default-token-4q4nh",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "nodeName": "gke-whack-a-pod-default-pool-8deaa3a5-znz4",
+                "restartPolicy": "Always",
+                "schedulerName": "default-scheduler",
+                "securityContext": {},
+                "serviceAccount": "default",
+                "serviceAccountName": "default",
+                "terminationGracePeriodSeconds": 30,
+                "tolerations": [
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.alpha.kubernetes.io/notReady",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    },
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.alpha.kubernetes.io/unreachable",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    }
+                ],
+                "volumes": [
+                    {
+                        "name": "default-token-4q4nh",
+                        "secret": {
+                            "defaultMode": 420,
+                            "secretName": "default-token-4q4nh"
+                        }
+                    }
+                ]
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2017-10-21T01:33:00Z",
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2017-10-21T01:33:03Z",
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2017-10-21T01:33:00Z",
+                        "status": "True",
+                        "type": "PodScheduled"
+                    }
+                ],
+                "containerStatuses": [
+                    {
+                        "containerID": "docker://956024e102060f55cddbcc040a9b5202d0f5790b56996279afe117d5d4e7030f",
+                        "image": "gcr.io/carnivaldemos/api",
+                        "imageID": "docker://sha256:f1740ddf1ad96242af9c986c2b15cf189307b181d77346c426978caf425f2603",
+                        "lastState": {},
+                        "name": "api-deployment",
+                        "ready": true,
+                        "restartCount": 0,
+                        "state": {
+                            "running": {
+                                "startedAt": "2017-10-21T01:33:02Z"
+                            }
+                        }
+                    }
+                ],
+                "hostIP": "10.128.0.3",
+                "phase": "Running",
+                "podIP": "10.120.1.247",
+                "startTime": "2017-10-21T01:33:00Z"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Pod",
+            "metadata": {
+                "annotations": {
+                    "kubernetes.io/created-by": "{\"kind\":\"SerializedReference\",\"apiVersion\":\"v1\",\"reference\":{\"kind\":\"ReplicaSet\",\"namespace\":\"default\",\"name\":\"api-deployment-1435701907\",\"uid\":\"c61cf2f0-b5ff-11e7-ab94-42010af0005b\",\"apiVersion\":\"extensions\",\"resourceVersion\":\"39104044\"}}\n",
+                    "kubernetes.io/limit-ranger": "LimitRanger plugin set: cpu request for container api-deployment"
+                },
+                "creationTimestamp": "2017-10-21T01:33:00Z",
+                "generateName": "api-deployment-1435701907-",
+                "labels": {
+                    "app": "api",
+                    "pod-template-hash": "1435701907"
+                },
+                "name": "api-deployment-1435701907-knrq1",
+                "namespace": "default",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "extensions/v1beta1",
+                        "controller": true,
+                        "kind": "ReplicaSet",
+                        "name": "api-deployment-1435701907",
+                        "uid": "c61cf2f0-b5ff-11e7-ab94-42010af0005b"
+                    }
+                ],
+                "resourceVersion": "39104095",
+                "selfLink": "/api/v1/namespaces/default/pods/api-deployment-1435701907-knrq1",
+                "uid": "c61fb3a9-b5ff-11e7-ab94-42010af0005b"
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "image": "gcr.io/carnivaldemos/api",
+                        "imagePullPolicy": "Always",
+                        "name": "api-deployment",
+                        "ports": [
+                            {
+                                "containerPort": 8080,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "resources": {
+                            "requests": {
+                                "cpu": "100m"
+                            }
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "default-token-4q4nh",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "nodeName": "gke-whack-a-pod-default-pool-8deaa3a5-b9p7",
+                "restartPolicy": "Always",
+                "schedulerName": "default-scheduler",
+                "securityContext": {},
+                "serviceAccount": "default",
+                "serviceAccountName": "default",
+                "terminationGracePeriodSeconds": 30,
+                "tolerations": [
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.alpha.kubernetes.io/notReady",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    },
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.alpha.kubernetes.io/unreachable",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    }
+                ],
+                "volumes": [
+                    {
+                        "name": "default-token-4q4nh",
+                        "secret": {
+                            "defaultMode": 420,
+                            "secretName": "default-token-4q4nh"
+                        }
+                    }
+                ]
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2017-10-21T01:33:00Z",
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2017-10-21T01:33:02Z",
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2017-10-21T01:33:00Z",
+                        "status": "True",
+                        "type": "PodScheduled"
+                    }
+                ],
+                "containerStatuses": [
+                    {
+                        "containerID": "docker://fa8d506ddd95b86475792f981aa1c82a80edbb065601c411726087b059927126",
+                        "image": "gcr.io/carnivaldemos/api",
+                        "imageID": "docker://sha256:f1740ddf1ad96242af9c986c2b15cf189307b181d77346c426978caf425f2603",
+                        "lastState": {},
+                        "name": "api-deployment",
+                        "ready": true,
+                        "restartCount": 0,
+                        "state": {
+                            "running": {
+                                "startedAt": "2017-10-21T01:33:01Z"
+                            }
+                        }
+                    }
+                ],
+                "hostIP": "10.128.0.2",
+                "phase": "Running",
+                "podIP": "10.120.0.163",
+                "startTime": "2017-10-21T01:33:00Z"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Pod",
+            "metadata": {
+                "annotations": {
+                    "kubernetes.io/created-by": "{\"kind\":\"SerializedReference\",\"apiVersion\":\"v1\",\"reference\":{\"kind\":\"ReplicaSet\",\"namespace\":\"default\",\"name\":\"api-deployment-1435701907\",\"uid\":\"c61cf2f0-b5ff-11e7-ab94-42010af0005b\",\"apiVersion\":\"extensions\",\"resourceVersion\":\"39104044\"}}\n",
+                    "kubernetes.io/limit-ranger": "LimitRanger plugin set: cpu request for container api-deployment"
+                },
+                "creationTimestamp": "2017-10-21T01:33:00Z",
+                "generateName": "api-deployment-1435701907-",
+                "labels": {
+                    "app": "api",
+                    "pod-template-hash": "1435701907"
+                },
+                "name": "api-deployment-1435701907-r3tg1",
+                "namespace": "default",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "extensions/v1beta1",
+                        "controller": true,
+                        "kind": "ReplicaSet",
+                        "name": "api-deployment-1435701907",
+                        "uid": "c61cf2f0-b5ff-11e7-ab94-42010af0005b"
+                    }
+                ],
+                "resourceVersion": "39104102",
+                "selfLink": "/api/v1/namespaces/default/pods/api-deployment-1435701907-r3tg1",
+                "uid": "c62047e8-b5ff-11e7-ab94-42010af0005b"
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "image": "gcr.io/carnivaldemos/api",
+                        "imagePullPolicy": "Always",
+                        "name": "api-deployment",
+                        "ports": [
+                            {
+                                "containerPort": 8080,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "resources": {
+                            "requests": {
+                                "cpu": "100m"
+                            }
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "default-token-4q4nh",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "nodeName": "gke-whack-a-pod-default-pool-8deaa3a5-b9p7",
+                "restartPolicy": "Always",
+                "schedulerName": "default-scheduler",
+                "securityContext": {},
+                "serviceAccount": "default",
+                "serviceAccountName": "default",
+                "terminationGracePeriodSeconds": 30,
+                "tolerations": [
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.alpha.kubernetes.io/notReady",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    },
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.alpha.kubernetes.io/unreachable",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    }
+                ],
+                "volumes": [
+                    {
+                        "name": "default-token-4q4nh",
+                        "secret": {
+                            "defaultMode": 420,
+                            "secretName": "default-token-4q4nh"
+                        }
+                    }
+                ]
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2017-10-21T01:33:00Z",
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2017-10-21T01:33:02Z",
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2017-10-21T01:33:00Z",
+                        "status": "True",
+                        "type": "PodScheduled"
+                    }
+                ],
+                "containerStatuses": [
+                    {
+                        "containerID": "docker://0eefa42c39aeba5d6bdbd1ada5085c4b3f874e3cc19aea5af94493e660cb1849",
+                        "image": "gcr.io/carnivaldemos/api",
+                        "imageID": "docker://sha256:f1740ddf1ad96242af9c986c2b15cf189307b181d77346c426978caf425f2603",
+                        "lastState": {},
+                        "name": "api-deployment",
+                        "ready": true,
+                        "restartCount": 0,
+                        "state": {
+                            "running": {
+                                "startedAt": "2017-10-21T01:33:02Z"
+                            }
+                        }
+                    }
+                ],
+                "hostIP": "10.128.0.2",
+                "phase": "Running",
+                "podIP": "10.120.0.167",
+                "startTime": "2017-10-21T01:33:00Z"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Pod",
+            "metadata": {
+                "annotations": {
+                    "kubernetes.io/created-by": "{\"kind\":\"SerializedReference\",\"apiVersion\":\"v1\",\"reference\":{\"kind\":\"ReplicaSet\",\"namespace\":\"default\",\"name\":\"api-deployment-1435701907\",\"uid\":\"c61cf2f0-b5ff-11e7-ab94-42010af0005b\",\"apiVersion\":\"extensions\",\"resourceVersion\":\"39104044\"}}\n",
+                    "kubernetes.io/limit-ranger": "LimitRanger plugin set: cpu request for container api-deployment"
+                },
+                "creationTimestamp": "2017-10-21T01:33:00Z",
+                "generateName": "api-deployment-1435701907-",
+                "labels": {
+                    "app": "api",
+                    "pod-template-hash": "1435701907"
+                },
+                "name": "api-deployment-1435701907-r9mrl",
+                "namespace": "default",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "extensions/v1beta1",
+                        "controller": true,
+                        "kind": "ReplicaSet",
+                        "name": "api-deployment-1435701907",
+                        "uid": "c61cf2f0-b5ff-11e7-ab94-42010af0005b"
+                    }
+                ],
+                "resourceVersion": "39104131",
+                "selfLink": "/api/v1/namespaces/default/pods/api-deployment-1435701907-r9mrl",
+                "uid": "c6203ef6-b5ff-11e7-ab94-42010af0005b"
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "image": "gcr.io/carnivaldemos/api",
+                        "imagePullPolicy": "Always",
+                        "name": "api-deployment",
+                        "ports": [
+                            {
+                                "containerPort": 8080,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "resources": {
+                            "requests": {
+                                "cpu": "100m"
+                            }
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "default-token-4q4nh",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "nodeName": "gke-whack-a-pod-default-pool-8deaa3a5-znz4",
+                "restartPolicy": "Always",
+                "schedulerName": "default-scheduler",
+                "securityContext": {},
+                "serviceAccount": "default",
+                "serviceAccountName": "default",
+                "terminationGracePeriodSeconds": 30,
+                "tolerations": [
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.alpha.kubernetes.io/notReady",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    },
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.alpha.kubernetes.io/unreachable",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    }
+                ],
+                "volumes": [
+                    {
+                        "name": "default-token-4q4nh",
+                        "secret": {
+                            "defaultMode": 420,
+                            "secretName": "default-token-4q4nh"
+                        }
+                    }
+                ]
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2017-10-21T01:33:00Z",
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2017-10-21T01:33:03Z",
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2017-10-21T01:33:00Z",
+                        "status": "True",
+                        "type": "PodScheduled"
+                    }
+                ],
+                "containerStatuses": [
+                    {
+                        "containerID": "docker://da615b5c8d550530c4b8b53bdbf99013edbd6840ca3b0303bbefa47a252fbc07",
+                        "image": "gcr.io/carnivaldemos/api",
+                        "imageID": "docker://sha256:f1740ddf1ad96242af9c986c2b15cf189307b181d77346c426978caf425f2603",
+                        "lastState": {},
+                        "name": "api-deployment",
+                        "ready": true,
+                        "restartCount": 0,
+                        "state": {
+                            "running": {
+                                "startedAt": "2017-10-21T01:33:02Z"
+                            }
+                        }
+                    }
+                ],
+                "hostIP": "10.128.0.3",
+                "phase": "Running",
+                "podIP": "10.120.1.244",
+                "startTime": "2017-10-21T01:33:00Z"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Pod",
+            "metadata": {
+                "annotations": {
+                    "kubernetes.io/created-by": "{\"kind\":\"SerializedReference\",\"apiVersion\":\"v1\",\"reference\":{\"kind\":\"ReplicaSet\",\"namespace\":\"default\",\"name\":\"api-deployment-1435701907\",\"uid\":\"c61cf2f0-b5ff-11e7-ab94-42010af0005b\",\"apiVersion\":\"extensions\",\"resourceVersion\":\"39104044\"}}\n",
+                    "kubernetes.io/limit-ranger": "LimitRanger plugin set: cpu request for container api-deployment"
+                },
+                "creationTimestamp": "2017-10-21T01:33:00Z",
+                "generateName": "api-deployment-1435701907-",
+                "labels": {
+                    "app": "api",
+                    "pod-template-hash": "1435701907"
+                },
+                "name": "api-deployment-1435701907-v4jn9",
+                "namespace": "default",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "extensions/v1beta1",
+                        "controller": true,
+                        "kind": "ReplicaSet",
+                        "name": "api-deployment-1435701907",
+                        "uid": "c61cf2f0-b5ff-11e7-ab94-42010af0005b"
+                    }
+                ],
+                "resourceVersion": "39104126",
+                "selfLink": "/api/v1/namespaces/default/pods/api-deployment-1435701907-v4jn9",
+                "uid": "c61ffaef-b5ff-11e7-ab94-42010af0005b"
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "image": "gcr.io/carnivaldemos/api",
+                        "imagePullPolicy": "Always",
+                        "name": "api-deployment",
+                        "ports": [
+                            {
+                                "containerPort": 8080,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "resources": {
+                            "requests": {
+                                "cpu": "100m"
+                            }
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "default-token-4q4nh",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "nodeName": "gke-whack-a-pod-default-pool-8deaa3a5-znz4",
+                "restartPolicy": "Always",
+                "schedulerName": "default-scheduler",
+                "securityContext": {},
+                "serviceAccount": "default",
+                "serviceAccountName": "default",
+                "terminationGracePeriodSeconds": 30,
+                "tolerations": [
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.alpha.kubernetes.io/notReady",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    },
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.alpha.kubernetes.io/unreachable",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    }
+                ],
+                "volumes": [
+                    {
+                        "name": "default-token-4q4nh",
+                        "secret": {
+                            "defaultMode": 420,
+                            "secretName": "default-token-4q4nh"
+                        }
+                    }
+                ]
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2017-10-21T01:33:00Z",
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2017-10-21T01:33:03Z",
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2017-10-21T01:33:00Z",
+                        "status": "True",
+                        "type": "PodScheduled"
+                    }
+                ],
+                "containerStatuses": [
+                    {
+                        "containerID": "docker://f68bef652c377f6973a5aafce5eb093ed482abfa2aa9c374185d3355bb2b476a",
+                        "image": "gcr.io/carnivaldemos/api",
+                        "imageID": "docker://sha256:f1740ddf1ad96242af9c986c2b15cf189307b181d77346c426978caf425f2603",
+                        "lastState": {},
+                        "name": "api-deployment",
+                        "ready": true,
+                        "restartCount": 0,
+                        "state": {
+                            "running": {
+                                "startedAt": "2017-10-21T01:33:02Z"
+                            }
+                        }
+                    }
+                ],
+                "hostIP": "10.128.0.3",
+                "phase": "Running",
+                "podIP": "10.120.1.245",
+                "startTime": "2017-10-21T01:33:00Z"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Pod",
+            "metadata": {
+                "annotations": {
+                    "kubernetes.io/created-by": "{\"kind\":\"SerializedReference\",\"apiVersion\":\"v1\",\"reference\":{\"kind\":\"ReplicaSet\",\"namespace\":\"default\",\"name\":\"api-deployment-1435701907\",\"uid\":\"c61cf2f0-b5ff-11e7-ab94-42010af0005b\",\"apiVersion\":\"extensions\",\"resourceVersion\":\"39104044\"}}\n",
+                    "kubernetes.io/limit-ranger": "LimitRanger plugin set: cpu request for container api-deployment"
+                },
+                "creationTimestamp": "2017-10-21T01:33:00Z",
+                "generateName": "api-deployment-1435701907-",
+                "labels": {
+                    "app": "api",
+                    "pod-template-hash": "1435701907"
+                },
+                "name": "api-deployment-1435701907-xx9lm",
+                "namespace": "default",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "extensions/v1beta1",
+                        "controller": true,
+                        "kind": "ReplicaSet",
+                        "name": "api-deployment-1435701907",
+                        "uid": "c61cf2f0-b5ff-11e7-ab94-42010af0005b"
+                    }
+                ],
+                "resourceVersion": "39104144",
+                "selfLink": "/api/v1/namespaces/default/pods/api-deployment-1435701907-xx9lm",
+                "uid": "c62053e0-b5ff-11e7-ab94-42010af0005b"
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "image": "gcr.io/carnivaldemos/api",
+                        "imagePullPolicy": "Always",
+                        "name": "api-deployment",
+                        "ports": [
+                            {
+                                "containerPort": 8080,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "resources": {
+                            "requests": {
+                                "cpu": "100m"
+                            }
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "default-token-4q4nh",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "nodeName": "gke-whack-a-pod-default-pool-8deaa3a5-znz4",
+                "restartPolicy": "Always",
+                "schedulerName": "default-scheduler",
+                "securityContext": {},
+                "serviceAccount": "default",
+                "serviceAccountName": "default",
+                "terminationGracePeriodSeconds": 30,
+                "tolerations": [
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.alpha.kubernetes.io/notReady",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    },
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.alpha.kubernetes.io/unreachable",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    }
+                ],
+                "volumes": [
+                    {
+                        "name": "default-token-4q4nh",
+                        "secret": {
+                            "defaultMode": 420,
+                            "secretName": "default-token-4q4nh"
+                        }
+                    }
+                ]
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2017-10-21T01:33:00Z",
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2017-10-21T01:33:03Z",
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2017-10-21T01:33:00Z",
+                        "status": "True",
+                        "type": "PodScheduled"
+                    }
+                ],
+                "containerStatuses": [
+                    {
+                        "containerID": "docker://b5889f6279eb4459e5b33f9b43ed9c65e90690265183c532722108ad33ce6624",
+                        "image": "gcr.io/carnivaldemos/api",
+                        "imageID": "docker://sha256:f1740ddf1ad96242af9c986c2b15cf189307b181d77346c426978caf425f2603",
+                        "lastState": {},
+                        "name": "api-deployment",
+                        "ready": true,
+                        "restartCount": 0,
+                        "state": {
+                            "running": {
+                                "startedAt": "2017-10-21T01:33:02Z"
+                            }
+                        }
+                    }
+                ],
+                "hostIP": "10.128.0.3",
+                "phase": "Running",
+                "podIP": "10.120.1.246",
+                "startTime": "2017-10-21T01:33:00Z"
+            }
+        }
+    ],
+    "kind": "List",
+    "metadata": {
+        "resourceVersion": "",
+        "selfLink": ""
+    }
+}

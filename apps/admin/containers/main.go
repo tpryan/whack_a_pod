@@ -16,12 +16,12 @@ func main() {
 	log.Printf("starting whack a pod admin api")
 	var err error
 
-	token, err = tokenFromDisk()
+	token, err = tokenFromDisk(defaultTokenPath)
 	if err != nil {
 		log.Printf("could not get token from file system")
 	}
 
-	certs, err := certsFromDisk()
+	certs, err := certsFromDisk(defaultCertPath)
 	if err != nil {
 		log.Printf("could not get token from file system")
 	}
@@ -107,16 +107,16 @@ func (h apiHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func handlePods(w http.ResponseWriter, r *http.Request) ([]byte, error) {
-	pods, err := listAllPods()
+	b, err := listPods()
 	if err != nil {
 		return nil, fmt.Errorf("could not retrieve k8s api: %v", err)
 	}
 
-	return sendBytes(pods)
+	return b, nil
 }
 
 func handlePodDelete(w http.ResponseWriter, r *http.Request) ([]byte, error) {
-	pod, err := deletePod(r.FormValue("pod"))
+	b, err := deletePod(r.FormValue("pod"))
 	if err != nil {
 		if err == errItemNotExist {
 			return nil, errItemNotExist
@@ -125,36 +125,36 @@ func handlePodDelete(w http.ResponseWriter, r *http.Request) ([]byte, error) {
 		return nil, fmt.Errorf("could not delete k8s object: %v", err)
 	}
 
-	return sendBytes(pod)
+	return b, nil
 }
 
 func handlePodsDelete(w http.ResponseWriter, r *http.Request) ([]byte, error) {
 
-	pods, err := deletePods("", "")
+	b, err := deletePods("")
 	if err != nil && err != errItemNotExist {
 		return nil, fmt.Errorf("could not delete k8s pods: %v", err)
 	}
-	return sendBytes(pods)
+	return b, nil
 }
 
 func handleDeploymentCreate(w http.ResponseWriter, r *http.Request) ([]byte, error) {
 
-	d, err := createDeployment()
+	b, err := createDeployment()
 	if err != nil {
 		return nil, fmt.Errorf("could not create k8s deployment: %v", err)
 	}
 
-	return sendBytes(d)
+	return b, nil
 }
 
 func handleDeploymentDelete(w http.ResponseWriter, r *http.Request) ([]byte, error) {
 
-	_, err := deleteDeployment()
+	_, err := deleteDeployment("api-deployment")
 	if err != nil && err != errItemNotExist {
 		return nil, fmt.Errorf("could not delete k8s deployment: %v", err)
 	}
 
-	_, err = deleteAllReplicaSets()
+	_, err = deleteReplicaSet()
 	if err != nil && err != errItemNotExist {
 		return nil, fmt.Errorf("could not delete k8s replica set: %v", err)
 	}
@@ -163,39 +163,39 @@ func handleDeploymentDelete(w http.ResponseWriter, r *http.Request) ([]byte, err
 }
 
 func handleNodes(w http.ResponseWriter, r *http.Request) ([]byte, error) {
-	nodes, err := listAllNodes()
+	b, err := listNodes()
 	if err != nil {
 		return nil, fmt.Errorf("could not get list of k8s nodes: %v", err)
 	}
 
-	return sendBytes(nodes)
+	return b, nil
 }
 
 func handleNodeDrain(w http.ResponseWriter, r *http.Request) ([]byte, error) {
 	nodename := r.FormValue("node")
 
-	node, err := toggleNode(nodename, true)
+	b, err := toggleNode(nodename, true)
 	if err != nil && err != errItemNotExist {
 		return nil, fmt.Errorf("could not retrieve k8s node info: %v", err)
 	}
 
-	_, err = deletePods("", nodename)
+	_, err = deletePods(nodename)
 	if err != nil {
 		return nil, fmt.Errorf("could not remove all pods on node: %v", err)
 	}
 
-	return sendBytes(node)
+	return b, nil
 }
 
 func handleNodeUncordon(w http.ResponseWriter, r *http.Request) ([]byte, error) {
 	nodename := r.FormValue("node")
 
-	node, err := toggleNode(nodename, false)
+	b, err := toggleNode(nodename, false)
 	if err != nil && err != errItemNotExist {
 		return nil, fmt.Errorf("could not retrieve k8s node info: %v", err)
 	}
 
-	return sendBytes(node)
+	return b, nil
 }
 
 func sendJSON(w http.ResponseWriter, content string, status int) {

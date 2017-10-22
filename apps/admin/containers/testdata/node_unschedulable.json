@@ -1,0 +1,471 @@
+
+{
+    "apiVersion": "v1",
+    "kind": "Node",
+    "metadata": {
+        "annotations": {
+            "node.alpha.kubernetes.io/ttl": "0",
+            "volumes.kubernetes.io/controller-managed-attach-detach": "true"
+        },
+        "creationTimestamp": "2017-03-20T17:00:56Z",
+        "labels": {
+            "beta.kubernetes.io/arch": "amd64",
+            "beta.kubernetes.io/instance-type": "n1-standard-4",
+            "beta.kubernetes.io/os": "linux",
+            "cloud.google.com/gke-nodepool": "default-pool",
+            "failure-domain.beta.kubernetes.io/region": "us-central1",
+            "failure-domain.beta.kubernetes.io/zone": "us-central1-c",
+            "kubernetes.io/hostname": "gke-whack-a-pod-default-pool-8deaa3a5-b9p7"
+        },
+        "name": "gke-whack-a-pod-default-pool-8deaa3a5-b9p7",
+        "namespace": "",
+        "resourceVersion": "39104372",
+        "selfLink": "/api/v1/nodesgke-whack-a-pod-default-pool-8deaa3a5-b9p7",
+        "uid": "c8b956be-0d8e-11e7-b473-42010af000cf"
+    },
+    "spec": {
+        "externalID": "6540334367623722115",
+        "podCIDR": "10.120.0.0/24",
+        "providerID": "gce://carnivaldemos/us-central1-c/gke-whack-a-pod-default-pool-8deaa3a5-b9p7",
+        "unschedulable": true
+    },
+    "status": {
+        "addresses": [
+            {
+                "address": "10.128.0.2",
+                "type": "InternalIP"
+            },
+            {
+                "address": "35.188.8.76",
+                "type": "ExternalIP"
+            },
+            {
+                "address": "gke-whack-a-pod-default-pool-8deaa3a5-b9p7",
+                "type": "Hostname"
+            }
+        ],
+        "allocatable": {
+            "alpha.kubernetes.io/nvidia-gpu": "0",
+            "cpu": "4",
+            "memory": "15381708Ki",
+            "pods": "110"
+        },
+        "capacity": {
+            "alpha.kubernetes.io/nvidia-gpu": "0",
+            "cpu": "4",
+            "memory": "15381708Ki",
+            "pods": "110"
+        },
+        "conditions": [
+            {
+                "lastHeartbeatTime": "2017-03-20T17:01:19Z",
+                "lastTransitionTime": "2017-03-20T17:01:19Z",
+                "message": "RouteController created a route",
+                "reason": "RouteCreated",
+                "status": "False",
+                "type": "NetworkUnavailable"
+            },
+            {
+                "lastHeartbeatTime": "2017-10-21T01:36:16Z",
+                "lastTransitionTime": "2017-03-20T17:00:56Z",
+                "message": "kubelet has sufficient disk space available",
+                "reason": "KubeletHasSufficientDisk",
+                "status": "False",
+                "type": "OutOfDisk"
+            },
+            {
+                "lastHeartbeatTime": "2017-10-21T01:36:16Z",
+                "lastTransitionTime": "2017-03-20T17:00:56Z",
+                "message": "kubelet has sufficient memory available",
+                "reason": "KubeletHasSufficientMemory",
+                "status": "False",
+                "type": "MemoryPressure"
+            },
+            {
+                "lastHeartbeatTime": "2017-10-21T01:36:16Z",
+                "lastTransitionTime": "2017-03-20T17:00:56Z",
+                "message": "kubelet has no disk pressure",
+                "reason": "KubeletHasNoDiskPressure",
+                "status": "False",
+                "type": "DiskPressure"
+            },
+            {
+                "lastHeartbeatTime": "2017-10-21T01:36:16Z",
+                "lastTransitionTime": "2017-03-20T17:01:26Z",
+                "message": "kubelet is posting ready status. AppArmor enabled",
+                "reason": "KubeletReady",
+                "status": "True",
+                "type": "Ready"
+            }
+        ],
+        "daemonEndpoints": {
+            "kubeletEndpoint": {
+                "Port": 10250
+            }
+        },
+        "images": [
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471983629
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471983503
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471983302
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471983302
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471983290
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471983275
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471983194
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471979999
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471979987
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471978343
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471978337
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471978322
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471978229
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471978172
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471978151
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471978046
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471977977
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471977950
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471977950
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471977944
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471977944
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471977884
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471977881
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471977863
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471977863
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471977860
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471977848
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471977305
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471977278
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471977269
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471977251
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471977248
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471977248
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471977245
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471977239
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471976675
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471976234
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471976234
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471976126
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471974611
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471974608
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471974605
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471974398
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471973969
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471973726
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471970832
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471970820
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471970812
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471970810
+            },
+            {
+                "names": [
+                    "\u003cnone\u003e@\u003cnone\u003e",
+                    "\u003cnone\u003e:\u003cnone\u003e"
+                ],
+                "sizeBytes": 471970768
+            }
+        ],
+        "nodeInfo": {
+            "architecture": "amd64",
+            "bootID": "020a803c-76eb-4de6-ad2b-4b52af3f529d",
+            "containerRuntimeVersion": "docker://1.11.2",
+            "kernelVersion": "4.4.21+",
+            "kubeProxyVersion": "v1.5.3",
+            "kubeletVersion": "v1.5.3",
+            "machineID": "9ae15998aaa220842be1486ea9751460",
+            "operatingSystem": "linux",
+            "osImage": "Container-Optimized OS from Google",
+            "systemUUID": "9AE15998-AAA2-2084-2BE1-486EA9751460"
+        }
+    }
+}

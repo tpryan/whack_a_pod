@@ -6,13 +6,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"os"
 	"strconv"
-
-	"k8s.io/api/apps/v1beta1"
-	"k8s.io/api/core/v1"
 )
 
 var (
@@ -21,28 +17,28 @@ var (
 	token               = ""
 	errItemNotExist     = fmt.Errorf("Item does not exist")
 	errItemAlreadyExist = fmt.Errorf("Item already exists")
+	doFunction          = client.Do
 )
 
 const (
-	tokenFile = "/var/run/secrets/kubernetes.io/serviceaccount/token"
-	certFile  = "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
-	root      = "https://kubernetes"
-	namespace = "default"
-	selector  = "app=api"
+	root             = "https://kubernetes"
+	selector         = "app=api"
+	defaultTokenPath = "/var/run/secrets/kubernetes.io/serviceaccount/token"
+	defaultCertPath  = "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
 )
 
-func tokenFromDisk() (string, error) {
-	b, err := ioutil.ReadFile(tokenFile)
+func tokenFromDisk(f string) (string, error) {
+	b, err := ioutil.ReadFile(f)
 	if err != nil {
 		return "", fmt.Errorf("could not retrieve kubernetes token from disk: %v", err)
 	}
 	return string(b), nil
 }
 
-func certsFromDisk() ([]byte, error) {
-	b, err := ioutil.ReadFile(certFile)
+func certsFromDisk(f string) ([]byte, error) {
+	b, err := ioutil.ReadFile(f)
 	if err != nil {
-		return nil, fmt.Errorf("could not retrieve kubernetes token from disk: %v", err)
+		return nil, fmt.Errorf("could not retrieve kubernetes certs.ca from disk: %v", err)
 	}
 	return b, nil
 }
@@ -50,8 +46,9 @@ func certsFromDisk() ([]byte, error) {
 func queryK8sAPI(url, method string, data []byte) ([]byte, int, error) {
 	req, err := http.NewRequest(method, url, bytes.NewBuffer(data))
 	if err != nil {
-		return nil, http.StatusInternalServerError, fmt.Errorf("could not create HTTP request: %v", err)
+		return nil, http.StatusInternalServerError, fmt.Errorf("could not create request for HTTP %s %s: %v", method, url, err)
 	}
+	// This is required for k8s api calls.
 	req.Header.Add("Authorization", "Bearer "+token)
 
 	if method == http.MethodPost {
@@ -64,20 +61,20 @@ func queryK8sAPI(url, method string, data []byte) ([]byte, int, error) {
 		req.Header.Set("Content-Length", strconv.Itoa(len(string(data))))
 	}
 
-	resp, err := client.Do(req)
+	resp, err := doFunction(req)
 	if err != nil {
-		return nil, http.StatusInternalServerError, fmt.Errorf("could not execute HTTP request: %v", err)
+		return nil, http.StatusInternalServerError, fmt.Errorf("could not execute HTTP request for HTTP %s %s: %v", method, url, err)
 	}
 	defer resp.Body.Close()
 
 	b, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, http.StatusInternalServerError, fmt.Errorf("could not read HTTP request: %v", err)
+		return nil, http.StatusInternalServerError, fmt.Errorf("could not read HTTP request for HTTP %s %s: %v", method, url, err)
 	}
 	return b, resp.StatusCode, nil
 }
 
-func listAllPods() (*v1.PodList, error) {
+func listPods() ([]byte, error) {
 	url := root + "/api/v1/pods?labelSelector=" + selector
 
 	b, _, err := queryK8sAPI(url, "GET", nil)
@@ -85,15 +82,10 @@ func listAllPods() (*v1.PodList, error) {
 		return nil, fmt.Errorf("I can't even with the HTTP: %v", err)
 	}
 
-	var pods v1.PodList
-	if err := json.Unmarshal(b, &pods); err != nil {
-		return nil, fmt.Errorf("could not convert HTTP request to Pod data structure: %v", err)
-	}
-
-	return &pods, nil
+	return b, nil
 }
 
-func listAllNodes() (*v1.NodeList, error) {
+func listNodes() ([]byte, error) {
 	url := root + "/api/v1/nodes"
 
 	b, _, err := queryK8sAPI(url, "GET", nil)
@@ -101,15 +93,10 @@ func listAllNodes() (*v1.NodeList, error) {
 		return nil, fmt.Errorf("I can't even with the HTTP: %v", err)
 	}
 
-	var node v1.NodeList
-	if err := json.Unmarshal(b, &node); err != nil {
-		return nil, fmt.Errorf("could not convert HTTP request to Pod data structure: %v", err)
-	}
-
-	return &node, nil
+	return b, nil
 }
 
-func pod(podname string) (*v1.Pod, error) {
+func describePod(podname string) ([]byte, error) {
 	url := root + podname
 
 	b, _, err := queryK8sAPI(url, "GET", nil)
@@ -117,16 +104,11 @@ func pod(podname string) (*v1.Pod, error) {
 		return nil, fmt.Errorf("I can't even with the HTTP: %v", err)
 	}
 
-	var pod v1.Pod
-	if err := json.Unmarshal(b, &pod); err != nil {
-		return nil, fmt.Errorf("could not convert HTTP request to Pod data structure: %v", err)
-	}
-
-	return &pod, nil
+	return b, nil
 
 }
 
-func deletePod(podname string) (*v1.Pod, error) {
+func deletePod(podname string) ([]byte, error) {
 	url := root + podname
 
 	b, status, err := queryK8sAPI(url, "DELETE", nil)
@@ -138,22 +120,12 @@ func deletePod(podname string) (*v1.Pod, error) {
 		return nil, errItemNotExist
 	}
 
-	var pod v1.Pod
-	if err := json.Unmarshal(b, &pod); err != nil {
-		return nil, fmt.Errorf("could not convert HTTP request to Pod data structure: %v", err)
-	}
-
-	return &pod, nil
+	return b, nil
 
 }
 
-func deletePods(pod, node string) (*v1.PodList, error) {
-	url := root
-	if len(pod) > 0 {
-		url += pod
-	} else {
-		url += "/api/v1/namespaces/" + namespace + "/pods" + "?labelSelector=" + selector
-	}
+func deletePods(node string) ([]byte, error) {
+	url := root + "/api/v1/namespaces/default/pods" + "?labelSelector=" + selector
 	if len(node) > 0 {
 		fs := "&fieldSelector=spec.nodeName=" + node
 		url += fs
@@ -165,20 +137,14 @@ func deletePods(pod, node string) (*v1.PodList, error) {
 	}
 
 	if status == http.StatusNotFound {
-
 		return nil, errItemNotExist
 	}
 
-	var podlist v1.PodList
-	if err := json.Unmarshal(b, &podlist); err != nil {
-		return nil, fmt.Errorf("could not convert HTTP request to Pod data structure: %v", err)
-	}
-
-	return &podlist, nil
+	return b, nil
 
 }
 
-func toggleNode(nodename string, inactive bool) (*v1.Node, error) {
+func toggleNode(nodename string, inactive bool) ([]byte, error) {
 	url := root + "/api/v1/nodes/" + nodename
 
 	j := fmt.Sprintf("{\"spec\": {\"unschedulable\": %t}}", inactive)
@@ -191,16 +157,11 @@ func toggleNode(nodename string, inactive bool) (*v1.Node, error) {
 		return nil, errItemNotExist
 	}
 
-	var node v1.Node
-	if err := json.Unmarshal(b, &node); err != nil {
-		return nil, fmt.Errorf("could not convert HTTP request to deployment data structure: %v", err)
-	}
-
-	return &node, nil
+	return b, nil
 }
 
-func deleteAllReplicaSets() (*v1.Pod, error) {
-	url := root + "/apis/extensions/v1beta1/namespaces/" + namespace + "/replicasets" + "?labelSelector=" + selector
+func deleteReplicaSet() ([]byte, error) {
+	url := root + "/apis/extensions/v1beta1/namespaces/default/replicasets" + "?labelSelector=" + selector
 
 	b, status, err := queryK8sAPI(url, "DELETE", nil)
 	if err != nil {
@@ -212,17 +173,12 @@ func deleteAllReplicaSets() (*v1.Pod, error) {
 		return nil, errItemNotExist
 	}
 
-	var pod v1.Pod
-	if err := json.Unmarshal(b, &pod); err != nil {
-		return nil, fmt.Errorf("could not convert HTTP request to Pod data structure: %v", err)
-	}
-
-	return &pod, nil
+	return b, nil
 
 }
 
-func deleteDeployment() (*v1beta1.Deployment, error) {
-	selflink := "/apis/extensions/v1beta1/namespaces/" + namespace + "/deployments/api-deployment"
+func deleteDeployment(depname string) ([]byte, error) {
+	selflink := "/apis/extensions/v1beta1/namespaces/default/deployments/" + depname
 	url := root + selflink
 
 	b, status, err := queryK8sAPI(url, "DELETE", nil)
@@ -233,13 +189,8 @@ func deleteDeployment() (*v1beta1.Deployment, error) {
 	if status == http.StatusNotFound {
 		return nil, errItemNotExist
 	}
-	log.Printf("response %s", string(b))
-	var d v1beta1.Deployment
-	if err := json.Unmarshal(b, &d); err != nil {
-		return nil, fmt.Errorf("could not convert HTTP request to deployment data structure: %v", err)
-	}
 
-	return &d, nil
+	return b, nil
 
 }
 
@@ -289,8 +240,8 @@ func imageFromEnv() (string, error) {
 	return i, nil
 }
 
-func createDeployment() (*v1beta1.Deployment, error) {
-	selflink := "/apis/extensions/v1beta1/namespaces/" + namespace + "/deployments/"
+func createDeployment() ([]byte, error) {
+	selflink := "/apis/extensions/v1beta1/namespaces/default/deployments"
 	url := root + selflink
 
 	image, err := imageFromEnv()
@@ -330,7 +281,6 @@ func createDeployment() (*v1beta1.Deployment, error) {
 	if err != nil {
 		return nil, fmt.Errorf("I can't even with the HTTP: %v", err)
 	}
-	log.Printf("response: %d %s", status, string(b))
 
 	if status == http.StatusNotFound {
 		return nil, errItemNotExist
@@ -339,11 +289,7 @@ func createDeployment() (*v1beta1.Deployment, error) {
 	if status == http.StatusConflict {
 		return nil, errItemAlreadyExist
 	}
-	var dep v1beta1.Deployment
-	if err := json.Unmarshal(b, &dep); err != nil {
-		return nil, fmt.Errorf("could not convert HTTP request to deployment data structure: %v", err)
-	}
 
-	return &dep, nil
+	return b, nil
 
 }

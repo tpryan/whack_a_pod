@@ -41,6 +41,7 @@ better yet, accept a pull request.)
 1. Alter `CLUSTER` if you want to call your cluster something other than
 `whack-a-pod`.
 1. Set `INGRESSNAME` if you need to use something other than the default. 
+1. Set `DOCKERREPO` if you need to use something other Google Container Registry. 
 1. Open a terminal in `/`.
 1. Run `make config` to create your ingress file. 
 1. This should create the following file:

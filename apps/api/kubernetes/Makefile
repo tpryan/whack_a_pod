@@ -22,7 +22,7 @@ reset: clean.deployment app
 
 reset.safe: env creds
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o "$(BASEDIR)/../containers/main" "$(BASEDIR)/../containers/main.go"
-	gcloud container builds submit "$(BASEDIR)/../containers/." --tag=gcr.io/$(PROJECT)/api
+	gcloud container builds submit "$(BASEDIR)/../containers/." --tag=$(DOCKERREPO)/api
 	-kubectl delete deployment api-deployment
 	-kubectl run api-deployment --image=$(DOCKERREPO)/api --replicas=12 --port=8080 --labels=app=api 
 	say "app refresh complete"		

@@ -22,13 +22,13 @@ reset: clean.deployment app
 
 
 reset.safe: env creds
-	gcloud container builds submit "$(BASEDIR)/../containers/." --tag=gcr.io/$(PROJECT)/game
+	gcloud container builds submit "$(BASEDIR)/../containers/." --tag=$(DOCKERREPO)/game
 	-kubectl delete deployment game-deployment
 	kubectl run game-deployment --image=$(DOCKERREPO)/game --replicas=4 --port=8080 --labels=app=game 
 	say "app refresh complete"	
 
 build: env creds
-	gcloud container builds submit "$(BASEDIR)/../containers/." --tag=gcr.io/$(PROJECT)/game
+	gcloud container builds submit "$(BASEDIR)/../containers/." --tag=$(DOCKERREPO)/game
 
 deploy: env creds deployment service
 

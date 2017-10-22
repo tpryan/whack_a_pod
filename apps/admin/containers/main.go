@@ -22,12 +22,11 @@ import (
 )
 
 var (
-	client              *http.Client
+	client              httpClient
 	pool                *x509.CertPool
 	token               = ""
 	errItemNotExist     = fmt.Errorf("Item does not exist")
 	errItemAlreadyExist = fmt.Errorf("Item already exists")
-	doFunction          = client.Do
 )
 
 const (

@@ -46,7 +46,7 @@ func TestHealth(t *testing.T) {
 
 func TestHandlePods(t *testing.T) {
 	log.SetOutput(ioutil.Discard)
-	doFunction = testClientDo
+	client = new(MockClient)
 	req, err := http.NewRequest("GET", "/admin/k8s/pods/get", nil)
 	if err != nil {
 		t.Fatal(err)
@@ -74,7 +74,7 @@ func TestHandlePods(t *testing.T) {
 
 func TestHandlePodDeleteExisting(t *testing.T) {
 	log.SetOutput(ioutil.Discard)
-	doFunction = testClientDo
+	client = new(MockClient)
 	req, err := http.NewRequest("GET", "/admin/k8s/pod/delete?pod="+podExistsSelfLink, nil)
 	if err != nil {
 		t.Fatal(err)
@@ -102,7 +102,7 @@ func TestHandlePodDeleteExisting(t *testing.T) {
 
 func TestHandlePodDeleteNonExisting(t *testing.T) {
 	log.SetOutput(ioutil.Discard)
-	doFunction = testClientDo
+	client = new(MockClient)
 	req, err := http.NewRequest("GET", "/admin/k8s/pod/delete?pod=dsadasdasdsa", nil)
 	if err != nil {
 		t.Fatal(err)
@@ -120,7 +120,7 @@ func TestHandlePodDeleteNonExisting(t *testing.T) {
 
 func TestHandlePodsDeleteAll(t *testing.T) {
 	log.SetOutput(ioutil.Discard)
-	doFunction = testClientDo
+	client = new(MockClient)
 	req, err := http.NewRequest("GET", "/admin/k8s/pods/delete", nil)
 	if err != nil {
 		t.Fatal(err)
@@ -148,7 +148,7 @@ func TestHandlePodsDeleteAll(t *testing.T) {
 
 func TestHandleDeploymentCreate(t *testing.T) {
 	log.SetOutput(ioutil.Discard)
-	doFunction = testClientDo
+	client = new(MockClient)
 	os.Setenv("APIIMAGE", "gcr.io/carnivaldemos/api")
 	req, err := http.NewRequest("GET", "/admin/k8s/deployment/create", nil)
 	if err != nil {
@@ -177,7 +177,7 @@ func TestHandleDeploymentCreate(t *testing.T) {
 
 func TestHandleDeploymentDelete(t *testing.T) {
 	log.SetOutput(ioutil.Discard)
-	doFunction = testClientDo
+	client = new(MockClient)
 	req, err := http.NewRequest("GET", "/admin/k8s/deployment/delete", nil)
 	if err != nil {
 		t.Fatal(err)
@@ -204,7 +204,7 @@ func TestHandleDeploymentDelete(t *testing.T) {
 
 func TestHandleDeploymentCreateNoEnvSet(t *testing.T) {
 	log.SetOutput(ioutil.Discard)
-	doFunction = testClientDo
+	client = new(MockClient)
 	req, err := http.NewRequest("GET", "/admin/k8s/deployment/create", nil)
 	if err != nil {
 		t.Fatal(err)
@@ -222,7 +222,7 @@ func TestHandleDeploymentCreateNoEnvSet(t *testing.T) {
 
 func TestHandleNodes(t *testing.T) {
 	log.SetOutput(ioutil.Discard)
-	doFunction = testClientDo
+	client = new(MockClient)
 	req, err := http.NewRequest("GET", "/admin/k8s/nodes/get", nil)
 	if err != nil {
 		t.Fatal(err)
@@ -250,7 +250,7 @@ func TestHandleNodes(t *testing.T) {
 
 func TestHandleNodeDrain(t *testing.T) {
 	log.SetOutput(ioutil.Discard)
-	doFunction = testClientDo
+	client = new(MockClient)
 	req, err := http.NewRequest("GET", "/admin/k8s/node/drain?node="+nodeName, nil)
 	if err != nil {
 		t.Fatal(err)
@@ -278,7 +278,7 @@ func TestHandleNodeDrain(t *testing.T) {
 
 func TestHandleNodeUncordon(t *testing.T) {
 	log.SetOutput(ioutil.Discard)
-	doFunction = testClientDo
+	client = new(MockClient)
 	req, err := http.NewRequest("GET", "/admin/k8s/node/uncordon?node="+nodeName, nil)
 	if err != nil {
 		t.Fatal(err)

@@ -36,6 +36,10 @@ func certsFromDisk(f string) ([]byte, error) {
 	return b, nil
 }
 
+type httpClient interface {
+	Do(req *http.Request) (*http.Response, error)
+}
+
 func queryK8sAPI(url, method string, data []byte) ([]byte, int, error) {
 	req, err := http.NewRequest(method, url, bytes.NewBuffer(data))
 	if err != nil {
@@ -54,7 +58,7 @@ func queryK8sAPI(url, method string, data []byte) ([]byte, int, error) {
 		req.Header.Set("Content-Length", strconv.Itoa(len(string(data))))
 	}
 
-	resp, err := doFunction(req)
+	resp, err := client.Do(req)
 	if err != nil {
 		return nil, http.StatusInternalServerError, fmt.Errorf("could not execute HTTP request for HTTP %s %s: %v", method, url, err)
 	}

@@ -36,7 +36,7 @@ var (
 )
 
 func TestCreateDeploymentNoEnv(t *testing.T) {
-	doFunction = testClientDo
+	client = new(MockClient)
 	_, err := createDeployment()
 	if err == nil {
 		t.Errorf("Expected error due to no ENV variable")
@@ -44,7 +44,7 @@ func TestCreateDeploymentNoEnv(t *testing.T) {
 }
 
 func TestCreateDeployment(t *testing.T) {
-	doFunction = testClientDo
+	client = new(MockClient)
 	os.Setenv("APIIMAGE", "gcr.io/carnivaldemos/api")
 	b, err := createDeployment()
 	if err != nil {
@@ -63,7 +63,7 @@ func TestCreateDeployment(t *testing.T) {
 }
 
 func TestDeleteDeployment(t *testing.T) {
-	doFunction = testClientDo
+	client = new(MockClient)
 	_, err := deleteDeployment("api-deployment")
 	if err != nil {
 		t.Errorf("Error getting deployment : %v", err)
@@ -80,7 +80,7 @@ func TestToggleNode(t *testing.T) {
 		{"gke-whack-a-pod-default-pool-8deaa3a5-b9p7", false},
 	}
 
-	doFunction = testClientDo
+	client = new(MockClient)
 
 	for _, c := range cases {
 		b, err := toggleNode(c.node, c.inactive)
@@ -104,7 +104,7 @@ func TestToggleNode(t *testing.T) {
 
 func TestListNodes(t *testing.T) {
 
-	doFunction = testClientDo
+	client = new(MockClient)
 
 	b, err := listNodes()
 	if err != nil {
@@ -125,7 +125,7 @@ func TestListNodes(t *testing.T) {
 
 func TestListPods(t *testing.T) {
 
-	doFunction = testClientDo
+	client = new(MockClient)
 
 	b, err := listPods()
 	if err != nil {
@@ -146,7 +146,7 @@ func TestListPods(t *testing.T) {
 
 func TestDeletePods(t *testing.T) {
 
-	doFunction = testClientDo
+	client = new(MockClient)
 
 	b, err := deletePods("")
 	if err != nil {
@@ -167,7 +167,7 @@ func TestDeletePods(t *testing.T) {
 
 func TestDescribePod(t *testing.T) {
 
-	doFunction = testClientDo
+	client = new(MockClient)
 	self := "/api/v1/namespaces/default/pods/api-deployment-1435701907-xx9lm"
 
 	b, err := describePod(self)
@@ -189,7 +189,7 @@ func TestDescribePod(t *testing.T) {
 
 func TestDeletePod(t *testing.T) {
 
-	doFunction = testClientDo
+	client = new(MockClient)
 	self := "/api/v1/namespaces/default/pods/api-deployment-1435701907-xx9lm"
 
 	b, err := deletePod(self)
@@ -210,8 +210,7 @@ func TestDeletePod(t *testing.T) {
 }
 
 func TestDeletePodDoesNotExist(t *testing.T) {
-
-	doFunction = testClientDo
+	client = new(MockClient)
 	self := "/api/v1/namespaces/default/pods/api-deployment-1435701907-FALSE"
 
 	_, err := deletePod(self)
@@ -221,7 +220,11 @@ func TestDeletePodDoesNotExist(t *testing.T) {
 
 }
 
-func testClientDo(req *http.Request) (*http.Response, error) {
+type MockClient struct {
+	DoFunc func(req *http.Request) (*http.Response, error)
+}
+
+func (m *MockClient) Do(req *http.Request) (*http.Response, error) {
 
 	r := http.Response{}
 	r.StatusCode = http.StatusOK

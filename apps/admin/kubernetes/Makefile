@@ -15,6 +15,7 @@ BASEDIR = $(shell pwd)
 
 include ../../../Makefile.properties
 
+
 reset: clean.deployment app
 	say "App Reset"
 
@@ -35,7 +36,8 @@ build: env creds main
 
 deploy: env creds deployment service
 	
-	
+test: 
+	cd 	"$(BASEDIR)/../containers" && go test
 
 deployment:
 	kubectl run admin-deployment --image=$(DOCKERREPO)/admin --replicas=1 --port=8080 --labels=app=admin --env="APIIMAGE=$(DOCKERREPO)/api"

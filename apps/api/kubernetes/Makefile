@@ -35,6 +35,9 @@ build: env creds main
 
 deploy: env creds deployment service
 
+test: 
+	cd 	"$(BASEDIR)/../containers" && go test
+
 deployment:
 	kubectl run api-deployment --image=$(DOCKERREPO)/api --replicas=12 --port=8080 --labels=app=api 
 

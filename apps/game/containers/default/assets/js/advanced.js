@@ -20,10 +20,11 @@ var game = new GAME();
 var score = new SCORE();
 var nodes = [];
 var pods_shown = [];
-var fails_threshold = 9;
+var fails_threshold = 20;
 
 
 document.addEventListener('DOMContentLoaded', function() {
+    api.timeout = 10000;
     deploymentAPI.Delete();
     deploymentAPI.ResetNodes();
     setReport("");

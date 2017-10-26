@@ -35,6 +35,8 @@ build: env creds main
 	gcloud container builds submit "$(BASEDIR)/../containers/." --tag=$(DOCKERREPO)/admin
 
 deploy: env creds deployment service
+
+deploy.minikube: deployment service
 	
 test: 
 	cd 	"$(BASEDIR)/../containers" && go test
@@ -45,12 +47,14 @@ deployment:
 service:
 	kubectl expose deployment admin-deployment --name=admin --target-port=8080  --type=NodePort --labels="app=admin"
 
-clean: clean.deployment clean.service 
+clean: env creds clean.deployment clean.service 
 
-clean.deployment: env creds
+clean.minikube: clean.deployment clean.service 
+
+clean.deployment: 
 	-kubectl delete deployment admin-deployment
 	
-clean.service: env creds
+clean.service: 
 	-kubectl delete service admin
 
 retry: clean build deploy

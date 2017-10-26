@@ -95,6 +95,22 @@ func handler() http.Handler {
 	r.HandleFunc("/admin/k8s/node/uncordon/", handleAPI(handleNodeUncordon))
 	r.HandleFunc("/admin/k8s/deployment/delete/", handleAPI(handleDeploymentDelete))
 	r.HandleFunc("/admin/k8s/deployment/create/", handleAPI(handleDeploymentCreate))
+	r.HandleFunc("/k8s/pods/get", handleAPI(handlePods))
+	r.HandleFunc("/k8s/nodes/get", handleAPI(handleNodes))
+	r.HandleFunc("/k8s/pod/delete", handleAPI(handlePodDelete))
+	r.HandleFunc("/k8s/pods/delete", handleAPI(handlePodsDelete))
+	r.HandleFunc("/k8s/node/drain", handleAPI(handleNodeDrain))
+	r.HandleFunc("/k8s/node/uncordon", handleAPI(handleNodeUncordon))
+	r.HandleFunc("/k8s/deployment/delete", handleAPI(handleDeploymentDelete))
+	r.HandleFunc("/k8s/deployment/create", handleAPI(handleDeploymentCreate))
+	r.HandleFunc("/k8s/pods/get/", handleAPI(handlePods))
+	r.HandleFunc("/k8s/nodes/get/", handleAPI(handleNodes))
+	r.HandleFunc("/k8s/pod/delete/", handleAPI(handlePodDelete))
+	r.HandleFunc("/k8s/pods/delete/", handleAPI(handlePodsDelete))
+	r.HandleFunc("/k8s/node/drain/", handleAPI(handleNodeDrain))
+	r.HandleFunc("/k8s/node/uncordon/", handleAPI(handleNodeUncordon))
+	r.HandleFunc("/k8s/deployment/delete/", handleAPI(handleDeploymentDelete))
+	r.HandleFunc("/k8s/deployment/create/", handleAPI(handleDeploymentCreate))
 	return r
 }
 

@@ -35,6 +35,8 @@ build: env creds main
 
 deploy: env creds deployment service
 
+deploy.minikube: deployment service
+
 test: 
 	cd 	"$(BASEDIR)/../containers" && go test
 
@@ -44,12 +46,14 @@ deployment:
 service:
 	kubectl expose deployment api-deployment --name=api --target-port=8080  --type=NodePort --labels="app=api"
 
-clean: clean.deployment clean.service 
+clean: env creds clean.deployment clean.service 
 
-clean.deployment: env creds
+clean.minikube: clean.deployment clean.service 
+
+clean.deployment: 
 	-kubectl delete deployment api-deployment
 	
-clean.service: env creds
+clean.service: 
 	-kubectl delete service api
 
 retry: clean build deploy

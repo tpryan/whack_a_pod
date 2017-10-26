@@ -20,6 +20,12 @@ deploy: env
 	cd "$(BASEDIR)/apps/game/kubernetes/" && $(MAKE) deploy
 	cd "$(BASEDIR)/apps/admin/kubernetes/" && $(MAKE) deploy
 	cd "$(BASEDIR)/apps/ingress/" && $(MAKE) deploy
+
+deploy.minikube: creds.minikube
+	cd "$(BASEDIR)/apps/api/kubernetes/" && $(MAKE) deploy.minikube
+	cd "$(BASEDIR)/apps/game/kubernetes/" && $(MAKE) deploy.minikube
+	cd "$(BASEDIR)/apps/admin/kubernetes/" && $(MAKE) deploy.minikube
+	cd "$(BASEDIR)/apps/ingress/" && $(MAKE) deploy.minikube	
 	
 
 clean: env
@@ -27,6 +33,12 @@ clean: env
 	cd "$(BASEDIR)/apps/game/kubernetes/" && $(MAKE) clean
 	cd "$(BASEDIR)/apps/admin/kubernetes/" && $(MAKE) clean	
 	cd "$(BASEDIR)/apps/ingress/" && $(MAKE) clean
+
+clean.minikube: 
+	cd "$(BASEDIR)/apps/api/kubernetes/" && $(MAKE) clean.minikube
+	cd "$(BASEDIR)/apps/game/kubernetes/" && $(MAKE) clean.minikube
+	cd "$(BASEDIR)/apps/admin/kubernetes/" && $(MAKE) clean.minikube	
+	cd "$(BASEDIR)/apps/ingress/" && $(MAKE) clean.minikube
 
 build: env
 	cd "$(BASEDIR)/apps/api/kubernetes/" && $(MAKE) build

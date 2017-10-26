@@ -29,9 +29,14 @@ func handler() http.Handler {
 	r.HandleFunc("/healthz", health)
 	r.HandleFunc("/api/healthz", health)
 	r.HandleFunc("/api/color", color)
-	r.HandleFunc("/api/color-complete", colorComplete)
 	r.HandleFunc("/api/color/", color)
+	r.HandleFunc("/api/color-complete", colorComplete)
 	r.HandleFunc("/api/color-complete/", colorComplete)
+	r.HandleFunc("/color", color)
+	r.HandleFunc("/color/", color)
+	r.HandleFunc("/color-complete", colorComplete)
+	r.HandleFunc("/color-complete/", colorComplete)
+
 	return r
 }
 

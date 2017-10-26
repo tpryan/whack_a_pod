@@ -93,6 +93,42 @@ the Replica Set is actually answering calls for the service.
 1. Open a terminal in `/infrastructure/`.
 1. Run `make clean`
 
+## Minikube
+Whack a Pod can run on Minikube.  Its performance isn't stellar, but the game
+versions of it run just as well a it does on a flaky conference wifi. 
+
+### Prerequisite 
+* Install minikube  
+[Directions](https://github.com/kubernetes/minikube/releases) 
+* Enable ingress  
+`minikube addons enable ingress`
+* Install xhyve driver (Mac OS])  
+[Directions](https://github.com/kubernetes/minikube/blob/master/docs/drivers.md)  
+
+### Docker Repository
+You can use the Container Registry based commands in the Makefiles to build and
+host your Docker images.  
+
+1. Open a terminal in root of whack_a_pod location.
+1. Run `make build`
+
+This still requires a Google Cloud Platform Project.  If you would like to build 
+them some other way, you can, nothing restricts you from doing so. Just make 
+sure you set `$(DOCKERREPO)` to the right value in Makefile.properties.
+
+
+### Running on Minikube
+
+1. Open a terminal in root of whack_a_pod location.
+1. Run `minikube start --vm-driver=xhyve`
+1. Run `make deploy.minikube`
+1. Run `kubectl describe ingress` to get the IP address of the ingress.
+1. Create an entry in /etc/hosts pointing IP address to `wap.io`.   
+
+### Clean Minimkube
+1. Run `make clean.minikube`
+1. Run `minikube stop`
+
 ## Architecture
 There are three Kubernetes services that make up the whole application:
 1. Game

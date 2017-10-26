@@ -42,3 +42,9 @@ ip:
 
 clean.ip:
 	gcloud compute --project $(PROJECT) addresses delete $(INGRESSNAME) 
+
+minikube:	
+	minikube start
+
+clean.minikube:	
+	minikube start	

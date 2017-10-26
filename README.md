@@ -111,6 +111,7 @@ host your Docker images.
 
 1. Open a terminal in root of whack_a_pod location.
 1. Run `make build`
+1. Make images publicly available by following [these directions](https://cloud.google.com/container-registry/docs/access-control)
 
 This still requires a Google Cloud Platform Project.  If you would like to build 
 them some other way, you can, nothing restricts you from doing so. Just make 

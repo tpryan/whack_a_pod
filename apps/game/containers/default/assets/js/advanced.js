@@ -239,8 +239,14 @@ function createNodeUI(name){
     var $holder = $("#nodes");
     $div.appendTo("#nodes")
     $killbtn = $("#kill-" + id)
-    $killbtn.click(killNode);
-    $killbtn.data("node", name);
+    
+    if(name=="minikube"){
+        $killbtn.hide();
+    } else{
+        $killbtn.click(killNode);
+        $killbtn.data("node", name);
+    }
+    
 }
 
 function killNode(e){

@@ -126,7 +126,7 @@ sure you set `$(DOCKERREPO)` to the right value in Makefile.properties.
 1. Run `kubectl describe ingress` to get the IP address of the ingress.
 1. Create an entry in /etc/hosts pointing IP address to `wap.io`.   
 
-### Clean Minimkube
+### Clean Minikube
 1. Run `make clean.minikube`
 1. Run `minikube stop`
 

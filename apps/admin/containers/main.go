@@ -153,12 +153,7 @@ func (h apiHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func handlePods(w http.ResponseWriter, r *http.Request) ([]byte, error) {
-	b, err := listPods()
-	if err != nil {
-		return nil, fmt.Errorf("could not retrieve k8s api: %v", err)
-	}
-
-	return b, nil
+	return listPods()
 }
 
 func handlePodDelete(w http.ResponseWriter, r *http.Request) ([]byte, error) {
@@ -184,13 +179,7 @@ func handlePodsDelete(w http.ResponseWriter, r *http.Request) ([]byte, error) {
 }
 
 func handleDeploymentCreate(w http.ResponseWriter, r *http.Request) ([]byte, error) {
-
-	b, err := createDeployment()
-	if err != nil {
-		return nil, fmt.Errorf("could not create k8s deployment: %v", err)
-	}
-
-	return b, nil
+	return createDeployment()
 }
 
 func handleDeploymentDelete(w http.ResponseWriter, r *http.Request) ([]byte, error) {
@@ -209,12 +198,7 @@ func handleDeploymentDelete(w http.ResponseWriter, r *http.Request) ([]byte, err
 }
 
 func handleNodes(w http.ResponseWriter, r *http.Request) ([]byte, error) {
-	b, err := listNodes()
-	if err != nil {
-		return nil, fmt.Errorf("could not get list of k8s nodes: %v", err)
-	}
-
-	return b, nil
+	return listNodes()
 }
 
 func handleNodeDrain(w http.ResponseWriter, r *http.Request) ([]byte, error) {
@@ -234,11 +218,10 @@ func handleNodeDrain(w http.ResponseWriter, r *http.Request) ([]byte, error) {
 }
 
 func handleNodeUncordon(w http.ResponseWriter, r *http.Request) ([]byte, error) {
-	nodename := r.FormValue("node")
 
-	b, err := toggleNode(nodename, false)
+	b, err := toggleNode(r.FormValue("node"), false)
 	if err != nil && err != errItemNotExist {
-		return nil, fmt.Errorf("could not retrieve k8s node info: %v", err)
+		return nil, fmt.Errorf("could uncordon node : %v", err)
 	}
 
 	return b, nil

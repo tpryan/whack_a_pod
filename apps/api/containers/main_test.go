@@ -9,7 +9,7 @@ import (
 	"testing"
 )
 
-// Because we are getting random values my tests were flaky.
+// Because we are getting random values early tests were flaky.
 // Repeating test many times allowed me to see intermittent
 // errors
 var trials = 1000
@@ -69,6 +69,7 @@ func TestHealthHandler(t *testing.T) {
 }
 
 func TestColorHandler(t *testing.T) {
+
 	req, err := http.NewRequest("GET", "/api/color", nil)
 	if err != nil {
 		t.Fatal(err)
@@ -78,14 +79,20 @@ func TestColorHandler(t *testing.T) {
 	handler := http.HandlerFunc(color)
 	handler.ServeHTTP(rr, req)
 
-	if status := rr.Code; status != http.StatusOK {
-		t.Errorf("wrong status code: got %v want %v", status, http.StatusOK)
+	if statusGot := rr.Code; statusGot != http.StatusOK {
+		t.Errorf("wrong status code %s: got %d want %d", "/api/color", statusGot, http.StatusOK)
 	}
 
-	actual := rr.Body.String()
-	if err := validateColor(actual); err != nil {
-		t.Errorf("%v", err)
+	colorGot := rr.Body.String()
+	if err := validateColor(colorGot); err != nil {
+		t.Errorf("Invalid color got: %s, err: %v", colorGot, err)
 	}
+
+}
+
+type result struct {
+	Color string `json:"color"`
+	Name  string `json:"name"`
 }
 
 func TestColorCompleteHandler(t *testing.T) {
@@ -102,13 +109,13 @@ func TestColorCompleteHandler(t *testing.T) {
 		t.Errorf("wrong status code: got %v want %v", status, http.StatusOK)
 	}
 
-	var result result
+	var got result
 	actual := rr.Body.Bytes()
-	if err := json.Unmarshal(actual, &result); err != nil {
+	if err := json.Unmarshal(actual, &got); err != nil {
 		t.Errorf("could not parse server response: %v", err)
 	}
 
-	if err := validateColor(result.Color); err != nil {
-		t.Errorf("%v", err)
+	if err := validateColor(got.Color); err != nil {
+		t.Errorf("Invalid color got: %s, err: %v", got.Color, err)
 	}
 }

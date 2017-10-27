@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"math/rand"
@@ -52,37 +51,26 @@ func color(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, hexColorString())
 }
 
-type result struct {
-	Color string `json:"color"`
-	Name  string `json:"name"`
-}
-
 func colorComplete(w http.ResponseWriter, r *http.Request) {
-	h, _ := os.Hostname()
-	result := result{Name: h, Color: hexColorString()}
+	status := http.StatusOK
+	msg := ""
+
+	h, err := os.Hostname()
+	if err != nil {
+		msg = fmt.Sprintf("{\"error\":\"could retrieve hostname: %v\"}", err)
+		status = http.StatusInternalServerError
+	} else {
+		msg = fmt.Sprintf("{\"color\":\"%s\", \"name\":\"%s\"}", hexColorString(), h)
+	}
 
 	w.Header().Add("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
-
-	b, err := json.Marshal(result)
-	if err != nil {
-		msg := fmt.Sprintf("{\"error\":\"could not unmarshal data %v\"}", err)
-		w.WriteHeader(http.StatusInternalServerError)
-		fmt.Fprint(w, msg)
-		return
-	}
-
-	w.WriteHeader(http.StatusOK)
-	fmt.Fprint(w, string(b))
-	return
+	w.WriteHeader(status)
+	fmt.Fprint(w, msg)
 }
 
 func hexColorString() string {
-	result := "#"
-	for i := 1; i <= 3; i++ {
-		rand.Seed(time.Now().UnixNano())
-		i := rand.Intn(256)
-		result += fmt.Sprintf("%02s", strconv.FormatInt(int64(i), 16))
-	}
-	return result
+	rand.Seed(time.Now().UnixNano())
+	i := rand.Intn(16777215) // = 0xFFFFFF the highest hex color value allowed.
+	return "#" + fmt.Sprintf("%06s", strconv.FormatInt(int64(i), 16))
 }

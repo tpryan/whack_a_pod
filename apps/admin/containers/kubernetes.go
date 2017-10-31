@@ -20,22 +20,6 @@ import (
 	"strconv"
 )
 
-func tokenFromDisk(f string) (string, error) {
-	b, err := ioutil.ReadFile(f)
-	if err != nil {
-		return "", fmt.Errorf("could not retrieve kubernetes token from disk: %v", err)
-	}
-	return string(b), nil
-}
-
-func certsFromDisk(f string) ([]byte, error) {
-	b, err := ioutil.ReadFile(f)
-	if err != nil {
-		return nil, fmt.Errorf("could not retrieve kubernetes certs.ca from disk: %v", err)
-	}
-	return b, nil
-}
-
 type httpClient interface {
 	Do(req *http.Request) (*http.Response, error)
 }
@@ -76,7 +60,7 @@ func listPods() ([]byte, error) {
 
 	b, _, err := queryK8sAPI(url, "GET", nil)
 	if err != nil {
-		return nil, fmt.Errorf("I can't even with the HTTP: %v", err)
+		return nil, fmt.Errorf("can't list pods: %v", err)
 	}
 
 	return b, nil
@@ -87,7 +71,7 @@ func deletePod(podname string) ([]byte, error) {
 
 	b, status, err := queryK8sAPI(url, "DELETE", nil)
 	if err != nil {
-		return nil, fmt.Errorf("I can't even with the HTTP: %v", err)
+		return nil, fmt.Errorf("can't delete pod: %v", err)
 	}
 
 	if status == http.StatusNotFound {
@@ -97,6 +81,7 @@ func deletePod(podname string) ([]byte, error) {
 	return b, nil
 
 }
+
 func deletePods(node string) ([]byte, error) {
 	url := root + "/api/v1/namespaces/default/pods" + "?labelSelector=" + selector
 	if len(node) > 0 {
@@ -106,7 +91,7 @@ func deletePods(node string) ([]byte, error) {
 
 	b, status, err := queryK8sAPI(url, "DELETE", nil)
 	if err != nil {
-		return nil, fmt.Errorf("I can't even with the HTTP: %v", err)
+		return nil, fmt.Errorf("can't delete pods: %v", err)
 	}
 
 	if status == http.StatusNotFound {
@@ -122,7 +107,7 @@ func describePod(podname string) ([]byte, error) {
 
 	b, _, err := queryK8sAPI(url, "GET", nil)
 	if err != nil {
-		return nil, fmt.Errorf("I can't even with the HTTP: %v", err)
+		return nil, fmt.Errorf("can't describe pod: %v", err)
 	}
 
 	return b, nil
@@ -134,7 +119,7 @@ func listNodes() ([]byte, error) {
 
 	b, _, err := queryK8sAPI(url, "GET", nil)
 	if err != nil {
-		return nil, fmt.Errorf("I can't even with the HTTP: %v", err)
+		return nil, fmt.Errorf("can't list nodes: %v", err)
 	}
 
 	return b, nil
@@ -146,7 +131,7 @@ func toggleNode(nodename string, inactive bool) ([]byte, error) {
 	j := fmt.Sprintf("{\"spec\": {\"unschedulable\": %t}}", inactive)
 	b, status, err := queryK8sAPI(url, "PATCH", []byte(j))
 	if err != nil {
-		return nil, fmt.Errorf("I can't even with the HTTP: %v", err)
+		return nil, fmt.Errorf("can't toggle node: %s inactive: %t %v", nodename, inactive, err)
 	}
 
 	if status == http.StatusNotFound {
@@ -161,7 +146,7 @@ func deleteReplicaSet() ([]byte, error) {
 
 	b, status, err := queryK8sAPI(url, "DELETE", nil)
 	if err != nil {
-		return nil, fmt.Errorf("I can't even with the HTTP: %v", err)
+		return nil, fmt.Errorf("can't delete replica set: %v", err)
 	}
 
 	if status == http.StatusNotFound {
@@ -258,7 +243,7 @@ func createDeployment() ([]byte, error) {
 
 	b, status, err := queryK8sAPI(url, "POST", dbytes)
 	if err != nil {
-		return nil, fmt.Errorf("I can't even with the HTTP: %v", err)
+		return nil, fmt.Errorf("can't created deployment: %v", err)
 	}
 
 	if status == http.StatusNotFound {
@@ -279,7 +264,7 @@ func deleteDeployment(depname string) ([]byte, error) {
 
 	b, status, err := queryK8sAPI(url, "DELETE", nil)
 	if err != nil {
-		return nil, fmt.Errorf("I can't even with the HTTP: %v", err)
+		return nil, fmt.Errorf("can't delete deployment: %v", err)
 	}
 
 	if status == http.StatusNotFound {

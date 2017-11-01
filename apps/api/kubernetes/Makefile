@@ -30,7 +30,7 @@ reset.safe: env creds
 main:
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o "$(BASEDIR)/../containers/main" "$(BASEDIR)/../containers/main.go"
 
-build: env creds main
+build: env main
 	gcloud container builds submit "$(BASEDIR)/../containers/." --tag=$(DOCKERREPO)/api
 
 deploy: env creds deployment service

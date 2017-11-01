@@ -15,11 +15,16 @@ BASEDIR = $(shell pwd)
 
 include Makefile.properties
 
-deploy: env
+deploy: env creds
 	cd "$(BASEDIR)/apps/api/kubernetes/" && $(MAKE) deploy
 	cd "$(BASEDIR)/apps/game/kubernetes/" && $(MAKE) deploy
 	cd "$(BASEDIR)/apps/admin/kubernetes/" && $(MAKE) deploy
 	cd "$(BASEDIR)/apps/ingress/" && $(MAKE) deploy
+
+reset.safe: env creds
+	cd "$(BASEDIR)/apps/api/kubernetes/" && $(MAKE) reset.safe
+	cd "$(BASEDIR)/apps/game/kubernetes/" && $(MAKE) reset.safe
+	cd "$(BASEDIR)/apps/admin/kubernetes/" && $(MAKE) reset.safe
 
 deploy.minikube: creds.minikube
 	cd "$(BASEDIR)/apps/api/kubernetes/" && $(MAKE) deploy.minikube
@@ -28,7 +33,7 @@ deploy.minikube: creds.minikube
 	cd "$(BASEDIR)/apps/ingress/" && $(MAKE) deploy.minikube	
 	
 
-clean: env
+clean: env creds
 	cd "$(BASEDIR)/apps/api/kubernetes/" && $(MAKE) clean
 	cd "$(BASEDIR)/apps/game/kubernetes/" && $(MAKE) clean
 	cd "$(BASEDIR)/apps/admin/kubernetes/" && $(MAKE) clean	
@@ -40,14 +45,14 @@ clean.minikube:
 	cd "$(BASEDIR)/apps/admin/kubernetes/" && $(MAKE) clean.minikube	
 	cd "$(BASEDIR)/apps/ingress/" && $(MAKE) clean.minikube
 
-build: env
+build: env creds
 	cd "$(BASEDIR)/apps/api/kubernetes/" && $(MAKE) build
 	cd "$(BASEDIR)/apps/game/kubernetes/" && $(MAKE) build
 	cd "$(BASEDIR)/apps/admin/kubernetes/" && $(MAKE) build		
 
-config: env
+config: env creds
 	@cd "$(BASEDIR)/apps/ingress/" && $(MAKE) config
 
-test: env
+test: 
 	cd "$(BASEDIR)/apps/api/kubernetes/" && $(MAKE) test
 	cd "$(BASEDIR)/apps/admin/kubernetes/" && $(MAKE) test	

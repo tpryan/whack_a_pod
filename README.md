@@ -124,7 +124,7 @@ sure you set `$(DOCKERREPO)` to the right value in Makefile.properties.
 1. Run `minikube start --vm-driver=xhyve`
 1. Run `make deploy.minikube`
 1. Run `kubectl describe ingress` to get the IP address of the ingress.
-1. Create an entry in /etc/hosts pointing IP address to `wap.io`.   
+1. Create an entry in /etc/hosts pointing IP address to `minikube.wap`.   
 
 ### Clean Minikube
 1. Run `make clean.minikube`

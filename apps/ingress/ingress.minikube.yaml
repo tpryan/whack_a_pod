@@ -19,7 +19,7 @@ metadata:
     ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - host: wap.io
+  - host: minikube.wap
     http:
       paths:
       - path: /api/*

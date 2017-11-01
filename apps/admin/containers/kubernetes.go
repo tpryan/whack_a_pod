@@ -196,21 +196,18 @@ type minimumPort struct {
 	Protocol      string `json:"protocol,omitempty"`
 }
 
-func imageFromEnv() (string, error) {
-	i := os.Getenv("APIIMAGE")
-	if len(i) == 0 {
-		return "", fmt.Errorf("env var APIIMAGE not set")
-	}
-	return i, nil
-}
-
 func createDeployment() ([]byte, error) {
 	selflink := "/apis/extensions/v1beta1/namespaces/default/deployments"
 	url := root + selflink
 
-	image, err := imageFromEnv()
-	if err != nil {
-		return nil, fmt.Errorf("could not get the name of the container image from env : %v", err)
+	image := os.Getenv("APIIMAGE")
+	if len(image) == 0 {
+		return nil, fmt.Errorf("env var APIIMAGE not set")
+	}
+
+	policy := os.Getenv("APIPULLPOLICY")
+	if len(policy) == 0 {
+		policy = "IfNotPresent"
 	}
 
 	var d minimumDeployment
@@ -225,7 +222,7 @@ func createDeployment() ([]byte, error) {
 		minimumContainer{
 			Name:            "api",
 			Image:           image,
-			ImagePullPolicy: "Always",
+			ImagePullPolicy: policy,
 			Ports: []minimumPort{
 				minimumPort{
 					ContainerPort: 8080,

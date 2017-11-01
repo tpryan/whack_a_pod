@@ -16,9 +16,13 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
+	"strings"
 	"time"
+
+	"github.com/gorilla/mux"
 )
 
 var (
@@ -40,14 +44,15 @@ func main() {
 	log.Printf("starting whack a pod admin api")
 	var err error
 
-	token, err = tokenFromDisk(defaultTokenPath)
+	b, err := ioutil.ReadFile(defaultTokenPath)
 	if err != nil {
-		log.Printf("could not get token from file system")
+		log.Printf("could not get token from file system: %v", err)
 	}
+	token = string(b)
 
-	certs, err := certsFromDisk(defaultCertPath)
+	certs, err := ioutil.ReadFile(defaultCertPath)
 	if err != nil {
-		log.Printf("could not get token from file system")
+		log.Printf("could not get token from file system: %v", err)
 	}
 
 	// This allows me to use a scratch Dockerfile as described here :
@@ -60,58 +65,45 @@ func main() {
 	pool.AppendCertsFromPEM(certs)
 	client = &http.Client{Transport: &http.Transport{TLSClientConfig: &tls.Config{RootCAs: pool}}}
 
+	router := mux.NewRouter()
+	for _, r := range routes {
+		router.Methods(r.method).Path(r.pattern).Handler(r.handlerFunc)
+		// Couldn't get a regex working here and wrote this to make it stop
+		// eating hours of my life.
+		if strings.Index(r.pattern, "/k8s/") == 0 {
+			router.Methods(r.method).Path("/admin" + r.pattern).Handler(r.handlerFunc)
+		}
+	}
+
 	srv := &http.Server{
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 10 * time.Second,
 		Addr:         ":8080",
-		Handler:      handler(),
+		Handler:      router,
 	}
 
 	srv.ListenAndServe()
+
 }
 
-func handler() http.Handler {
+// Route represets  a gorrila route from a http call to an application function
+type route struct {
+	method      string
+	pattern     string
+	handlerFunc http.HandlerFunc
+}
 
-	r := http.NewServeMux()
-	r.HandleFunc("/", health)
-	r.HandleFunc("/healthz", health)
-	r.HandleFunc("/admin/healthz", health)
-	r.HandleFunc("/healthz/", health)
-	r.HandleFunc("/admin/healthz/", health)
-
-	r.HandleFunc("/admin/k8s/pods/get", handleAPI(handlePods))
-	r.HandleFunc("/admin/k8s/nodes/get", handleAPI(handleNodes))
-	r.HandleFunc("/admin/k8s/pod/delete", handleAPI(handlePodDelete))
-	r.HandleFunc("/admin/k8s/pods/delete", handleAPI(handlePodsDelete))
-	r.HandleFunc("/admin/k8s/node/drain", handleAPI(handleNodeDrain))
-	r.HandleFunc("/admin/k8s/node/uncordon", handleAPI(handleNodeUncordon))
-	r.HandleFunc("/admin/k8s/deployment/delete", handleAPI(handleDeploymentDelete))
-	r.HandleFunc("/admin/k8s/deployment/create", handleAPI(handleDeploymentCreate))
-	r.HandleFunc("/admin/k8s/pods/get/", handleAPI(handlePods))
-	r.HandleFunc("/admin/k8s/nodes/get/", handleAPI(handleNodes))
-	r.HandleFunc("/admin/k8s/pod/delete/", handleAPI(handlePodDelete))
-	r.HandleFunc("/admin/k8s/pods/delete/", handleAPI(handlePodsDelete))
-	r.HandleFunc("/admin/k8s/node/drain/", handleAPI(handleNodeDrain))
-	r.HandleFunc("/admin/k8s/node/uncordon/", handleAPI(handleNodeUncordon))
-	r.HandleFunc("/admin/k8s/deployment/delete/", handleAPI(handleDeploymentDelete))
-	r.HandleFunc("/admin/k8s/deployment/create/", handleAPI(handleDeploymentCreate))
-	r.HandleFunc("/k8s/pods/get", handleAPI(handlePods))
-	r.HandleFunc("/k8s/nodes/get", handleAPI(handleNodes))
-	r.HandleFunc("/k8s/pod/delete", handleAPI(handlePodDelete))
-	r.HandleFunc("/k8s/pods/delete", handleAPI(handlePodsDelete))
-	r.HandleFunc("/k8s/node/drain", handleAPI(handleNodeDrain))
-	r.HandleFunc("/k8s/node/uncordon", handleAPI(handleNodeUncordon))
-	r.HandleFunc("/k8s/deployment/delete", handleAPI(handleDeploymentDelete))
-	r.HandleFunc("/k8s/deployment/create", handleAPI(handleDeploymentCreate))
-	r.HandleFunc("/k8s/pods/get/", handleAPI(handlePods))
-	r.HandleFunc("/k8s/nodes/get/", handleAPI(handleNodes))
-	r.HandleFunc("/k8s/pod/delete/", handleAPI(handlePodDelete))
-	r.HandleFunc("/k8s/pods/delete/", handleAPI(handlePodsDelete))
-	r.HandleFunc("/k8s/node/drain/", handleAPI(handleNodeDrain))
-	r.HandleFunc("/k8s/node/uncordon/", handleAPI(handleNodeUncordon))
-	r.HandleFunc("/k8s/deployment/delete/", handleAPI(handleDeploymentDelete))
-	r.HandleFunc("/k8s/deployment/create/", handleAPI(handleDeploymentCreate))
-	return r
+var routes = []route{
+	{"GET", "/", health},
+	{"GET", "/healthz", health},
+	{"GET", "/k8s/pods/get", handleAPI(handlePods)},
+	{"GET", "/k8s/nodes/get", handleAPI(handleNodes)},
+	{"GET", "/k8s/pod/delete", handleAPI(handlePodDelete)},
+	{"GET", "/k8s/pods/delete", handleAPI(handlePodsDelete)},
+	{"GET", "/k8s/node/drain", handleAPI(handleNodeDrain)},
+	{"GET", "/k8s/node/uncordon", handleAPI(handleNodeUncordon)},
+	{"GET", "/k8s/deployment/delete", handleAPI(handleDeploymentDelete)},
+	{"GET", "/k8s/deployment/create", handleAPI(handleDeploymentCreate)},
 }
 
 func health(w http.ResponseWriter, r *http.Request) {

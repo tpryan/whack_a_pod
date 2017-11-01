@@ -392,8 +392,8 @@ function DEPLOYMENTAPI(hostname, logwindow){
     var uri_delete = "/admin/k8s/deployment/delete";
     var uri_create = "/admin/k8s/deployment/create";
     var uri_deletepod = "/admin/k8s/pod/delete?pod=";
-    var uri_drain = "/admin/k8s/node/drain/?node=";
-    var uri_uncordon = "/admin/k8s/node/uncordon/?node=";
+    var uri_drain = "/admin/k8s/node/drain?node=";
+    var uri_uncordon = "/admin/k8s/node/uncordon?node=";
 
 
     var getPodsURI = function(){

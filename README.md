@@ -93,6 +93,28 @@ the Replica Set is actually answering calls for the service.
 1. Open a terminal in `/infrastructure/`.
 1. Run `make clean`
 
+## Kubernetes
+Whack a Pod can run on Kubernetes (as well as Tectonic and OpenShift).  Its performance depends on the configured cluster nodes.
+
+### Prerequisite 
+* Install and configure a cluster  
+[Kubernetes](https://kubernetes.io/docs/setup/)  
+[Tectonic](https://coreos.com/tectonic/docs/latest/)  
+[OpenShift](https://docs.openshift.com/container-platform/latest/install_config/install/advanced_install.html)  
+
+### Docker Repository
+Set `$(DOCKERREPO)` to the right value in Makefile.properties. This needs to be your docker registry the orchestrator is running.
+
+### Running on Kubernetes
+
+1. Open a terminal in root of whack_a_pod location.
+1. Run `make deploy.kubernetes`
+1. Run `kubectl describe ingress` to get the IP address of the ingress.
+1. Create an DNS entry in your router pointing the discovered IP address to `kubernetes.wap`.   
+
+### Clean Kubernetes
+1. Run `make clean.kubernetes`
+
 ## Minikube
 Whack a Pod can run on Minikube.  Its performance isn't stellar, but the game
 versions of it run just as well a it does on a flaky conference wifi. 

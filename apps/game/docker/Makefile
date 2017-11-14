@@ -7,7 +7,7 @@ app: clean build serve
 
 
 build: 
-	docker build -t game "$(BASEDIR)/../containers/."
+	docker build -t game -t $(DOCKERREPO)/game "$(BASEDIR)/../containers/."
 	
 serve: 
 	docker run --name=game -d -P -p 8080:8080 game

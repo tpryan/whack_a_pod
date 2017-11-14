@@ -9,7 +9,7 @@ main:
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o "$(BASEDIR)/../containers/main" "$(BASEDIR)/../containers/main.go"
 
 build: main
-	docker build -t api "$(BASEDIR)/../containers/."
+	docker build -t api -t $(DOCKERREPO)/api "$(BASEDIR)/../containers/."
 	
 serve: 
 	docker run --name=api -d -P -p 8080:8080 api

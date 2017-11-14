@@ -17,20 +17,22 @@ metadata:
   name: wap-ingress
   annotations:
     ingress.kubernetes.io/rewrite-target: /
+    ingress.kubernetes.io/ssl-redirect: "true"
+    ingress.kubernetes.io/use-port-in-redirects: "true"
 spec:
   rules:
-  - host: kubernetes.wap
-    http:
-      paths:
-      - path: /api/*
-        backend:
-          serviceName: api
-          servicePort: 8080
-      - path: /admin/*
-        backend:
-          serviceName: admin
-          servicePort: 8080
-      - path: /*
-        backend:
-          serviceName: game
-          servicePort: 8080
+    - host: kubernetes.wap
+      http:
+        paths:
+        - path: /api/*
+          backend:
+            serviceName: api
+            servicePort: 8080
+        - path: /admin/*
+          backend:
+            serviceName: admin
+            servicePort: 8080
+        - path: /*
+          backend:
+            serviceName: game
+            servicePort: 8080

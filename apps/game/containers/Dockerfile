@@ -14,4 +14,8 @@
 FROM nginx
 COPY default.conf /etc/nginx/conf.d
 COPY default /usr/share/nginx/html
+
+RUN apt-get update && apt-get install -y curl
+HEALTHCHECK CMD curl --fail http://localhost:8080/healthz/
+
 RUN chmod -R 755 /usr/share/nginx/html

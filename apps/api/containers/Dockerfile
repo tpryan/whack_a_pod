@@ -11,6 +11,10 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-FROM scratch
+FROM alpine:3.5
+
+RUN apk add --no-cache curl
+HEALTHCHECK CMD curl --fail http://localhost:8080/ || exit 1
+
 ADD main /
 CMD ["/main"]

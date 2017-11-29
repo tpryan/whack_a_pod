@@ -19,7 +19,14 @@ service and to simulate creating and destroying nodes.
 
 ![Advanced Screenshot](screenshots/advanced.png "Advanced Version")
 
-## Getting Started
+# Getting Started
+
+Currently the following directions can be used:
+- [Getting Started using GCE](#getting-started-using-gce)
+- [Getting Started using Vanilla Kubernetes](#getting-started-using-vanilla-kubernetes)
+- [Getting Started using Minikube](#getting-started-using-minikube)
+
+## Getting Started using GCE
 
 The current directions assume you are using Google Cloud Platform to take
 advantage of Container Engine to build a manage your Kubernetes cluster.  There
@@ -93,7 +100,29 @@ the Replica Set is actually answering calls for the service.
 1. Open a terminal in `/infrastructure/`.
 1. Run `make clean`
 
-## Minikube
+## Getting Started using Vanilla Kubernetes
+Whack a Pod can run on Self-Hosted Kubernetes clusters, as well as Tectonic and OpenShift.  Its performance depends on the configured cluster nodes.
+
+### Prerequisite 
+* Install and configure a cluster  
+[Kubernetes](https://kubernetes.io/docs/setup/)  
+[Tectonic](https://coreos.com/tectonic/docs/latest/)  
+[OpenShift](https://docs.openshift.com/container-platform/latest/install_config/install/advanced_install.html)  
+
+### Docker Repository
+Set `$(DOCKERREPO)` to the right value in Makefile.properties. This can be the docker registry the orchestrator is running. Another possibility is using a self-hosted registry.
+
+### Running on Vanilla Kubernetes
+
+1. Open a terminal in root of whack_a_pod location.
+1. Run `make deploy.kubernetes`
+1. Run `kubectl describe ingress` to get the IP address of the ingress.
+1. Create an DNS entry in your router pointing the discovered IP address to `kubernetes.wap`.   
+
+### Clean resources from Vanilla Kubernetes
+1. Run `make clean.kubernetes`
+
+## Getting Started using Minikube
 Whack a Pod can run on Minikube.  Its performance isn't stellar, but the game
 versions of it run just as well a it does on a flaky conference wifi. 
 

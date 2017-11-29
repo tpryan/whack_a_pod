@@ -11,7 +11,18 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-FROM nginx
-COPY default.conf /etc/nginx/conf.d
-COPY default /usr/share/nginx/html
-RUN chmod -R 755 /usr/share/nginx/html
+FROM bitnami/nginx
+
+COPY default.conf /bitnami/nginx/conf
+COPY default /app
+
+USER root
+
+RUN apt-get update && apt-get install -y curl
+HEALTHCHECK CMD curl --fail http://localhost:8080/healthz/
+
+RUN chmod -R 755 /app
+RUN chown -R 1001 /app
+RUN chgrp -R 1001 /app
+
+USER 1001

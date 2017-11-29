@@ -21,17 +21,22 @@ deploy: env creds
 deploy.minikube: 
 	kubectl apply -f "$(BASEDIR)/ingress.minikube.yaml"	
 
+deploy.kubernetes: 
+	kubectl apply -f "$(BASEDIR)/ingress.kubernetes.yaml"	
+
 config: env
 	@echo Creating INGRESS Yaml files based on samples and setting in your Makefile.properties
 	@cp "$(BASEDIR)/ingress.sample.yaml" "$(BASEDIR)/ingress.yaml"
 	$(call rewritefile,"$(BASEDIR)/ingress.yaml",%INGRESSNAME%,$(INGRESSNAME))
 
 clean: env creds
-	-kubectl delete -f "$(BASEDIR)/ingress.minikube.yaml"	
-
+	-kubectl delete -f "$(BASEDIR)/ingress.yaml"	
 
 clean.minikube: 
-	-kubectl delete -f "$(BASEDIR)/ingress.yaml"
+	-kubectl delete -f "$(BASEDIR)/ingress.minikube.yaml"
+
+clean.kubernetes: 
+	-kubectl delete -f "$(BASEDIR)/ingress.kubernetes.yaml"
 
 define rewritefile
 	@sed s/$(2)/$(3)/g <""$(1)"" >"$(BASEDIR)/.temp"

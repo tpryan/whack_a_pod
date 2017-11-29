@@ -15,23 +15,28 @@ BASEDIR = $(shell pwd)
 
 include Makefile.properties
 
+reset.safe: env creds
+	cd "$(BASEDIR)/apps/api/kubernetes/" && $(MAKE) reset.safe
+	cd "$(BASEDIR)/apps/game/kubernetes/" && $(MAKE) reset.safe
+	cd "$(BASEDIR)/apps/admin/kubernetes/" && $(MAKE) reset.safe
+
 deploy: env creds
 	cd "$(BASEDIR)/apps/api/kubernetes/" && $(MAKE) deploy
 	cd "$(BASEDIR)/apps/game/kubernetes/" && $(MAKE) deploy
 	cd "$(BASEDIR)/apps/admin/kubernetes/" && $(MAKE) deploy
 	cd "$(BASEDIR)/apps/ingress/" && $(MAKE) deploy
 
-reset.safe: env creds
-	cd "$(BASEDIR)/apps/api/kubernetes/" && $(MAKE) reset.safe
-	cd "$(BASEDIR)/apps/game/kubernetes/" && $(MAKE) reset.safe
-	cd "$(BASEDIR)/apps/admin/kubernetes/" && $(MAKE) reset.safe
-
 deploy.minikube: creds.minikube
 	cd "$(BASEDIR)/apps/api/kubernetes/" && $(MAKE) deploy.minikube
 	cd "$(BASEDIR)/apps/game/kubernetes/" && $(MAKE) deploy.minikube
 	cd "$(BASEDIR)/apps/admin/kubernetes/" && $(MAKE) deploy.minikube
 	cd "$(BASEDIR)/apps/ingress/" && $(MAKE) deploy.minikube	
-	
+
+deploy.kubernetes: creds.kubernetes
+	cd "$(BASEDIR)/apps/api/kubernetes/" && $(MAKE) deploy.minikube
+	cd "$(BASEDIR)/apps/game/kubernetes/" && $(MAKE) deploy.minikube
+	cd "$(BASEDIR)/apps/admin/kubernetes/" && $(MAKE) deploy.minikube
+	cd "$(BASEDIR)/apps/ingress/" && $(MAKE) deploy.kubernetes
 
 clean: env creds
 	cd "$(BASEDIR)/apps/api/kubernetes/" && $(MAKE) clean
@@ -45,10 +50,26 @@ clean.minikube:
 	cd "$(BASEDIR)/apps/admin/kubernetes/" && $(MAKE) clean.minikube	
 	cd "$(BASEDIR)/apps/ingress/" && $(MAKE) clean.minikube
 
+clean.kubernetes: 
+	cd "$(BASEDIR)/apps/api/kubernetes/" && $(MAKE) clean.minikube
+	cd "$(BASEDIR)/apps/game/kubernetes/" && $(MAKE) clean.minikube
+	cd "$(BASEDIR)/apps/admin/kubernetes/" && $(MAKE) clean.minikube	
+	cd "$(BASEDIR)/apps/ingress/" && $(MAKE) clean.kubernetes
+
 build: env creds
 	cd "$(BASEDIR)/apps/api/kubernetes/" && $(MAKE) build
 	cd "$(BASEDIR)/apps/game/kubernetes/" && $(MAKE) build
 	cd "$(BASEDIR)/apps/admin/kubernetes/" && $(MAKE) build		
+
+build.images:
+	cd "$(BASEDIR)/apps/api/docker/" && $(MAKE) build
+	cd "$(BASEDIR)/apps/game/docker/" && $(MAKE) build
+	cd "$(BASEDIR)/apps/admin/docker/" && $(MAKE) build
+
+push.images: build.images
+	docker push $(DOCKERREPO)/api
+	docker push $(DOCKERREPO)/game
+	docker push $(DOCKERREPO)/admin
 
 config: env creds
 	@cd "$(BASEDIR)/apps/ingress/" && $(MAKE) config

@@ -1,5 +1,7 @@
 BASEDIR = $(shell pwd)
 
+include $(BASEDIR)/../../../Makefile.properties
+
 .DEFAULT_GOAL := app	
 	
 app: clean build serve

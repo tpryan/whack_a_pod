@@ -177,7 +177,8 @@ type minimumDeployment struct {
 				Labels map[string]string `json:"labels,omitempty"`
 			} `json:"metadata,omitempty"`
 			Spec struct {
-				Containers []minimumContainer `json:"containers,omitempty"`
+				TerminationGracePeriodSeconds int                `json:"terminationGracePeriodSeconds,omitempty"`
+				Containers                    []minimumContainer `json:"containers,omitempty"`
 			} `json:"spec,omitempty"`
 		} `json:"template,omitempty"`
 	} `json:"spec,omitempty"`
@@ -218,11 +219,13 @@ func createDeployment() ([]byte, error) {
 	d.Spec.Selector.MatchLabels = map[string]string{"app": "api"}
 	d.Spec.Strategy.Type = "RollingUpdate"
 	d.Spec.Template.Metadata.Labels = map[string]string{"app": "api"}
+	d.Spec.Template.Spec.TerminationGracePeriodSeconds = 1
 	d.Spec.Template.Spec.Containers = []minimumContainer{
 		minimumContainer{
 			Name:            "api",
 			Image:           image,
 			ImagePullPolicy: policy,
+
 			Ports: []minimumPort{
 				minimumPort{
 					ContainerPort: 8080,

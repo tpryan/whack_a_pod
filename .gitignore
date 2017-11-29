@@ -15,3 +15,4 @@ apps/api/kubernetes/api-deployment.yaml
 /apps/admin/containers/main
 /apps/api/containers/main
 /Makefile.de.properties
+Makefile.uk.properties

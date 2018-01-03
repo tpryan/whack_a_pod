@@ -31,7 +31,7 @@ app: build deploy
 main:
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o "$(BASEDIR)/../containers/main" "$(BASEDIR)/../containers/main.go" "$(BASEDIR)/../containers/kubernetes.go"	
 
-build: env creds main
+build: env main
 	gcloud container builds submit "$(BASEDIR)/../containers/." --tag=$(DOCKERREPO)/admin
 
 deploy: env creds deployment service
@@ -61,4 +61,3 @@ retry: clean build deploy
 
 config: env 
 	echo "No custom config needed for admin"
-	

@@ -27,11 +27,11 @@ config: env
 	$(call rewritefile,"$(BASEDIR)/ingress.yaml",%INGRESSNAME%,$(INGRESSNAME))
 
 clean: env creds
-	-kubectl delete -f "$(BASEDIR)/ingress.minikube.yaml"	
+	-kubectl delete -f "$(BASEDIR)/ingress.yaml"
 
 
 clean.minikube: 
-	-kubectl delete -f "$(BASEDIR)/ingress.yaml"
+	-kubectl delete -f "$(BASEDIR)/ingress.minikube.yaml"
 
 define rewritefile
 	@sed s/$(2)/$(3)/g <""$(1)"" >"$(BASEDIR)/.temp"

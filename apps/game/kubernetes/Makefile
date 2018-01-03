@@ -27,7 +27,7 @@ reset.safe: env creds
 	kubectl run game-deployment --image=$(DOCKERREPO)/game --replicas=4 --port=8080 --labels=app=game 
 	say "app refresh complete"	
 
-build: env creds
+build: env
 	gcloud container builds submit "$(BASEDIR)/../containers/." --tag=$(DOCKERREPO)/game
 
 deploy: env creds deployment service
@@ -53,4 +53,4 @@ clean.service:
 
 retry: clean build deploy
 
-config: env 
+config: env

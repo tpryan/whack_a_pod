@@ -31,6 +31,12 @@ deploy.minikube: creds.minikube
 	cd "$(BASEDIR)/apps/game/kubernetes/" && $(MAKE) deploy.minikube
 	cd "$(BASEDIR)/apps/admin/kubernetes/" && $(MAKE) deploy.minikube
 	cd "$(BASEDIR)/apps/ingress/" && $(MAKE) deploy.minikube	
+
+deploy.generic: 
+	cd "$(BASEDIR)/apps/api/kubernetes/" && $(MAKE) deploy.generic
+	cd "$(BASEDIR)/apps/game/kubernetes/" && $(MAKE) deploy.generic
+	cd "$(BASEDIR)/apps/admin/kubernetes/" && $(MAKE) deploy.generic
+	cd "$(BASEDIR)/apps/ingress/" && $(MAKE) deploy.generic
 	
 
 clean: env creds
@@ -38,6 +44,12 @@ clean: env creds
 	cd "$(BASEDIR)/apps/game/kubernetes/" && $(MAKE) clean
 	cd "$(BASEDIR)/apps/admin/kubernetes/" && $(MAKE) clean	
 	cd "$(BASEDIR)/apps/ingress/" && $(MAKE) clean
+
+clean.generic: 
+	cd "$(BASEDIR)/apps/api/kubernetes/" && $(MAKE) clean.generic
+	cd "$(BASEDIR)/apps/game/kubernetes/" && $(MAKE) clean.generic
+	cd "$(BASEDIR)/apps/admin/kubernetes/" && $(MAKE) clean.generic
+	cd "$(BASEDIR)/apps/ingress/" && $(MAKE) clean.generic
 
 clean.minikube: 
 	cd "$(BASEDIR)/apps/api/kubernetes/" && $(MAKE) clean.minikube
@@ -49,6 +61,11 @@ build: env creds
 	cd "$(BASEDIR)/apps/api/kubernetes/" && $(MAKE) build
 	cd "$(BASEDIR)/apps/game/kubernetes/" && $(MAKE) build
 	cd "$(BASEDIR)/apps/admin/kubernetes/" && $(MAKE) build		
+
+build.generic: 
+	cd "$(BASEDIR)/apps/api/kubernetes/" && $(MAKE) build.generic
+	cd "$(BASEDIR)/apps/game/kubernetes/" && $(MAKE) build.generic
+	cd "$(BASEDIR)/apps/admin/kubernetes/" && $(MAKE) build.generic
 
 config: env creds
 	@cd "$(BASEDIR)/apps/ingress/" && $(MAKE) config

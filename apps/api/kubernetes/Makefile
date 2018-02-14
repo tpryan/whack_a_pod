@@ -33,9 +33,17 @@ main:
 build: env main
 	gcloud container builds submit "$(BASEDIR)/../containers/." --tag=$(DOCKERREPO)/api
 
+build.generic: main
+	docker build "$(BASEDIR)/../containers/." --tag=$(DOCKERREPO)/whackapod-api
+	docker push $(DOCKERREPO)/whackapod-api
+
 deploy: env creds deployment service
 
 deploy.minikube: deployment service
+
+deploy.generic: 
+	kubectl run api-deployment --image=$(DOCKERREPO)/whackapod-api --replicas=12 --port=8080 --labels=app=api 
+	kubectl expose deployment api-deployment --name=api --target-port=8080  --type=NodePort --labels="app=api"
 
 test: 
 	cd 	"$(BASEDIR)/../containers" && go test
@@ -47,6 +55,7 @@ service:
 	kubectl expose deployment api-deployment --name=api --target-port=8080  --type=NodePort --labels="app=api"
 
 clean: env creds clean.deployment clean.service 
+clean.generic: clean.deployment clean.service 
 
 clean.minikube: clean.deployment clean.service 
 

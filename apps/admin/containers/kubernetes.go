@@ -215,7 +215,7 @@ func createDeployment() ([]byte, error) {
 	d.APIVersion = "extensions/v1beta1"
 	d.Kind = "Deployment"
 	d.Metadata.Name = "api-deployment"
-	d.Spec.Replicas = 12
+	d.Spec.Replicas = 9
 	d.Spec.Selector.MatchLabels = map[string]string{"app": "api"}
 	d.Spec.Strategy.Type = "RollingUpdate"
 	d.Spec.Template.Metadata.Labels = map[string]string{"app": "api"}

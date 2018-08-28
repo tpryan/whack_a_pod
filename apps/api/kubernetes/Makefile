@@ -42,7 +42,7 @@ deploy: env creds deployment service
 deploy.minikube: deployment service
 
 deploy.generic: 
-	kubectl run api-deployment --image=$(DOCKERREPO)/whackapod-api --replicas=12 --port=8080 --labels=app=api 
+	kubectl run api-deployment --image=$(DOCKERREPO)/whackapod-api --replicas=9 --port=8080 --labels=app=api 
 	kubectl expose deployment api-deployment --name=api --target-port=8080  --type=NodePort --labels="app=api"
 
 test: 

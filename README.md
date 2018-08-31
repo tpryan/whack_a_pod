@@ -117,14 +117,41 @@ This still requires a Google Cloud Platform Project.  If you would like to build
 them some other way, you can, nothing restricts you from doing so. Just make 
 sure you set `$(DOCKERREPO)` to the right value in Makefile.properties.
 
+#### Docker Repository with DockerHub 
+Alternatively, to host your images on DockerHub,
+
+1. Create an account on DockerHub
+2. Create an image repository on DockerHub
+3. In the `Makefile.properties`, change the value of `PROJECT` so that it equals your image repository slug
+4. In the `Makefile.properties`, change the value of `DOCKERREPO` so that it looks like `yourusername/$(PROJECT)`
+5. Run `make build.dockerhub`
+
+Your repository should have three new images with the tags:
+- admin
+- api
+- game
+
+For example, if your username is `username` and your repository name is `wap`, your images will be pushed to:
+- username/wap:admin
+- username/wap:api
+- username/wap:game
 
 ### Running on Minikube
 
 1. Open a terminal in root of whack_a_pod location.
 1. Run `minikube start --vm-driver=xhyve`
 1. Run `make deploy.minikube`
-1. Run `kubectl describe ingress` to get the IP address of the ingress.
-1. Create an entry in /etc/hosts pointing IP address to `minikube.wap`.   
+1. Run `minikube ip` to get the IP address of the Minikube deployment.
+1. Create an entry in /etc/hosts pointing IP address to `minikube.wap`.
+
+### Running on Minikube with DockerHub
+1. Open a terminal in root of whack_a_pod location.
+1. Run `minikube start`
+1. Run `make deploy.minikube.dockerhub`
+1. The last line of the previous command should contain an IP address beside a `"minikube.wap"` string
+1. Run `sudo vim /etc/hosts`, append the last line to the `/etc/hosts` and save the file.
+1. Wait for the ingress to obtain an IP address (run `kubectl get ing --watch` and wait till the `ADDRESS` column has a value)
+1. Visit [http://minikube.wap](http://minikube.wap) in the browser
 
 ### Clean Minikube
 1. Run `make clean.minikube`

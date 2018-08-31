@@ -22,15 +22,15 @@ spec:
   - host: minikube.wap
     http:
       paths:
-      - path: /api/*
+      - path: /api/
         backend:
           serviceName: api
           servicePort: 8080
-      - path: /admin/*
+      - path: /admin/
         backend:
           serviceName: admin
           servicePort: 8080
-      - path: /*
+      - path: /
         backend:
           serviceName: game
           servicePort: 8080

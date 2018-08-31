@@ -33,6 +33,10 @@ main:
 build: env main
 	gcloud container builds submit "$(BASEDIR)/../containers/." --tag=$(DOCKERREPO)/api
 
+build.dockerhub: main
+	docker build "$(BASEDIR)/../containers/." --tag=$(DOCKERREPO):api
+	docker push $(DOCKERREPO):api
+
 build.generic: main
 	docker build "$(BASEDIR)/../containers/." --tag=$(DOCKERREPO)/whackapod-api
 	docker push $(DOCKERREPO)/whackapod-api
@@ -40,6 +44,10 @@ build.generic: main
 deploy: env creds deployment service
 
 deploy.minikube: deployment service
+
+deploy.minikube.dockerhub:
+	kubectl run api-deployment --image=$(DOCKERREPO):api --replicas=12 --port=8080 --labels=app=api
+	kubectl expose deployment api-deployment --name=api --target-port=8080  --type=NodePort --labels="app=api"
 
 deploy.generic: 
 	kubectl run api-deployment --image=$(DOCKERREPO)/whackapod-api --replicas=12 --port=8080 --labels=app=api 

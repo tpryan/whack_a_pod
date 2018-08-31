@@ -30,6 +30,10 @@ reset.safe: env creds
 build: env
 	gcloud container builds submit "$(BASEDIR)/../containers/." --tag=$(DOCKERREPO)/game
 
+build.dockerhub:
+	docker build "$(BASEDIR)/../containers/." --tag=$(DOCKERREPO):game
+	docker push $(DOCKERREPO):game
+
 build.generic: 
 	docker build "$(BASEDIR)/../containers/." --tag=$(DOCKERREPO)/whackapod-game
 	docker push $(DOCKERREPO)/whackapod-game
@@ -38,19 +42,23 @@ deploy: env creds deployment service
 
 deploy.minikube: deployment service
 
+deploy.minikube.dockerhub:
+	kubectl run game-deployment --image=$(DOCKERREPO):game --replicas=4 --port=8080 --labels=app=game 
+	kubectl expose deployment game-deployment --name=game --target-port=8080  --type=NodePort --labels="app=game"
+
 deploy.generic: 
 	kubectl run game-deployment --image=$(DOCKERREPO)/whackapod-game --replicas=4 --port=8080 --labels=app=game 
-	kubectl expose deployment game-deployment --name=game --target-port=8080  --type=NodePort --labels="app=api"
+	kubectl expose deployment game-deployment --name=game --target-port=8080  --type=NodePort --labels="app=game"
 
 deployment:
 	kubectl run game-deployment --image=$(DOCKERREPO)/game --replicas=4 --port=8080 --labels=app=game 
 
 service:
-	kubectl expose deployment game-deployment --name=game --target-port=8080  --type=NodePort --labels="app=api"
+	kubectl expose deployment game-deployment --name=game --target-port=8080  --type=NodePort --labels="app=game"
 
 clean: env creds clean.deployment clean.service 
 
-clean.generic: clean.deployment clean.service 
+clean.generic: clean.deployment clean.service
 
 clean.minikube: clean.deployment clean.service 
 

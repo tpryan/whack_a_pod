@@ -18,10 +18,10 @@ include ../../Makefile.properties
 deploy: env creds
 	kubectl apply -f "$(BASEDIR)/ingress.yaml"
 
-deploy.minikube: 
-	kubectl apply -f "$(BASEDIR)/ingress.minikube.yaml"	
+deploy.minikube:
+	kubectl apply -f "$(BASEDIR)/ingress.minikube.yaml"
 
-deploy.generic: 
+deploy.generic:
 	kubectl apply -f "$(BASEDIR)/ingress.generic.yaml"	
 
 config: env
@@ -32,10 +32,10 @@ config: env
 clean: env creds
 	-kubectl delete -f "$(BASEDIR)/ingress.yaml"
 
-clean.minikube: 
+clean.minikube:
 	-kubectl delete -f "$(BASEDIR)/ingress.minikube.yaml"
 
-clean.generic: 
+clean.generic:
 	-kubectl delete -f "$(BASEDIR)/ingress.generic.yaml"
 
 define rewritefile

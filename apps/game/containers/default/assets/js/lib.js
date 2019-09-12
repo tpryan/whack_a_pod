@@ -317,7 +317,7 @@ function API(hostname){
     this.debug = false;
     this.fails = 0;
     this.fail_threshold = 2;
-    var apihostname = window.location.hostname;
+    var apihostname = window.location.host;
     this.timeout = 5000;
     var apiprotocol = window.location.protocol + "//";
     if (apihostname.length == 0){
@@ -381,7 +381,7 @@ function DEPLOYMENTAPI(hostname, logwindow){
     if (typeof(logwindow)==='undefined') logwindow = new LOGWINDOW();
 
     this.debug = false;
-    var apihostname = window.location.hostname;
+    var apihostname = window.location.host;
     this.timeout = 5000;
     var apiprotocol = window.location.protocol + "//";
     if (apihostname.length == 0){

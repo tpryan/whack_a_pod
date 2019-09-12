@@ -16,21 +16,21 @@ kind: Ingress
 metadata:
   name: wap-ingress
   annotations:
-    ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - host: minikube.wap
-    http:
+  - http:
       paths:
-      - path: /api/
+      - path: /api/*
         backend:
           serviceName: api
           servicePort: 8080
-      - path: /admin/
+      - path: /admin/*
         backend:
           serviceName: admin
           servicePort: 8080
-      - path: /
+      - path: /*
         backend:
           serviceName: game
           servicePort: 8080
+    host: whackapod.example.com
